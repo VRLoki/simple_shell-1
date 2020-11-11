@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
+
 #define SEP " \n\a\t\v\r"
 
 
@@ -33,7 +34,7 @@ int _exec_func(char *comm, char **commarg, char **en);
 
 /* _parse_string.c */
 char **_parse_string(char *string, int *nbw);
-void _free_grid(int **grid, int height);
+void _free_grid(char **grid, int height);
 
 
 #endif

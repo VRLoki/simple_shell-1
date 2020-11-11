@@ -1,23 +1,20 @@
 #include "hsh.h"
 
 
-int main(int ac, char *av)
+
+
+int main(int ac, char **av)
 {
 	int read = 0;
 	int nbw = 0;
 	int count = 0;
 	char *line = NULL;
 	size_t n;
-	char *str;
-	char *token;
-	pid_t child_pid;
-	int status;
 	char **parsed = NULL;
-	char *argv[10];
 
 	if (ac > 1)
 	{
-		printf("hsh used with file to read - Non interactive mode\n");
+		printf("hsh used with file - Non interactive mode %s\n", av[1]);
 		exit(0);
 	}
 	if (isatty(STDIN_FILENO))
@@ -25,7 +22,7 @@ int main(int ac, char *av)
 		while (1)
 		{
 			printf("$ ");
-
+			count++;
 			read = getline(&line, &n, stdin);
 			if (read == EOF)
 			{
@@ -37,7 +34,7 @@ int main(int ac, char *av)
 			if (nbw == 0)
 				continue;
 
-			exec_func(parsed[0], parsed, NULL);
+			_exec_func(parsed[0], parsed, NULL);
 			_free_grid(parsed, nbw);
 
 
@@ -47,22 +44,14 @@ int main(int ac, char *av)
 	{
 		while ((read = getline(&line, &n, stdin)) != EOF)
 		{
-			if (strlen(line) == 1)
+			nbw = 0;
+			count++;
+			parsed = _parse_string(line, &nbw);
+			if (nbw == 0)
 				continue;
 
-			line[strlen(line)-1] = 0;
-
-			nbw = 0;
-			token = strtok(line, " ");
-			while (token != NULL)
-			{
-				argv[nbw]  = token;
-				nbw++;
-				token = strtok(NULL, " ");
-			}
-			argv[nbw] = NULL;
-
-			exec_func(argv[0], argv, NULL);
+			_exec_func(parsed[0], parsed, NULL);
+			_free_grid(parsed, nbw);
 		}
 	}
 
@@ -86,10 +75,13 @@ int _exec_func(char *comm, char **commarg, char **en)
 
 	if (child_pid == 0)
 	{
-		if (execve(comm, commarg, en) == -1);
-		    exit(2);
+		if (execve(comm, commarg, en) == -1)
+		{
+			exit(2);
+		}
 	}
 	else
 		wait(&status);
 
+	return (0);
 }
