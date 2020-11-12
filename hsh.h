@@ -36,5 +36,8 @@ int _exec_func(char *comm, char **commarg, char **en);
 char **_parse_string(char *string, int *nbw);
 void _free_grid(char **grid, int height);
 
+/*_exec_fct.c */
+int _exec_func(char *comm, char **commarg, char **en);
+
 
 #endif
