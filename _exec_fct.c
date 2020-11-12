@@ -23,25 +23,48 @@ int _exec_func(char **parsed, char **env)
 	{
 		if (execve(command, parsed, env) == -1)
 		{
-			perror("test");
-			printf("Error number %i\n", errno);
-			exit(errno);
+			_error_func(errno);
 		}
 	}
 	else
 	{
 		wait(&status);
 		if (WIFEXITED(status))
+		{
 			WEXITSTATUS(status);
+		}
 		exit_status = WEXITSTATUS(status);
 		printf("exit_status %i\n", exit_status);
 	}
 	return (exit_status);
 }
 
+typedef struct	error_mess
+{
+	int	nbr_error;
+	int	n_err_sh;
+	char	*message_error;
+}	error_mess_t;
 
-
-
+int	_error_func(int errnb)
+{
+	unsigned int	i;
+	error_mess_t	error_mess[] = {
+		{2, 127, "not found"},
+		{13, 13, "Permission denied"},
+	};
+	i = 0;
+	while (error_mess[i].nbr_error)
+	{
+		if ((error_mess[i].nbr_error) == errnb)
+		{
+			errx(error_mess[i].n_err_sh, "%s", error_mess[i].message_error);
+		}
+		i++;
+	}
+	printf("exit failure\n");
+	return (EXIT_FAILURE);
+}
 
 
 char *_getfullpath(char *name, char *mypath)
