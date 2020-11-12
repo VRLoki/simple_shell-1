@@ -3,7 +3,7 @@
 
 
 
-int main(int ac, char **av)
+int main(int ac, char **av, char **env)
 {
 	int read = 0;
 	int nbw = 0;
@@ -21,8 +21,8 @@ int main(int ac, char **av)
 	{
 		while (1)
 		{
-			printf("$ ");
 			count++;
+			printf("$:%i ", count);
 			read = getline(&line, &n, stdin);
 			if (read == EOF)
 			{
@@ -34,11 +34,11 @@ int main(int ac, char **av)
 			if (nbw == 0)
 				continue;
 
-			_exec_func(parsed[0], parsed, NULL);
+			_exec_func(parsed, env);
 			_free_grid(parsed, nbw);
 
-
 		}
+		free(line);
 	}
 	else
 	{
@@ -50,10 +50,11 @@ int main(int ac, char **av)
 			if (nbw == 0)
 				continue;
 
-			_exec_func(parsed[0], parsed, NULL);
+			_exec_func(parsed, env);
 			_free_grid(parsed, nbw);
-		}
-	}
 
+		}
+		free(line);
+	}
 	return (0);
 }

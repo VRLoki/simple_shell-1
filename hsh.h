@@ -15,6 +15,10 @@
 #define SEP " \n\a\t\v\r"
 
 
+
+
+
+
 extern char **environ;
 
 /* _putfct.c */
@@ -28,16 +32,19 @@ int _strcmp(char *s1, char *s2);
 char *_strcpy(char *dest, char *src);
 char *_strdup(char *str);
 
-/* _example.c */
-int _exec_func(char *comm, char **commarg, char **en);
+/* _strfct2.c */
+int _strlennull(char *s);
+char *_str_concat(char *s1, char *s2);
+char *_getenv(char *name, char **env);
 
+/* main.c */
 
 /* _parse_string.c */
 char **_parse_string(char *string, int *nbw);
 void _free_grid(char **grid, int height);
 
 /*_exec_fct.c */
-int _exec_func(char *comm, char **commarg, char **en);
-
+int _exec_func(char **parsed, char **en);
+char *_getfullpath(char *name, char *mypath);
 
 #endif
