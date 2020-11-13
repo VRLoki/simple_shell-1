@@ -20,7 +20,6 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 	int nextchar;
 	int fd;
 
-//printf("bufflen = [%i]\n", bufflen);
 	if (initbuf == 0 || bufflen == 0)
 	{
 		initbuf = 1;
@@ -33,11 +32,12 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		}
 		buf[bufflen] = '\0';
 	}
-//printf("buf = [%s]", buf);
+
 	if (bufflen == 0)
 		return (EOF);
+
 	nextchar = _strfindn(buf, '\n');
-	nextline = malloc((nextchar + 1) * sizeof(char));
+	nextline = malloc((nextchar) * sizeof(char));
 	if (nextline == NULL)
 	{
 		free(buf);
@@ -45,11 +45,11 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 	}
 	*n = nextchar;
 	_strncpy(nextline, buf, nextchar);
-	nextline[nextchar + 1] = '\0';
-	printf("nextline = [%s]", nextline);
-	printf("lineptr = [%s]", *lineptr);
-	*lineptr = _strdup(nextline);
+	nextline[nextchar] = '\0';
+       	*lineptr = _strdup(nextline);
 	free(nextline);
+//	printf("lineptr %s", *lineptr);
+
 	if (bufflen == nextchar)
 	{
 		free(buf);
@@ -57,11 +57,15 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 	}
 	else
 	{
-		tmp = malloc((bufflen - nextchar) * sizeof(char));
-		tmp = (buf + nextchar);
+//		printf("bufflen %i - nextchar %i\n", bufflen, nextchar);
+		//tmp = malloc((bufflen - nextchar) * sizeof(char));
+		tmp = _strdup((buf + nextchar));
+//		printf("Tmp is %s\n", tmp);
 		free(buf);
-		buf = tmp;
-		bufflen = bufflen - nextchar;
+		buf = malloc((bufflen - nextchar) * sizeof(char));
+		buf = _strdup(tmp);
+		bufflen = _strlen(buf);
+//		printf("Now buf is %s and bufflen %i\n", buf, bufflen);
 	}
 	return (nextchar);
 }

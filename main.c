@@ -50,15 +50,17 @@ void _interactive(int ac, char **av, char **env)
 		count++;
 		_puts("$: ");
 		read = _getline(&line, &n, stdin);
-//printf("read = %i\n", read);
-//printf("line = %s\n", line);
+//		printf("read = %i\n", read);
+//		printf("line = %s\n", line);
 		if (read == EOF)
 		{
 			printf("\n");
-			continue;
+			break;
 		}
 		nbw = 0;
 		parsed = _parse_string(line, &nbw);
+		line = NULL;
+//		printf("line is : %s\n", line);
 		if (nbw == 0)
 			continue;
 
@@ -97,8 +99,9 @@ void _noninteractive(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 
-	while ((read = getline(&line, &n, stdin)) != EOF)
+	while ((read = _getline(&line, &n, stdin)) != EOF)
 	{
+//		printf("Line : %s\n", line);
 		nbw = 0;
 		count++;
 		parsed = _parse_string(line, &nbw);
