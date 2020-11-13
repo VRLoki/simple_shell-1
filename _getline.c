@@ -18,7 +18,6 @@ ssize_t _getline(char **lineptr, size_t *n)
 	char *nextline;
 	char *tmp;
 	int nextchar;
-	int fd;
 
 	if (initbuf == 0 || bufflen == 0)
 	{
@@ -47,7 +46,6 @@ ssize_t _getline(char **lineptr, size_t *n)
 	nextline[nextchar] = '\0';
        	*lineptr = _strdup(nextline);
 	free(nextline);
-//	printf("lineptr %s", *lineptr);
 
 	if (bufflen == nextchar)
 	{
@@ -56,15 +54,11 @@ ssize_t _getline(char **lineptr, size_t *n)
 	}
 	else
 	{
-//		printf("bufflen %i - nextchar %i\n", bufflen, nextchar);
-		//tmp = malloc((bufflen - nextchar) * sizeof(char));
 		tmp = _strdup((buf + nextchar));
-//		printf("Tmp is %s\n", tmp);
 		free(buf);
 		buf = malloc((bufflen - nextchar) * sizeof(char));
 		buf = _strdup(tmp);
 		bufflen = _strlen(buf);
-//		printf("Now buf is %s and bufflen %i\n", buf, bufflen);
 	}
 	return (nextchar);
 }
@@ -175,7 +169,6 @@ ssize_t _getlinefile(char **lineptr, size_t *n, int fd)
 	nextline[nextchar] = '\0';
        	*lineptr = _strdup(nextline);
 	free(nextline);
-//	printf("lineptr %s", *lineptr);
 
 	if (bufflen == nextchar)
 	{
@@ -184,15 +177,11 @@ ssize_t _getlinefile(char **lineptr, size_t *n, int fd)
 	}
 	else
 	{
-//		printf("bufflen %i - nextchar %i\n", bufflen, nextchar);
-		//tmp = malloc((bufflen - nextchar) * sizeof(char));
 		tmp = _strdup((buf + nextchar));
-//		printf("Tmp is %s\n", tmp);
 		free(buf);
 		buf = malloc((bufflen - nextchar) * sizeof(char));
 		buf = _strdup(tmp);
 		bufflen = _strlen(buf);
-//		printf("Now buf is %s and bufflen %i\n", buf, bufflen);
 	}
 	return (nextchar);
 }

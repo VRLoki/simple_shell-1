@@ -13,7 +13,7 @@
 
 int main(int ac, char **av, char **env)
 {
-	if (ac == 2)
+	if (ac > 1)
 		_filemode(ac, av, env);
 	if (isatty(STDIN_FILENO))
 		_interactive(ac, av, env);
@@ -50,8 +50,6 @@ void _interactive(int ac, char **av, char **env)
 		count++;
 		_puts("$: ");
 		read = _getline(&line, &n);
-//		printf("read = %i\n", read);
-//		printf("line = %s\n", line);
 		if (read == EOF)
 		{
 			printf("\n");
@@ -60,7 +58,6 @@ void _interactive(int ac, char **av, char **env)
 		nbw = 0;
 		parsed = _parse_string(line, &nbw);
 		line = NULL;
-//		printf("line is : %s\n", line);
 		if (nbw == 0)
 			continue;
 
@@ -101,7 +98,6 @@ void _noninteractive(int ac, char **av, char **env)
 
 	while ((read = _getline(&line, &n)) != EOF)
 	{
-//		printf("Line : %s\n", line);
 		nbw = 0;
 		count++;
 		parsed = _parse_string(line, &nbw);

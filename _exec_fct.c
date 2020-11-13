@@ -9,9 +9,10 @@ int _exec_func(char **parsed, char **env, int count)
 	char *mypath;
 	char *command;
 
-	child_pid = fork();
 	mypath = _getenv("PATH", env);
 	command = _getfullpath(parsed[0], mypath);
+
+	child_pid = fork();
 
 	if (child_pid == -1)
 	{
@@ -34,7 +35,6 @@ int _exec_func(char **parsed, char **env, int count)
 			WEXITSTATUS(status);
 		}
 		exit_status = WEXITSTATUS(status);
-/*		printf("exit_status %i\n", exit_status); */
 	}
 	return (exit_status);
 }
