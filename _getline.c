@@ -1,20 +1,31 @@
 #include "hsh.h"
 
+/**
+ * _getline - get the next line of the input.
+ *
+ * @lineptr: the adress where stock the next line.
+ * @n: number of character return.
+ * @stream: the source.
+ *
+ * Return: the position of the next EOL or -1 if fail
+ */
+
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-	static char *buf = NULL;
-	static int initbuf = 0;
-	int bufflen;
+	static char *buf;
+	static int initbuf;
+	static int bufflen;
 	char *nextline;
 	char *tmp;
 	int nextchar;
 	int fd;
 
-
-	if (initbuf == 0)
+	//printf("bufflen = [%i]\n", bufflen);
+	if (initbuf == 0 || bufflen == 0)
 	{
 		initbuf = 1;
 		fd = fileno(stream);
+		buf = (char *)malloc(sizeof(char) * 1024);
 		bufflen = read(fd, buf, 1024);
 		if (bufflen == -1)
 		{
@@ -22,9 +33,9 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		}
 		buf[bufflen] = '\0';
 	}
+//	printf("buf = [%s]", buf);
 	if (bufflen == 0)
 		return (EOF);
-
 	nextchar = _strfindn(buf, '\n');
 	nextline = malloc((nextchar + 1) * sizeof(char));
 	if (nextline == NULL)
@@ -32,12 +43,13 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		free(buf);
 		return (-1);
 	}
-
 	*n = nextchar;
 	_strncpy(nextline, buf, nextchar);
 	nextline[nextchar + 1] = '\0';
-	*lineptr = nextline;
-
+	printf("nextline = [%s]", nextline);
+	printf("lineptr = [%s]", *lineptr);
+	*lineptr = _strdup(nextline);
+	free(nextline);
 	if (bufflen == nextchar)
 	{
 		free(buf);
@@ -51,10 +63,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		buf = tmp;
 		bufflen = bufflen - nextchar;
 	}
-	return(nextchar);
-
-
-
+	return (nextchar);
 }
 
 
@@ -75,7 +84,7 @@ int _strfindn(char *s, char c)
 	while (*(s + i))
 	{
 		if (*(s + i) == c)
-			return (i);
+			return (i + 1);
 		i++;
 	}
 
