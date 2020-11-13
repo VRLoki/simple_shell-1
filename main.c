@@ -1,6 +1,14 @@
 #include "hsh.h"
 
-
+/**
+ * main - entry point.
+ *
+ * @ac: number of arguments.
+ * @av: the tab with the arguments.
+ * @env: the environnement
+ *
+ * Return: EXIT_SUCCESS
+ */
 
 
 int main(int ac, char **av, char **env)
@@ -15,6 +23,15 @@ int main(int ac, char **av, char **env)
 }
 
 
+/**
+ * _interactive - execute the shell in interactive mode.
+ *
+ * @ac: number of arguments.
+ * @av: the tab with the arguments.
+ * @env: the environnement
+ *
+ * Return: void
+ */
 
 void _interactive(int ac, char **av, char **env)
 {
@@ -31,12 +48,22 @@ void _interactive(int ac, char **av, char **env)
 	while (1)
 	{
 		count++;
+<<<<<<< HEAD
 		printf("$:%i ", count);
 		read = _getline(&line, &n, stdin);
+||||||| merged common ancestors
+		printf("$:%i ", count);
+		read = getline(&line, &n, stdin);
+=======
+		_puts("$: ");
+		read = _getline(&line, &n, stdin);
+//		printf("read = %i\n", read);
+//		printf("line = %s\n", line);
+>>>>>>> 900100368e7088f81a3bd430056addd7b701809c
 		if (read == EOF)
 		{
 			printf("\n");
-			break;
+			continue;
 		}
 		nbw = 0;
 		parsed = _parse_string(line, &nbw);
@@ -50,11 +77,20 @@ void _interactive(int ac, char **av, char **env)
 		_free_grid(parsed, nbw);
 
 	}
-	free(line);
+	if (line != NULL)
+		free(line);
 }
 
 
-
+/**
+ * _noninteractive - execute the shell in noninteractive mode.
+ *
+ * @ac: number of arguments.
+ * @av: the tab with the arguments.
+ * @env: the environnement
+ *
+ * Return: void
+ */
 
 void _noninteractive(int ac, char **av, char **env)
 {
@@ -82,12 +118,20 @@ void _noninteractive(int ac, char **av, char **env)
 		else
 			_exec_func(parsed, env, count);
 	}
-	free(line);
-
+	if (line != NULL)
+		free(line);
 }
 
 
-
+/**
+ * _filemode - execute the shell in file mode.
+ *
+ * @ac: number of arguments.
+ * @av: the tab with the arguments.
+ * @env: the environnement
+ *
+ * Return: void
+ */
 
 void _filemode(int ac, char **av, char **env)
 {

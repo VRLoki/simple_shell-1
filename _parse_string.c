@@ -3,7 +3,7 @@
 
 
 /**
- * free_grid - frees a 2 dimensional grid
+ * _free_grid - frees a 2 dimensional grid
  *
  * @grid : grid to be freed
  * @height : grid height
@@ -53,7 +53,6 @@ char **_parse_string(char *string, int *nbw)
 		token = strtok(NULL, sep);
 	}
 	free(dups);
-
 	parsed = malloc(sizeof(char *) * (*nbw + 1));
 	if (parsed == NULL)
 		return (NULL);
