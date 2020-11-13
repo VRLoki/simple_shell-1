@@ -61,8 +61,9 @@ int	_error_func(int errnb, char*command, int count, char **env);
 int     _error_open(int errnb, char *command, int count, char **env);
 
 /* _getline.c */
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+ssize_t _getline(char **lineptr, size_t *n);
 int _strfindn(char *s, char c);
 char *_strncpy(char *dest, char *src, int n);
+ssize_t _getlinefile (char **lineptr, size_t *n, int fd);
 
 #endif

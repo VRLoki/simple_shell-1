@@ -49,7 +49,7 @@ void _interactive(int ac, char **av, char **env)
 	{
 		count++;
 		_puts("$: ");
-		read = _getline(&line, &n, stdin);
+		read = _getline(&line, &n);
 //		printf("read = %i\n", read);
 //		printf("line = %s\n", line);
 		if (read == EOF)
@@ -99,7 +99,7 @@ void _noninteractive(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 
-	while ((read = _getline(&line, &n, stdin)) != EOF)
+	while ((read = _getline(&line, &n)) != EOF)
 	{
 //		printf("Line : %s\n", line);
 		nbw = 0;
@@ -130,35 +130,42 @@ void _noninteractive(int ac, char **av, char **env)
 
 void _filemode(int ac, char **av, char **env)
 {
-/*		fd = open(av[1], O_RDONLY);
-		if (fd == -1)
-		{
-			if (errno == EACCES)
-				err = 126;
-			else
-				err = 127;
-			_error_open(err, av[1], 0, env);
-		}
 
-		while ((read = getline(&line, &n, open_file)) != EOF)
-		{
-			nbw = 0;
-			count++;
-			parsed = _parse_string(line, &nbw);
-			if (nbw == 0)
-				continue;
+	int read = 0;
+	int nbw = 0;
+	int count = 0;
+	char *line = NULL;
+	size_t n;
+	char **parsed = NULL;
+	int fd, err;
 
-			if (_isbuiltin(parsed[0]) == 1)
-				_exec_builtin(parsed, env, count);
-			else
-				_exec_func(parsed, env, count);
-		}
-			close(fd);
-			return (EXIT_SUCCESS);
-*/
 	(void)ac;
-	(void)env;
-	printf("To be done %s", av[1]);
-	exit(EXIT_SUCCESS);
+	(void)av;
 
+
+	fd = open(av[1], O_RDONLY);
+	if (fd == -1)
+	{
+		if (errno == EACCES)
+			err = 126;
+		else
+			err = 127;
+		_error_open(err, av[1], 0, env);
+	}
+
+	while ((read = _getlinefile(&line, &n, fd)) != EOF)
+	{
+		nbw = 0;
+		count++;
+		parsed = _parse_string(line, &nbw);
+		if (nbw == 0)
+			continue;
+
+		if (_isbuiltin(parsed[0]) == 1)
+			_exec_builtin(parsed, env, count);
+		else
+			_exec_func(parsed, env, count);
+	}
+	close(fd);
+	exit (EXIT_SUCCESS);
 }
