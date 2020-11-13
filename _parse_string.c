@@ -73,6 +73,7 @@ char **_parse_string(char *string, int *nbw)
 			return (NULL);
 		}
 		token = strtok(NULL, sep);
+/*		printf("parse[%i] : %s\n", i, parsed[i]);*/
 	}
 	parsed[i] = NULL;
 	free(dups);

@@ -21,6 +21,10 @@
 
 extern char **environ;
 
+/* _builtin.c */
+int _isbuiltin(char *comm);
+int _exec_builtin();
+
 /* _putfct.c */
 int _putchar(char c);
 int _puts(char *s);
@@ -36,17 +40,25 @@ char *_strdup(char *str);
 int _strlennull(char *s);
 char *_str_concat(char *s1, char *s2);
 char *_getenv(char *name, char **env);
+char*_strrev(char *str);
+char*_convert_base(unsigned long int nbr, int base, int cap);
 
 /* main.c */
+void _interactive(int ac, char **av, char **env);
+void _noninteractive(int ac, char **av, char **env);
+void _filemode(int ac, char **av, char **env);
+
+
 
 /* _parse_string.c */
 char **_parse_string(char *string, int *nbw);
 void _free_grid(char **grid, int height);
 
 /* _exec_fct.c */
-int _exec_func(char **parsed, char **en);
+int _exec_func(char **parsed, char **en, int count);
 char *_getfullpath(char *name, char *mypath);
-int	_error_func(int errnb);
+int	_error_func(int errnb, char*command, int count, char **env);
+int     _error_open(int errnb, char *command, int count, char **env);
 
 /* _getline.c */
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);

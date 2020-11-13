@@ -2,7 +2,7 @@
 
 
 
-int _exec_func(char **parsed, char **env)
+int _exec_func(char **parsed, char **env, int count)
 {
 	int status = 0, exit_status = 0;
 	pid_t child_pid;
@@ -23,7 +23,7 @@ int _exec_func(char **parsed, char **env)
 	{
 		if (execve(command, parsed, env) == -1)
 		{
-			_error_func(errno);
+			_error_func(errno, command, count, env);
 		}
 	}
 	else
@@ -34,37 +34,89 @@ int _exec_func(char **parsed, char **env)
 			WEXITSTATUS(status);
 		}
 		exit_status = WEXITSTATUS(status);
-		printf("exit_status %i\n", exit_status);
+/*		printf("exit_status %i\n", exit_status); */
 	}
 	return (exit_status);
 }
+
+
+
+
 
 typedef struct	error_mess
 {
 	int	nbr_error;
 	int	n_err_sh;
-	char	*message_error;
+	char	*m_error;
 }	error_mess_t;
 
-int	_error_func(int errnb)
+
+
+
+int	_error_func(int errnb, char *command, int count, char **env)
 {
 	unsigned int	i;
+	char *dispmess;
 	error_mess_t	error_mess[] = {
 		{2, 127, "not found"},
-		{13, 13, "Permission denied"},
+		{13, 126, "Permission denied"},
 	};
+
+	dispmess = _strdup(_getenv("_", env));
+	dispmess = _str_concat(dispmess, ": ");
+	dispmess = _str_concat(dispmess, _convert_base(count, 10, 0));
+	dispmess = _str_concat(dispmess, ": ");
+	dispmess = _str_concat(dispmess, command);
+	dispmess = _str_concat(dispmess, ": ");
+
 	i = 0;
 	while (error_mess[i].nbr_error)
 	{
 		if ((error_mess[i].nbr_error) == errnb)
 		{
-			errx(error_mess[i].n_err_sh, "%s", error_mess[i].message_error);
+			dispmess = _str_concat(dispmess, error_mess[i].m_error);
+			dispmess = _str_concat(dispmess, "\n");
+			write(STDERR_FILENO, dispmess, _strlen(dispmess));
+			free(dispmess);
+			exit (error_mess[i].n_err_sh);
 		}
 		i++;
 	}
-	printf("exit failure\n");
-	return (EXIT_FAILURE);
+	dispmess = _str_concat(dispmess, "Error to add");
+	dispmess = _str_concat(dispmess, "\n");
+	write(STDERR_FILENO, dispmess, _strlen(dispmess));
+	free(dispmess);
+	exit (EXIT_FAILURE);
 }
+
+
+
+
+
+int	_error_open(int errnb, char *command, int count, char **env)
+{
+	char *dispmess;
+
+	dispmess = _strdup(_getenv("_", env));
+	dispmess = _str_concat(dispmess, ": ");
+	dispmess = _str_concat(dispmess, _convert_base(count, 10, 0));
+	dispmess = _str_concat(dispmess, ": Can't open ");
+	dispmess = _str_concat(dispmess, command);
+	dispmess = _str_concat(dispmess, "\n");
+	write(STDERR_FILENO, dispmess, _strlen(dispmess));
+	free(dispmess);
+	exit (errnb);
+}
+
+
+
+
+
+
+
+
+
+
 
 
 char *_getfullpath(char *name, char *mypath)
