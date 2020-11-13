@@ -12,65 +12,29 @@
 
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-<<<<<<< HEAD
-	static char *buf;
-	static int initbuf = 0;
-	int bufflen = NULL;
-||||||| merged common ancestors
-	static char *buf = NULL;
-	static int initbuf = 0;
-	int bufflen;
-=======
 	static char *buf;
 	static int initbuf;
 	static int bufflen;
->>>>>>> 900100368e7088f81a3bd430056addd7b701809c
 	char *nextline;
 	char *tmp;
 	int nextchar;
 	int fd;
 
-<<<<<<< HEAD
-	if (initbuf == 0)
-||||||| merged common ancestors
-
-	if (initbuf == 0)
-=======
-	//printf("bufflen = [%i]\n", bufflen);
+//printf("bufflen = [%i]\n", bufflen);
 	if (initbuf == 0 || bufflen == 0)
->>>>>>> 900100368e7088f81a3bd430056addd7b701809c
 	{
 		initbuf = 1;
 		fd = fileno(stream);
-<<<<<<< HEAD
-		printf("fd %u", fd);
-		buf = malloc(sizeof(char) * 1024);
-		if (buf == NULL)
-			return (-1);
-||||||| merged common ancestors
-=======
 		buf = (char *)malloc(sizeof(char) * 1024);
->>>>>>> 900100368e7088f81a3bd430056addd7b701809c
 		bufflen = read(fd, buf, 1024);
-		printf("bufflen %i", bufflen);
-/*		if (_strlen(buf) == 0)
+		if (bufflen == -1)
 		{
 			return (-1);
 		}
 		buf[bufflen] = '\0';
-<<<<<<< HEAD
-*/	}
-
-	getline(lineptr, n, stream);
-/*	if (bufflen == 0)
-||||||| merged common ancestors
 	}
+//printf("buf = [%s]", buf);
 	if (bufflen == 0)
-=======
-	}
-//	printf("buf = [%s]", buf);
-	if (bufflen == 0)
->>>>>>> 900100368e7088f81a3bd430056addd7b701809c
 		return (EOF);
 	nextchar = _strfindn(buf, '\n');
 	nextline = malloc((nextchar + 1) * sizeof(char));
@@ -99,19 +63,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		buf = tmp;
 		bufflen = bufflen - nextchar;
 	}
-<<<<<<< HEAD
-	return(nextchar);
-*/
-
-
-||||||| merged common ancestors
-	return(nextchar);
-
-
-
-=======
 	return (nextchar);
->>>>>>> 900100368e7088f81a3bd430056addd7b701809c
 }
 
 

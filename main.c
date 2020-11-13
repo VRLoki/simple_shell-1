@@ -48,18 +48,10 @@ void _interactive(int ac, char **av, char **env)
 	while (1)
 	{
 		count++;
-<<<<<<< HEAD
-		printf("$:%i ", count);
-		read = _getline(&line, &n, stdin);
-||||||| merged common ancestors
-		printf("$:%i ", count);
-		read = getline(&line, &n, stdin);
-=======
 		_puts("$: ");
 		read = _getline(&line, &n, stdin);
-//		printf("read = %i\n", read);
-//		printf("line = %s\n", line);
->>>>>>> 900100368e7088f81a3bd430056addd7b701809c
+//printf("read = %i\n", read);
+//printf("line = %s\n", line);
 		if (read == EOF)
 		{
 			printf("\n");
