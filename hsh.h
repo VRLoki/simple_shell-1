@@ -43,8 +43,13 @@ char *_getenv(char *name, char **env);
 char **_parse_string(char *string, int *nbw);
 void _free_grid(char **grid, int height);
 
-/*_exec_fct.c */
+/* _exec_fct.c */
 int _exec_func(char **parsed, char **en);
 char *_getfullpath(char *name, char *mypath);
+
+/* _getline.c */
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+int _strfindn(char *s, char c);
+char *_strncpy(char *dest, char *src, int n);
 
 #endif
