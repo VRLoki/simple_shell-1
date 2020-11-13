@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
-
+#include <err.h>
 
 #define SEP " \n\a\t\v\r"
 
@@ -46,6 +46,7 @@ void _free_grid(char **grid, int height);
 /* _exec_fct.c */
 int _exec_func(char **parsed, char **en);
 char *_getfullpath(char *name, char *mypath);
+int	_error_func(int errnb);
 
 /* _getline.c */
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
