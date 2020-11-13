@@ -5,16 +5,6 @@
 
 int main(int ac, char **av, char **env)
 {
-/*	int read = 0;
-	int nbw = 0;
-	int count = 0;
-	char *line = NULL;
-	size_t n;
-	char **parsed = NULL;
-	int fd;
-	int err;
-	FILE *open_file;
-*/
 	if (ac == 2)
 		_filemode(ac, av, env);
 	if (isatty(STDIN_FILENO))
@@ -42,7 +32,7 @@ void _interactive(int ac, char **av, char **env)
 	{
 		count++;
 		printf("$:%i ", count);
-		read = getline(&line, &n, stdin);
+		read = _getline(&line, &n, stdin);
 		if (read == EOF)
 		{
 			printf("\n");

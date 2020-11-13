@@ -2,27 +2,33 @@
 
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-	static char *buf = NULL;
+	static char *buf;
 	static int initbuf = 0;
-	int bufflen;
+	int bufflen = NULL;
 	char *nextline;
 	char *tmp;
 	int nextchar;
 	int fd;
 
-
 	if (initbuf == 0)
 	{
 		initbuf = 1;
 		fd = fileno(stream);
+		printf("fd %u", fd);
+		buf = malloc(sizeof(char) * 1024);
+		if (buf == NULL)
+			return (-1);
 		bufflen = read(fd, buf, 1024);
-		if (bufflen == -1)
+		printf("bufflen %i", bufflen);
+/*		if (_strlen(buf) == 0)
 		{
 			return (-1);
 		}
 		buf[bufflen] = '\0';
-	}
-	if (bufflen == 0)
+*/	}
+
+	getline(lineptr, n, stream);
+/*	if (bufflen == 0)
 		return (EOF);
 
 	nextchar = _strfindn(buf, '\n');
@@ -52,7 +58,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		bufflen = bufflen - nextchar;
 	}
 	return(nextchar);
-
+*/
 
 
 }
