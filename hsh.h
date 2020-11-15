@@ -24,7 +24,7 @@ extern char	**environ;
 
 /* _builtin.c */
 int	_isbuiltin(char *comm);
-void	(*_get_builtin_fct(int built_nbr))(char *);
+int	_get_builtin_fct(int built_nbr, char **comm, int count, char **env);
 
 /* _putfct.c */
 int	_putchar(char c);
@@ -56,9 +56,9 @@ char	**_parse_string(char *string, int *nbw);
 void	_free_grid(char **grid, int height);
 
 /* _exec_fct.c */
-int	_exec_func(char **parsed, char **en, int count);
+int	_exec_fct(char **parsed, char **en, int count);
 char	*_getfullpath(char *name, char *mypath);
-int	_error_func(int errnb, char*command, int count, char **env);
+int	_error_fct(int errnb, char*command, int count, char **env);
 int	_error_open(int errnb, char *command, int count, char **env);
 
 /* _getline.c */
@@ -68,11 +68,11 @@ char	*_strncpy(char *dest, char *src, int n);
 ssize_t	_getlinefile (char **lineptr, size_t *n, int fd);
 
 /* _ft_exit.c */
-void		_ft_exit(char *status);
+int		_ft_exit(char *s, int count, char **env);
 bool		_check_zero(char *s);
 unsigned char	_atoi_exit(char *s);
 
 /* _ft_env.c */
-void	_ft_env(char *status);
+int	_ft_env(char *s);
 
 #endif

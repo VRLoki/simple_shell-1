@@ -42,7 +42,6 @@ void	_interactive(int ac, char **av, char **env)
 	size_t	n;
 	char	**parsed = NULL;
 	int	built_nbr;
-	void	(*ebf)(char *);
 
 	(void)ac;
 	(void)av;
@@ -66,12 +65,10 @@ void	_interactive(int ac, char **av, char **env)
 		built_nbr = _isbuiltin(parsed[0]);
 		if (built_nbr != 0)
 		{
-			ebf = _get_builtin_fct(built_nbr);
-			ebf(parsed[1]);
-
+			_get_builtin_fct(built_nbr, parsed, count, env);
 		}
 		else
-			_exec_func(parsed, env, count);
+			_exec_fct(parsed, env, count);
 		_free_grid(parsed, nbw);
 
 	}
@@ -115,7 +112,7 @@ void _noninteractive(int ac, char **av, char **env)
 			printf("builtin fct\n");
 //			_exec_builtin(parsed, env, count);
 		else
-			_exec_func(parsed, env, count);
+			_exec_fct(parsed, env, count);
 	}
 	if (line != NULL)
 		free(line);
@@ -169,7 +166,7 @@ void _filemode(int ac, char **av, char **env)
 			printf("builtin fct\n");
 //			_exec_builtin(parsed, env, count);
 		else
-			_exec_func(parsed, env, count);
+			_exec_fct(parsed, env, count);
 	}
 	close(fd);
 	exit (EXIT_SUCCESS);

@@ -11,8 +11,12 @@ unsigned char	_atoi_exit(char *s)
 		i++;
 	}
 	nbr = 0;
-	while (s[i] >= '0' && s[i] <= '9')
+	while (s[i])
 	{
+		if (s[i] < '0' || s[i] > '9')
+		{
+			return (0);
+		}
 		nbr = nbr * 10 + (s[i] - '0');
 		i++;
 	}
@@ -39,29 +43,30 @@ bool	_check_zero(char *s)
 	return (false);
 }
 
-void	_ft_exit(char *s)
+int     _error_exit(char *command, int count, char **env)
+{
+	char *dispmess;
+
+	dispmess = _strdup(_getenv("_", env));
+	dispmess = _str_concat(dispmess, ": ");
+	dispmess = _str_concat(dispmess, _convert_base(count, 10, 0));
+	dispmess = _str_concat(dispmess, ": exit: Illegal number: ");
+	dispmess = _str_concat(dispmess, command);
+	dispmess = _str_concat(dispmess, "\n");
+	write(STDERR_FILENO, dispmess, _strlen(dispmess));
+	free(dispmess);
+}
+
+int	_ft_exit(char *s, int count, char **env)
 {
 	unsigned char	nbr;
-	unsigned int	i;
-	unsigned int	j;
 	char		*num_error;
 
 	if (s == NULL)
 	{
 		_exit(0);
 	}
-	i = 0;
-	while (ATOI(s[i]))
-	{
-		i++;
-	}
-	j = i;
-	while (!ATOI(s[j]))
-	{
-		j++;
-	}
-	j -= i;
-	num_error = strndup(&s[i], j);
+	num_error = strdup(s);
 	nbr = _atoi_exit(num_error);
 	if (nbr == 0)
 	{
@@ -74,9 +79,10 @@ void	_ft_exit(char *s)
 	{
 		_exit(nbr);
 	}
-	printf("Illegal number: %s\n", num_error);
+	_error_exit(s, count, env); 
 	if (num_error != NULL)
 	{
 		free(num_error);
 	}
+	return (2);
 }
