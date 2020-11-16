@@ -156,13 +156,10 @@ int		_ft_exit(char *s, param_t *param);
 bool		_check_zero(char *s);
 unsigned char	_atoi_exit(char *s);
 
-/* _ft_env.c */
-/* int	_ft_env(char *s);*/
-
 /* _env_fct.c */
-param_t * _initParam(char **av, char **env);
-envl_t *_getEnvList(char **env);
-char **_getEnvChar(envl_t *head);
+param_t	*_initParam(char **av, char **env);
+envl_t	*_getEnvList(char **env);
+char	**_getEnvChar(envl_t *head);
 
 
 

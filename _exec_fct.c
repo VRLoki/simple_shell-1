@@ -1,6 +1,13 @@
 #include "hsh.h"
 
-
+/**
+ * _exec_fct - execute the commande pass by parsed
+ *
+ * @parsed: the commande to execute.
+ * @param: global parameters of the shell.
+ *
+ * Return: the exit status (Always)
+ */
 
 int _exec_fct(char **parsed, param_t *param)
 {
@@ -91,8 +98,15 @@ int	_error_fct(int errnb, char *command, param_t *param)
 }
 
 
-
-
+/**
+ * _error_open - Display an error message.
+ *
+ * @errnb: the error number.
+ * @command: the name of the command who is failling.
+ * @param: global parameters of the shell.
+ *
+ * Return: (Always)
+ */
 
 int	_error_open(int errnb, char *command, param_t *param)
 {
@@ -110,15 +124,14 @@ int	_error_open(int errnb, char *command, param_t *param)
 }
 
 
-
-
-
-
-
-
-
-
-
+/**
+ * _getfullpath - get the full path of a command.
+ *
+ * @name: the command.
+ * @mypath: .
+ *
+ * Return: (Always)
+ */
 
 char *_getfullpath(char *name, char *mypath)
 {
@@ -128,10 +141,13 @@ char *_getfullpath(char *name, char *mypath)
 	char *copypath;
 	struct stat st;
 
+	printf("name = [%s]\n", name);
+	printf("path = [%s]\n", mypath);
 	if (stat(name, &st) == 0)
 		return (name);
 
-	if (mypath == NULL || mypath[0] == ':' || (name[0] == '.' && name[1] == '/'))
+	if (mypath == NULL || mypath[0] == ':'
+		|| (name[0] == '.' && name[1] == '/'))
 		return(name);
 
 	fullname = _str_concat("/", name);
