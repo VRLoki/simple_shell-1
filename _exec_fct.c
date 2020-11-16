@@ -2,14 +2,15 @@
 
 
 
-int _exec_fct(char **parsed, char **env, int count)
+int _exec_fct(char **parsed, param_t *param)
 {
 	int status = 0, exit_status = 0;
 	pid_t child_pid;
 	char *mypath;
 	char *command;
+	char **envfull = _getEnvChar(param->envlist);
 
-	mypath = _getenv("PATH", env);
+	mypath = _getenv("PATH", envfull);
 	command = _getfullpath(parsed[0], mypath);
 
 	child_pid = fork();
@@ -21,9 +22,9 @@ int _exec_fct(char **parsed, char **env, int count)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(command, parsed, env) == -1)
+		if (execve(command, parsed, envfull) == -1)
 		{
-			_error_fct(errno, command, count, env);
+			_error_fct(errno, command, param);
 		}
 	}
 	else
@@ -52,18 +53,19 @@ typedef struct	error_mess
 
 
 
-int	_error_fct(int errnb, char *command, int count, char **env)
+int	_error_fct(int errnb, char *command, param_t *param)
 {
 	unsigned int	i;
 	char *dispmess;
+
 	error_mess_t	error_mess[] = {
 		{2, 127, "not found"},
 		{13, 126, "Permission denied"},
 	};
 
-	dispmess = _strdup(_getenv("_", env));
+	dispmess = _strdup(param->bashname);
 	dispmess = _str_concat(dispmess, ": ");
-	dispmess = _str_concat(dispmess, _convert_base(count, 10, 0));
+	dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
 	dispmess = _str_concat(dispmess, ": ");
 	dispmess = _str_concat(dispmess, command);
 	dispmess = _str_concat(dispmess, ": ");
@@ -92,13 +94,13 @@ int	_error_fct(int errnb, char *command, int count, char **env)
 
 
 
-int	_error_open(int errnb, char *command, int count, char **env)
+int	_error_open(int errnb, char *command, param_t *param)
 {
 	char *dispmess;
 
-	dispmess = _strdup(_getenv("_", env));
+	dispmess = _strdup(param->bashname);
 	dispmess = _str_concat(dispmess, ": ");
-	dispmess = _str_concat(dispmess, _convert_base(count, 10, 0));
+	dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
 	dispmess = _str_concat(dispmess, ": Can't open ");
 	dispmess = _str_concat(dispmess, command);
 	dispmess = _str_concat(dispmess, "\n");

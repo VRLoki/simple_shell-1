@@ -14,8 +14,18 @@
 #include <stdbool.h>
 
 #define SEP " \n\a\t\v\r"
-#define ATOI(c) ((c == '\t' || c == '\n' || c == '\r' || c == '\v' || c  == '\f' || c == ' ')  && c != '\0')
 
+
+
+/**
+ * struct aliasl - linked list on the alias variables
+ *
+ * @var: variable
+ * @value: variable value
+ * @next: next node
+ *
+ * Description: store the alias
+ */
 typedef struct aliasl
 {
 	char *var;
@@ -24,6 +34,16 @@ typedef struct aliasl
 } aliasl_t;
 
 
+
+/**
+ * struct envl - linked list on the ENV variables
+ *
+ * @var: variable
+ * @value: variable value
+ * @next: next node
+ *
+ * Description: store the environment
+ */
 typedef struct envl
 {
 	char *var;
@@ -32,6 +52,15 @@ typedef struct envl
 } envl_t;
 
 
+
+/**
+ * struct envl - linked list on the history
+ *
+ * @line: history line
+ * @next: next node
+ *
+ * Description: store the history
+ */
 typedef struct histl
 {
 	char *line;
@@ -40,14 +69,31 @@ typedef struct histl
 
 
 
-typedef struct param
+/**
+ * struct paraml - central structure containing all information
+ * and parameters needed to execute Shell
+ *
+ * @bashname: name of the bash for error message display
+ * @count: number of lines of command
+ * @pid: pid of the current shell process
+ * @lastval: last return value from executed commands
+ * @envlist: head of linked list on the environment variables
+ * @alias: head of linked list on the alias variable
+ * @hist: head of linked list on the history
+ * @fdnb : file descriptor to read from (NOT USED)
+ * @parsed : parsed string to work from (NOT USED)
+ *
+ * Description: store the environment
+ */
+
+
+typedef struct paraml
 {
 	char *bashname;
 	int count;
 	char *pid;
-	int lastVal;
-	char **environ;
-	envl_t *env;
+	int lastval;
+	envl_t *envlist;
 	aliasl_t *alias;
 	histl_t *hist;
 	int fdnb;
@@ -58,12 +104,11 @@ typedef struct param
 
 
 
-
 extern char	**environ;
 
 /* _builtin.c */
 int	_isbuiltin(char *comm);
-int	_get_builtin_fct(int built_nbr, char **comm, int count, char **env);
+int	_get_builtin_fct(char **comm, param_t *param);
 
 /* _putfct.c */
 int	_putchar(char c);
@@ -84,9 +129,9 @@ char	*_strrev(char *str);
 char	*_convert_base(unsigned long int nbr, int base, int cap);
 
 /* main.c */
-void	_interactive(int ac, char **av, char **env);
-void	_noninteractive(int ac, char **av, char **env);
-void	_filemode(int ac, char **av, char **env);
+void	_interactive(char **av, char **env);
+void	_noninteractive(char **av, char **env);
+void	_filemode(char **av, char **env);
 
 
 
@@ -95,10 +140,10 @@ char	**_parse_string(char *string, int *nbw);
 void	_free_grid(char **grid, int height);
 
 /* _exec_fct.c */
-int	_exec_fct(char **parsed, char **en, int count);
+int	_exec_fct(char **parsed, param_t *param);
 char	*_getfullpath(char *name, char *mypath);
-int	_error_fct(int errnb, char*command, int count, char **env);
-int	_error_open(int errnb, char *command, int count, char **env);
+int	_error_fct(int errnb, char*command, param_t *param);
+int	_error_open(int errnb, char *command, param_t *param);
 
 /* _getline.c */
 ssize_t	_getline(char **lineptr, size_t *n);
@@ -107,11 +152,18 @@ char	*_strncpy(char *dest, char *src, int n);
 ssize_t	_getlinefile (char **lineptr, size_t *n, int fd);
 
 /* _ft_exit.c */
-int		_ft_exit(char *s, int count, char **env);
+int		_ft_exit(char *s, param_t *param);
 bool		_check_zero(char *s);
 unsigned char	_atoi_exit(char *s);
 
 /* _ft_env.c */
-int	_ft_env(char *s);
+/* int	_ft_env(char *s);*/
+
+/* _env_fct.c */
+param_t * _initParam(char **av, char **env);
+envl_t *_getEnvList(char **env);
+char **_getEnvChar(envl_t *head);
+
+
 
 #endif

@@ -17,10 +17,11 @@ int	_isbuiltin(char *comm)
 
 
 
-int	_get_builtin_fct(int built_nbr, char **comm, int count, char **env)
+int	_get_builtin_fct(char **comm, param_t *param)
 {
-	if (built_nbr == 1)
-		return (_ft_exit(comm[1], count, env));
+	if (_strcmp(comm[0], "exit") == 0)
+		return (_ft_exit(comm[1], param));
 	else
 		printf("not done yet\n");
+	return (1);
 }
