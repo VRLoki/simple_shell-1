@@ -2,7 +2,7 @@
 
 
 
-int _exec_func(char **parsed, char **env, int count)
+int _exec_fct(char **parsed, char **env, int count)
 {
 	int status = 0, exit_status = 0;
 	pid_t child_pid;
@@ -19,12 +19,11 @@ int _exec_func(char **parsed, char **env, int count)
 		perror("Error: Children process failed");
 		exit(1);
 	}
-
 	if (child_pid == 0)
 	{
 		if (execve(command, parsed, env) == -1)
 		{
-			_error_func(errno, command, count, env);
+			_error_fct(errno, command, count, env);
 		}
 	}
 	else
@@ -53,7 +52,7 @@ typedef struct	error_mess
 
 
 
-int	_error_func(int errnb, char *command, int count, char **env)
+int	_error_fct(int errnb, char *command, int count, char **env)
 {
 	unsigned int	i;
 	char *dispmess;
@@ -78,7 +77,7 @@ int	_error_func(int errnb, char *command, int count, char **env)
 			dispmess = _str_concat(dispmess, "\n");
 			write(STDERR_FILENO, dispmess, _strlen(dispmess));
 			free(dispmess);
-			exit (error_mess[i].n_err_sh);
+			exit(error_mess[i].n_err_sh);
 		}
 		i++;
 	}
