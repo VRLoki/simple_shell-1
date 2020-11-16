@@ -14,6 +14,45 @@
 
 #define SEP " \n\a\t\v\r"
 
+typedef struct aliasl
+{
+	char *var;
+	char *value;
+	struct aliasl *next;
+} aliasl_t;
+
+
+typedef struct envl
+{
+	char *var;
+	char *value;
+	struct envl *next;
+} envl_t;
+
+
+typedef struct histl
+{
+	char *line;
+	struct histl *next;
+} histl_t;
+
+
+
+typedef struct param
+{
+	char *bashname;
+	int count;
+	char *pid;
+	int lastVal;
+	char **environ;
+	envl_t *env;
+	aliasl_t *alias;
+	histl_t *hist;
+	int fdnb;
+	char **parsed;
+} param_t;
+
+
 
 
 
