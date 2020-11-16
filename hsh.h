@@ -54,7 +54,7 @@ typedef struct envl
 
 
 /**
- * struct envl - linked list on the history
+ * struct histl - linked list on the history
  *
  * @line: history line
  * @next: next node

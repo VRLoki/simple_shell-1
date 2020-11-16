@@ -44,30 +44,7 @@ void	_interactive(char **av, char **env)
 
 	param_t *param;
 
-	int i;
-	envl_t *tmp;
-	char **envfull;
-
 	param = _initParam(av, env);
-
-	tmp = param->envlist;
-	while (tmp)
-	{
-		printf("%s is %s\n", tmp->var, tmp->value);
-		tmp = tmp->next;
-	}
-
-	envfull = _getEnvChar(param->envlist);
-	i = 0;
-	while (envfull[i])
-	{
-		printf("%s\n", envfull[i]);
-		i++;
-	}
-	printf("NAME %s\n", param->bashname);
-
-
-
 
 	while (1)
 	{
@@ -137,6 +114,8 @@ void _noninteractive(char **av, char **env)
 		}
 		else
 			_exec_fct(parsed, param);
+		_free_grid(parsed, nbw);
+
 	}
 	if (line != NULL)
 		free(line);
@@ -192,6 +171,8 @@ void _filemode(char **av, char **env)
 		}
 		else
 			_exec_fct(parsed, param);
+		_free_grid(parsed, nbw);
+
 	}
 	close(fd);
 	exit (EXIT_SUCCESS);
