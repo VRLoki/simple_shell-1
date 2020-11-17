@@ -82,9 +82,7 @@ int _launchShell(param_t *param)
 		}
 		built_nbr = _isbuiltin(parsed[0]);
 		if (built_nbr != 0)
-		{
 			_get_builtin_fct(parsed, param);
-		}
 		else
 			_exec_fct(parsed, param);
 		_free_grid(parsed, nbw);
