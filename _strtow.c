@@ -23,7 +23,7 @@ int _isdelim(char c, const char *del)
 		i++;
 	}
 
-	return(0);
+	return (0);
 }
 
 

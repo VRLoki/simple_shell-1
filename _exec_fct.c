@@ -19,7 +19,6 @@ int _exec_fct(char **parsed, param_t *param)
 
 	envfull = _getEnvChar(param->envlist);
 	mypath = _getenv("PATH", envfull);
-
 	command = _getfullpath(parsed[0], mypath);
 
 	child_pid = fork();
@@ -52,16 +51,16 @@ int _exec_fct(char **parsed, param_t *param)
 
 
 
-typedef struct	error_mess
-{
-	int	nbr_error;
-	int	n_err_sh;
-	char	*m_error;
-}	error_mess_t;
 
-
-
-
+/**
+ * _error_fct - print an error message
+ *
+ * @errnb: error number input
+ * @command: command failing
+ * @param : global parameters structure
+ *
+ * Return: the exit status (Always)
+ */
 int	_error_fct(int errnb, char *command, param_t *param)
 {
 	unsigned int	i;
@@ -96,8 +95,10 @@ int	_error_fct(int errnb, char *command, param_t *param)
 	dispmess = _str_concat(dispmess, "\n");
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
-	exit (EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 }
+
+
 
 
 /**
@@ -122,7 +123,7 @@ int	_error_open(int errnb, char *command, param_t *param)
 	dispmess = _str_concat(dispmess, "\n");
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
-	exit (errnb);
+	exit(errnb);
 }
 
 
@@ -139,35 +140,32 @@ char *_getfullpath(char *name, char *mypath)
 {
 	char *fullname = NULL;
 	char *fullnamepath = NULL;
-	char *token = NULL;
-	char *copypath;
 	char **splitpath;
 	int i;
 	struct stat st;
 
-/*	if (stat(name, &st) == 0)
-	return (name);*/
-
-	if (mypath == NULL || mypath[0] == ':'
-		|| (name[0] == '.' && name[1] == '/'))
-		return(name);
+	if (mypath == NULL || (name[0] == '.' && name[1] == '/'))
+		return (name);
 
 	fullname = _str_concat("/", name);
-	splitpath = _strtow(mypath,":");
+	splitpath = _strtow2(mypath, ":");
 	i = 0;
-	while (splitpath[i])
+	while (splitpath[i] != NULL)
 	{
-		fullnamepath = _str_concat(splitpath[i], fullname);
+		if (_strlen(splitpath[i]) == 0)
+			fullnamepath = _strdup(name);
+		else
+			fullnamepath = _str_concat(splitpath[i], fullname);
 		if (stat(fullnamepath, &st) == 0)
 		{
 			free(fullname);
-			return(fullnamepath);
+			return (fullnamepath);
 		}
 		free(fullnamepath);
 		i++;
 	}
 	free(fullname);
 	free(splitpath);
-	return(name);
+	return (name);
 
 }

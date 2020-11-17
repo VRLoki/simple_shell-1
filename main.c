@@ -50,30 +50,36 @@ int main(int ac, char **av, char **env)
 }
 
 
+/**
+ * _launchShell - main loop for Shell
+ *
+ * @param: parameter variable
+ *
+ * Return: EXIT_SUCCESS
+ */
 
 int _launchShell(param_t *param)
 {
-	int     read = 0;
-	int     nbw = 0;
+	int     read = 0, nbw = 0, built_nbr;
 	char    *line = NULL;
 	size_t  n;
 	char    **parsed = NULL;
-	int     built_nbr;
-
 
 	signal(SIGINT, _siginthandler);
 	if (param->mode == 0)
 		_puts("$: ");
 
-	while((read = _getlinefile(&line, &n, param->fdnb)) != EOF)
+	while ((read = _getlinefile(&line, &n, param->fdnb)) != EOF)
 	{
 		nbw = 0;
 		param->count++;
-
 		parsed = _parse_string2(line, &nbw);
 		if (nbw == 0)
+		{
+			if (param->mode == 0)
+				_puts("$: ");
 			continue;
-
+		}
 		built_nbr = _isbuiltin(parsed[0]);
 		if (built_nbr != 0)
 		{
@@ -82,7 +88,6 @@ int _launchShell(param_t *param)
 		else
 			_exec_fct(parsed, param);
 		_free_grid(parsed, nbw);
-
 		if (param->mode == 0)
 			_puts("$: ");
 	}

@@ -80,12 +80,20 @@ char **_parse_string(char *string, int *nbw)
 
 
 
-
+/**
+ * _parse_string2 - find all the words from a string and
+ * store them in a grid using _strtow
+ *
+ * @string : string parsed
+ * @nbw : number of words
+ *
+ * Return: created char **
+ */
 
 char **_parse_string2(char *string, int *nbw)
 {
 	char *del = " \n\t\a\r\v";
 
 	*nbw = _nbword(string, del);
-	return(_strtow(string, del));
+	return (_strtow(string, del));
 }

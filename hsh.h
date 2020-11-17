@@ -17,6 +17,25 @@
 
 
 
+
+/**
+ * struct error_mess - use to display proper error message
+ *
+ * @nbr_error: error number from execve
+ * @n_err_sh: error number to return
+ * @m_error: text message
+ *
+ * Description: store the error message
+ */
+typedef struct  error_mess
+{
+	int     nbr_error;
+	int     n_err_sh;
+	char    *m_error;
+}       error_mess_t;
+
+
+
 /**
  * struct aliasl - linked list on the alias variables
  *
@@ -142,14 +161,13 @@ char **_parse_string2(char *string, int *nbw);
 /* _exec_fct.c */
 int	_exec_fct(char **parsed, param_t *param);
 char	*_getfullpath(char *name, char *mypath);
-int	_error_fct(int errnb, char*command, param_t *param);
+int	_error_fct(int errnb, char *command, param_t *param);
 int	_error_open(int errnb, char *command, param_t *param);
 
 /* _getline.c */
-ssize_t	_getline(char **lineptr, size_t *n);
 int	_strfindn(char *s, char c);
 char	*_strncpy(char *dest, char *src, int n);
-ssize_t	_getlinefile (char **lineptr, size_t *n, int fd);
+ssize_t	_getlinefile(char **lineptr, size_t *n, int fd);
 
 /* _ft_exit.c */
 int		_ft_exit(char *s, param_t *param);
@@ -167,5 +185,10 @@ int _isdelim(char c, const char *del);
 int _nbword(const char *s, const char *del);
 char *_mydup(const char *str, int size);
 char **_strtow(const char *str, const char *del);
+
+/* _strtow2.c */
+int _nbword2(const char *s, const char *del);
+char **_strtow2(const char *str, const char *del);
+
 
 #endif
