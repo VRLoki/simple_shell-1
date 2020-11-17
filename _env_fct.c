@@ -16,10 +16,6 @@ param_t * _initParam(char **av, char **env)
 	param->parsed = NULL;
 	param->envlist = _getEnvList(env);
 	return (param);
-
-
-
-
 }
 
 
@@ -27,10 +23,9 @@ param_t * _initParam(char **av, char **env)
 envl_t *_getEnvList(char **env)
 {
 	int i;
-	char *line, *token;
 	envl_t *new, *head, *tmp;
+	char **tok;
 
-	head = malloc(sizeof(envl_t));
 	head = NULL;
 
 	i = 0;
@@ -40,14 +35,12 @@ envl_t *_getEnvList(char **env)
 		new = malloc(sizeof(envl_t));
 		if (new == NULL)
 			return (NULL);
-		line = _strdup(env[i]);
-		token = strtok(line, "=");
-		if (token != NULL)
-			new->var = _strdup(token);
-		token = strtok(NULL,"=");
-		if (token != NULL)
-			new->value = _strdup(token);
-		free(line);
+		tok = _strtow(env[i], "=");
+		if (tok[0])
+			new->var = _strdup(tok[0]);
+		if (tok[1])
+			new->value = _strdup(tok[1]);
+		free(tok);
 		new->next = NULL;
 
 		if (head == NULL)
@@ -76,6 +69,9 @@ char **_getEnvChar(envl_t *head)
 	char **env;
 	char *var, *value;
 
+
+	if(head == NULL)
+		return (NULL);
 	i = 0;
 	tmp = head;
 	while(tmp)

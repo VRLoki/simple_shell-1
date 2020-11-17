@@ -72,9 +72,20 @@ char **_parse_string(char *string, int *nbw)
 			return (NULL);
 		}
 		token = strtok(NULL, sep);
-/*		printf("parse[%i] : %s\n", i, parsed[i]);*/
 	}
 	parsed[i] = NULL;
 	free(dups);
 	return (parsed);
+}
+
+
+
+
+
+char **_parse_string2(char *string, int *nbw)
+{
+	char *del = " \n\t\a\r\v";
+
+	*nbw = _nbword(string, del);
+	return(_strtow(string, del));
 }

@@ -81,6 +81,7 @@ typedef struct histl
  * @alias: head of linked list on the alias variable
  * @hist: head of linked list on the history
  * @fdnb : file descriptor to read from (NOT USED)
+ * @mode : 0 for Interactive, 1 for Noninter, 2 for FileMode
  * @parsed : parsed string to work from (NOT USED)
  *
  * Description: store the environment
@@ -97,6 +98,7 @@ typedef struct paraml
 	aliasl_t *alias;
 	histl_t *hist;
 	int fdnb;
+	int mode;
 	char **parsed;
 } param_t;
 
@@ -129,15 +131,13 @@ char	*_strrev(char *str);
 char	*_convert_base(unsigned long int nbr, int base, int cap);
 
 /* main.c */
-void	_interactive(char **av, char **env);
-void	_noninteractive(char **av, char **env);
-void	_filemode(char **av, char **env);
-
-
+int _launchShell(param_t *param);
+void _siginthandler(int signum);
 
 /* _parse_string.c */
 char	**_parse_string(char *string, int *nbw);
 void	_free_grid(char **grid, int height);
+char **_parse_string2(char *string, int *nbw);
 
 /* _exec_fct.c */
 int	_exec_fct(char **parsed, param_t *param);
@@ -155,12 +155,17 @@ ssize_t	_getlinefile (char **lineptr, size_t *n, int fd);
 int		_ft_exit(char *s, param_t *param);
 bool		_check_zero(char *s);
 unsigned char	_atoi_exit(char *s);
+int     _error_exit(char *command, param_t *param);
 
 /* _env_fct.c */
 param_t	*_initParam(char **av, char **env);
 envl_t	*_getEnvList(char **env);
 char	**_getEnvChar(envl_t *head);
 
-
+/* _strtow.c */
+int _isdelim(char c, const char *del);
+int _nbword(const char *s, const char *del);
+char *_mydup(const char *str, int size);
+char **_strtow(const char *str, const char *del);
 
 #endif

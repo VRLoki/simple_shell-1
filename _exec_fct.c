@@ -15,9 +15,11 @@ int _exec_fct(char **parsed, param_t *param)
 	pid_t child_pid;
 	char *mypath;
 	char *command;
-	char **envfull = _getEnvChar(param->envlist);
+	char **envfull;
 
+	envfull = _getEnvChar(param->envlist);
 	mypath = _getenv("PATH", envfull);
+
 	command = _getfullpath(parsed[0], mypath);
 
 	child_pid = fork();
@@ -139,33 +141,33 @@ char *_getfullpath(char *name, char *mypath)
 	char *fullnamepath = NULL;
 	char *token = NULL;
 	char *copypath;
+	char **splitpath;
+	int i;
 	struct stat st;
 
-	printf("name = [%s]\n", name);
-	printf("path = [%s]\n", mypath);
-	if (stat(name, &st) == 0)
-		return (name);
+/*	if (stat(name, &st) == 0)
+	return (name);*/
 
 	if (mypath == NULL || mypath[0] == ':'
 		|| (name[0] == '.' && name[1] == '/'))
 		return(name);
 
 	fullname = _str_concat("/", name);
-	copypath = _strdup(mypath);
-
-	token = strtok(copypath, ":");
-	while (token != NULL)
+	splitpath = _strtow(mypath,":");
+	i = 0;
+	while (splitpath[i])
 	{
-		fullnamepath = _str_concat(token, fullname);
+		fullnamepath = _str_concat(splitpath[i], fullname);
 		if (stat(fullnamepath, &st) == 0)
 		{
 			free(fullname);
 			return(fullnamepath);
 		}
-		token = strtok(NULL, ":");
 		free(fullnamepath);
+		i++;
 	}
 	free(fullname);
-	free(copypath);
+	free(splitpath);
 	return(name);
+
 }

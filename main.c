@@ -13,97 +13,64 @@
 
 int main(int ac, char **av, char **env)
 {
+	int fd, err;
+	param_t *param;
+
+	param = _initParam(av, env);
 	if (ac > 1)
-		_filemode(av, env);
-	if (isatty(STDIN_FILENO))
-		_interactive(av, env);
+	{	fd = open(av[1], O_RDONLY);
+		if (fd == -1)
+		{
+			if (errno == EACCES)
+				err = 126;
+			else
+				err = 127;
+			free(param);
+			_error_open(err, av[1], param);
+		}
+		else
+		{
+			param->mode = 2;
+			param->fdnb = fd;
+		}
+	}
+	else if (isatty(STDIN_FILENO))
+	{
+		param->mode = 0;
+		param->fdnb = STDIN_FILENO;
+	}
 	else
-		_noninteractive(av, env);
+	{
+		param->mode = 1;
+		param->fdnb = STDIN_FILENO;
+	}
+
+	_launchShell(param);
 	return (EXIT_SUCCESS);
 }
 
 
-/**
- * _interactive - execute the shell in interactive mode.
- *
- * @ac: number of arguments.
- * @av: the tab with the arguments.
- * @env: the environnement
- *
- * Return: void
- */
 
-void	_interactive(char **av, char **env)
+int _launchShell(param_t *param)
 {
-	int	read = 0;
-	int	nbw = 0;
-	char	*line = NULL;
-	size_t	n;
-	char	**parsed = NULL;
-	int	built_nbr;
+	int     read = 0;
+	int     nbw = 0;
+	char    *line = NULL;
+	size_t  n;
+	char    **parsed = NULL;
+	int     built_nbr;
 
-	param_t *param;
 
-	param = _initParam(av, env);
-
-	while (1)
-	{
-		param->count++;
+	signal(SIGINT, _siginthandler);
+	if (param->mode == 0)
 		_puts("$: ");
-		read = _getline(&line, &n);
-		if (read == EOF)
-		{
-			printf("\n");
-			break;
-		}
-		nbw = 0;
-		parsed = _parse_string(line, &nbw);
-		line = NULL;
-		if (nbw == 0)
-			continue;
 
-		built_nbr = _isbuiltin(parsed[0]);
-		if (built_nbr != 0)
-		{
-			_get_builtin_fct(parsed, param);
-		}
-		else
-			_exec_fct(parsed, param);
-		_free_grid(parsed, nbw);
-
-	}
-	if (line != NULL)
-		free(line);
-}
-
-
-/**
- * _noninteractive - execute the shell in noninteractive mode.
- *
- * @ac: number of arguments.
- * @av: the tab with the arguments.
- * @env: the environnement
- *
- * Return: void
- */
-
-void _noninteractive(char **av, char **env)
-{
-	int read = 0;
-	int nbw = 0;
-	char *line = NULL;
-	size_t n;
-	char **parsed = NULL;
-	param_t *param;
-	int	built_nbr;
-
-	param = _initParam(av, env);
-
-	while ((read = _getline(&line, &n)) != EOF)
+	while((read = _getlinefile(&line, &n, param->fdnb)) != EOF)
 	{
 		nbw = 0;
 		param->count++;
-		parsed = _parse_string(line, &nbw);
+
+		parsed = _parse_string2(line, &nbw);
 		if (nbw == 0)
 			continue;
 
@@ -116,64 +83,29 @@ void _noninteractive(char **av, char **env)
 			_exec_fct(parsed, param);
 		_free_grid(parsed, nbw);
 
+		if (param->mode == 0)
+			_puts("$: ");
 	}
+	if (param->mode == 0)
+		_putchar('\n');
 	if (line != NULL)
 		free(line);
+	if (param->mode == 2)
+		close(param->fdnb);
+	return (EXIT_SUCCESS);
 }
 
 
+
+
 /**
- * _filemode - execute the shell in file mode.
+ * _siginthandler - signal handler
  *
- * @ac: number of arguments.
- * @av: the tab with the arguments.
- * @env: the environnement
- *
- * Return: void
+ * @signum: int
  */
-
-void _filemode(char **av, char **env)
+void _siginthandler(int signum)
 {
-
-	int read = 0;
-	int nbw = 0;
-	char *line = NULL;
-	size_t n;
-	char **parsed = NULL;
-	int fd, err;
-	param_t *param;
-	int	built_nbr;
-
-	param = _initParam(av, env);
-
-	fd = open(av[1], O_RDONLY);
-	if (fd == -1)
-	{
-		if (errno == EACCES)
-			err = 126;
-		else
-			err = 127;
-		_error_open(err, av[1], param);
-	}
-
-	while ((read = _getlinefile(&line, &n, fd)) != EOF)
-	{
-		nbw = 0;
-		param->count++;
-		parsed = _parse_string(line, &nbw);
-		if (nbw == 0)
-			continue;
-
-		built_nbr = _isbuiltin(parsed[0]);
-		if (built_nbr != 0)
-		{
-			_get_builtin_fct(parsed, param);
-		}
-		else
-			_exec_fct(parsed, param);
-		_free_grid(parsed, nbw);
-
-	}
-	close(fd);
-	exit (EXIT_SUCCESS);
+	(void) signum;
+	write(0, "\n", 1);
+	_puts("$: ");
 }
