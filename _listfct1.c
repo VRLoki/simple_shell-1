@@ -40,7 +40,6 @@ int _is_nodeal(aliasl_t *head, char *var)
 {
 	while (head)
 	{
-		printf("HOLA\n");
 		if (_strcmp2(var, head->var) == 0)
 			return (1);
 		head = head->next;
@@ -64,21 +63,16 @@ int _strcmp2(char *s1, char *s2)
 	int i = 0;
 	int lens1 = _strlen(s1);
 	int lens2 = _strlen(s2);
-	printf("Metro\n");
-	printf("s1 : %i\n", lens1);
-	printf("s2 : %i\n", lens2);
+
 	if (lens1 != lens2)
 		return (1);
 
-	printf("Entrer\n");
-	printf("s1[0] %c\n", s1[0]);
 	while (s1[i])
 	{
-		printf("i %i\n", i);
 		if (s1[i] != s2[i])
 			return (1);
 		i++;
 	}
-	printf("RER\n");
+
 	return (0);
 }

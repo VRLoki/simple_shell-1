@@ -155,6 +155,7 @@ int	_assign_alias(char *comm, param_t *param)
 	cut = _str_findeq(comm);
 	var = _strncut(comm, cut, 0);
 	val = _strncut(comm, len - cut - 1, cut + 1);
+
 	if (var == NULL || val == NULL)
 		return(1);
 
