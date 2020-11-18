@@ -3,6 +3,9 @@
 /**
  * _ft_env - display all environnements variables of the shell.
  *
+ * @param: global parameter variable
+ *
+ * Return: 0 on success, -1 if failure
  */
 
 int	_ft_env(param_t *param)
@@ -10,7 +13,7 @@ int	_ft_env(param_t *param)
 	char		**envfull;
 	unsigned int	i;
 
-	envfull =_getEnvChar(param->envlist);
+	envfull = _getEnvChar(param->envlist);
 	if (envfull != NULL)
 	{
 		i = 0;

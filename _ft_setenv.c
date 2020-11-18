@@ -1,7 +1,8 @@
 #include "hsh.h"
 
 /**
- * _ft_setenv - initialize a new environment variable, or modify an existing one.
+ * _ft_setenv - initialize a new environment variable,
+ * or modify an existing one.
  *
  * @name: the name of the environnement.
  * @value: the value.
@@ -13,7 +14,6 @@
 
 int	_ft_setenv(char *name, char *value, int overwrite, param_t *param)
 {
-	char	**envfull;
 	envl_t	*comp;
 	envl_t	*pre_node;
 

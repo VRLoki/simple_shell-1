@@ -168,6 +168,7 @@ int	_error_open(int errnb, char *command, param_t *param);
 int	_strfindn(char *s, char c);
 char	*_strncpy(char *dest, char *src, int n);
 ssize_t	_getlinefile(char **lineptr, size_t *n, int fd);
+char *_strncut(char *src, int n, int from);
 
 /* _ft_exit.c */
 int		_ft_exit(char *s, param_t *param);
@@ -198,5 +199,13 @@ int	_ft_setenv(char *name, char *value, int overwrite, param_t *param);
 
 /* _ft_unsetenv.c */
 int	_ft_unsetenv(char *name, param_t *param);
+
+/* _ft_alias.c */
+int     _ft_alias(char **comm, param_t *param);
+int     _print_all_alias(param_t *param);
+int     _print_single_alias(char *name, param_t *param);
+int     _str_findeq(char *str);
+int     _assign_alias(char *comm, param_t *param);
+
 
 #endif

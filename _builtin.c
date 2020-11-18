@@ -35,13 +35,16 @@ int	_get_builtin_fct(char **comm, param_t *param)
 {
 	if (_strcmp(comm[0], "exit") == 0)
 		return (_ft_exit(comm[1], param));
-	else if (_strcmp(comm[0], "env") == 0)
+	if (_strcmp(comm[0], "env") == 0)
 		return (_ft_env(param));
-	else if (_strcmp(comm[0], "setenv") == 0)
+	if (_strcmp(comm[0], "setenv") == 0)
 		return (_ft_setenv(comm[1], comm[2], comm[3] == NULL ? 0 : atoi(comm[3]), param));
-	else if (_strcmp(comm[0], "unsetenv") == 0)
+	if (_strcmp(comm[0], "unsetenv") == 0)
 		return (_ft_unsetenv(comm[1], param));
-	else
-		printf("not done yet\n");
+	if (_strcmp(comm[0], "alias") == 0)
+		return (_ft_alias(comm, param));
+
+
+	printf("not done yet\n");
 	return (1);
 }

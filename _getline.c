@@ -56,6 +56,35 @@ char *_strncpy(char *dest, char *src, int n)
 
 
 
+/**
+ * *_strncut - copies a portion string
+ *
+ * @src : string source to be copied
+ * @n : number of character to cut
+ * @from : number to cut from
+ *
+ * Return: string concatenated
+ */
+
+char *_strncut(char *src, int n, int from)
+{
+	char *ret;
+	int i;
+
+	ret = malloc(sizeof(char) * (n + 1));
+	if (ret == NULL)
+		return (NULL);
+
+	for (i = 0; i < n; i++)
+		ret[i] = src[i + from];
+	ret[i] = '\0';
+
+	return (ret);
+}
+
+
+
+
 
 
 
