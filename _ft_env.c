@@ -76,9 +76,11 @@ int	_ft_setenv(char **comm, param_t *param)
 	envl_t  *pre_node;
 
 	comp = (envl_t *)malloc(sizeof(envl_t));
-	if (comm == NULL || comm[1] == NULL || comm[2] == NULL
-			|| comp == NULL || param->envlist == NULL)
+	if (comm == NULL || comp == NULL || param->envlist == NULL)
+		return (-1);
+	if (comm[1] == NULL || comm[2] == NULL)
 	{
+		_error_env(comm[0], param);
 		return (-1);
 	}
 	comp = param->envlist;
@@ -94,9 +96,7 @@ int	_ft_setenv(char **comm, param_t *param)
 			return (0);
 		}
 		if (comp->next == NULL)
-		{
 			pre_node = comp;
-		}
 		comp = comp->next;
 	}
 	if (comp == NULL)
@@ -109,6 +109,7 @@ int	_ft_setenv(char **comm, param_t *param)
 		comp->next = NULL;
 		pre_node->next = comp;
 	}
+	free(comp);
 	return (0);
 }
 
@@ -127,8 +128,6 @@ int	_ft_unsetenv(char **comm, param_t *param)
 	envl_t  *pre_node;
 	envl_t  *del_node;
 
-	del_node = (envl_t *)malloc(sizeof(envl_t));
-	pre_node = (envl_t *)malloc(sizeof(envl_t));
 	if (comm == NULL || del_node == NULL || pre_node == NULL)
 	{
 		return (-1);
@@ -149,7 +148,6 @@ int	_ft_unsetenv(char **comm, param_t *param)
 	}
 	while (del_node != NULL)
 	{
-		del_node = del_node->next;
 		if (_strcmp(comm[1], del_node->var) == 0)
 		{
 			pre_node->next = del_node->next;
@@ -157,7 +155,8 @@ int	_ft_unsetenv(char **comm, param_t *param)
 			free(del_node->value);
 			return (0);
 		}
-		pre_node = pre_node->next;
+		pre_node = del_node->next;
+		del_node = del_node->next;
 	}
 	return (0);
 }
