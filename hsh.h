@@ -193,12 +193,8 @@ char **_strtow2(const char *str, const char *del);
 
 /* _ft_env.c */
 int	_ft_env(param_t *param);
-
-/* _ft_setenv.c */
-int	_ft_setenv(char *name, char *value, int overwrite, param_t *param);
-
-/* _ft_unsetenv.c */
-int	_ft_unsetenv(char *name, param_t *param);
+int	_ft_setenv(char **comm, param_t *param);
+int	_ft_unsetenv(char **comm, param_t *param);
 
 /* _ft_alias.c */
 int     _ft_alias(char **comm, param_t *param);
