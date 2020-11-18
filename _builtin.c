@@ -38,9 +38,9 @@ int	_get_builtin_fct(char **comm, param_t *param)
 	if (_strcmp(comm[0], "env") == 0)
 		return (_ft_env(param));
 	if (_strcmp(comm[0], "setenv") == 0)
-		return (_ft_setenv(comm[1], comm[2], comm[3] == NULL ? 0 : atoi(comm[3]), param));
+		return (_ft_setenv(comm, param));
 	if (_strcmp(comm[0], "unsetenv") == 0)
-		return (_ft_unsetenv(comm[1], param));
+		return (_ft_unsetenv(comm, param));
 	if (_strcmp(comm[0], "alias") == 0)
 		return (_ft_alias(comm, param));
 
