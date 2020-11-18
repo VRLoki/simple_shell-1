@@ -90,10 +90,94 @@ char **_parse_string(char *string, int *nbw)
  * Return: created char **
  */
 
-char **_parse_string2(char *string, int *nbw)
+char **_parse_string2(char *string, int *nbw, param_t *param)
 {
 	char *del = " \n\t\a\r\v";
+	char **comm;
+	char **aliascomm;
+	aliasl_t *visited;
 
 	*nbw = _nbword(string, del);
-	return (_strtow(string, del));
+	comm = _strtow(string, del);
+	visited = NULL;
+	aliascomm = _parse_alias(comm, nbw, param, &visited);
+	return (aliascomm);
+}
+
+
+
+
+
+/**
+ * _parse_alias - add all the alias in the
+ * command line and update nbw
+ *
+ * @comm : intial command line
+ * @nbw: total number of word in comm
+ * @param: global parameter variable
+ *
+ * Return: new command line including alias
+ */
+
+char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t **vis)
+{
+	char *del = " \n\t\a\r\v";
+	aliasl_t *head;
+	int lenal, i, redo = 0;
+	char **parsal;
+	char **newcomm;
+
+
+	if (comm[0] == NULL)
+		return (NULL);
+
+	redo = 0;
+	head = param->alias;
+
+	_puts("Coucou\n");
+	if (head != NULL)
+		printf("HeadVar %s\n", head->var);
+
+	while (head)
+	{
+/*		printf("HeadVar2 %s\n", head->var);
+		printf("Comm[0] %s\n", comm[0]);
+		printf("len HeadVar %i\n", _strlen(head->var));
+		printf("len comm[0] %i\n", _strlen(comm[0]));
+
+		if (_strcmp2(head->var, comm[0]) == 0 && _is_nodeal(*vis, comm[0]) == 0)
+		{
+			printf("HeadVar3\n");
+			_add_nodealias(vis, comm[0]);
+
+			lenal = _nbword(head->value, del);
+			parsal = _strtow(head->value, del);
+			newcomm = malloc((*nbw + lenal) * sizeof(char *));
+
+			for (i = 0; i < lenal; i++)
+			{
+				newcomm[i] = _strdup(parsal[i]);
+				free(parsal[i]);
+			}
+			free(comm[0]);
+			for (i = 0; i < *nbw - 1; i++)
+			{
+				newcomm[lenal + i] = _strdup(comm[i + 1]);
+				free(comm[i + 1]);
+			}
+			newcomm[*nbw + lenal] = NULL;
+			free(comm);
+			free(parsal);
+			*nbw = *nbw + lenal - 1;
+			if (lenal == 0)
+				return (newcomm);
+			else
+/*				return (_parse_alias(newcomm, nbw, param, vis));
+				return (newcomm);
+				}*/
+		printf("NEXT\n");
+		head = head->next;
+	}
+	return (comm);
+
 }

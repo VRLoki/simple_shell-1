@@ -156,7 +156,8 @@ void _siginthandler(int signum);
 /* _parse_string.c */
 char	**_parse_string(char *string, int *nbw);
 void	_free_grid(char **grid, int height);
-char **_parse_string2(char *string, int *nbw);
+char **_parse_string2(char *string, int *nbw, param_t *param);
+char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t **vis);
 
 /* _exec_fct.c */
 int	_exec_fct(char **parsed, param_t *param);
@@ -203,5 +204,9 @@ int     _print_single_alias(char *name, param_t *param);
 int     _str_findeq(char *str);
 int     _assign_alias(char *comm, param_t *param);
 
+/* _listfct1.c */
+int _add_nodealias(aliasl_t **head, char *var);
+int _is_nodeal(aliasl_t *head, char *var);
+int _strcmp2(char *s1, char *s2);
 
 #endif

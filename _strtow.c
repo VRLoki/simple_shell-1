@@ -97,7 +97,7 @@ char *_mydup(const char *str, int size)
  * @str : string to be splitted
  * @del : string of delimiters
  *
- * Return: string
+ * Return: array of strings
  */
 
 char **_strtow(const char *str, const char *del)

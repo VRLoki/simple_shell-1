@@ -73,7 +73,7 @@ int _launchShell(param_t *param)
 	{
 		nbw = 0;
 		param->count++;
-		parsed = _parse_string2(line, &nbw);
+		parsed = _parse_string2(line, &nbw, param);
 		if (nbw == 0)
 		{
 			if (param->mode == 0)

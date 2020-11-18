@@ -128,6 +128,7 @@ int	_str_findeq(char *str)
 	{
 		if (str[i] == '=')
 			return (i);
+		i++;
 	}
 	return (0);
 }
@@ -193,6 +194,4 @@ int	_assign_alias(char *comm, param_t *param)
 	free(var);
 	free(value);
 	return(0);
-
-
 }
