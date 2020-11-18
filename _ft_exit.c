@@ -1,5 +1,13 @@
 #include "hsh.h"
 
+/**
+ * _atoi_exit - chexk if there is only number in the exit number.
+ *
+ * @s: the exit number.
+ *
+ * Return: the exit number or 0 if fail
+ */
+
 unsigned char	_atoi_exit(char *s)
 {
 	int		i;
@@ -20,6 +28,14 @@ unsigned char	_atoi_exit(char *s)
 	return (nbr);
 }
 
+/**
+ * _check_zero - check if there is only 0 in s.
+ *
+ * @s: the string to check.
+ *
+ * Return: true if true and false if false
+ */
+
 bool	_check_zero(char *s)
 {
 	unsigned int	i;
@@ -37,6 +53,16 @@ bool	_check_zero(char *s)
 	return (false);
 }
 
+
+/**
+ * _error_exit - display the error message of the function exit.
+ *
+ * @command: the exit number who make the error.
+ * @param: global parameters of the shell.
+ *
+ * Return: 2 always
+ */
+
 int     _error_exit(char *command, param_t *param)
 {
 	char *dispmess;
@@ -53,6 +79,15 @@ int     _error_exit(char *command, param_t *param)
 	return (2);
 }
 
+
+/**
+ * _ft_exit - exit the program.
+ *
+ * @s: the exit number
+ * @param: global parameters of the shell.
+ *
+ * Return: 2 if fail
+ */
 
 int	_ft_exit(char *s, param_t *param)
 {

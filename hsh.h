@@ -190,5 +190,13 @@ char **_strtow(const char *str, const char *del);
 int _nbword2(const char *s, const char *del);
 char **_strtow2(const char *str, const char *del);
 
+/* _ft_env.c */
+int	_ft_env(param_t *param);
+
+/* _ft_setenv.c */
+int	_ft_setenv(char *name, char *value, int overwrite, param_t *param);
+
+/* _ft_unsetenv.c */
+int	_ft_unsetenv(char *name, param_t *param);
 
 #endif
