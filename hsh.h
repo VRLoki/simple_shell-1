@@ -212,6 +212,11 @@ int     _assign_alias(char *comm, param_t *param);
 int     _ft_unalias(char **comm, param_t *param);
 int     _delete_alias(char *comm, param_t *param);
 
+/* _ft_cd.c */
+int	_ft_cd(char **path, param_t *param);
+char	**_init_tab(char *s1, char *s2);
+void	_free_tab(char **tab);
+
 /* _listfct1.c */
 int _add_nodealias(aliasl_t **head, char *var);
 int _is_nodeal(aliasl_t *head, char *var);

@@ -75,6 +75,10 @@ int	_ft_setenv(char **comm, param_t *param)
 	envl_t  *comp;
 	envl_t  *pre_node;
 
+	printf("comm[0] = [%s]\n", comm[0]);
+	printf("comm[1] = [%s]\n", comm[1]);
+	printf("comm[2] = [%s]\n", comm[2]);
+	printf("comm[3] = [%s]\n", comm[3]);
 	comp = (envl_t *)malloc(sizeof(envl_t));
 	if (comm == NULL || comp == NULL || param->envlist == NULL)
 		return (-1);
@@ -90,7 +94,7 @@ int	_ft_setenv(char **comm, param_t *param)
 		{
 			if (comm[3] != 0)
 			{
-				free(comp->var);
+				free(comp->value);
 				comp->value = _strdup(comm[2]);
 			}
 			return (0);
@@ -128,7 +132,7 @@ int	_ft_unsetenv(char **comm, param_t *param)
 	envl_t  *pre_node;
 	envl_t  *del_node;
 
-	if (comm == NULL || del_node == NULL || pre_node == NULL)
+	if (comm == NULL)
 	{
 		return (-1);
 	}
