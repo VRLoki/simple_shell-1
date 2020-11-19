@@ -22,7 +22,7 @@ param_t *_initParam(char **av, char **env)
 	param->bashname = _strdup(av[0]);
 	param->alias = NULL;
 	param->hist = NULL;
-	param->lastval = 0;
+	param->lastexit = 0;
 	param->pid = "1111";
 	param->parsed = NULL;
 	param->envlist = _getEnvList(env);

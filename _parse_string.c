@@ -95,12 +95,36 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 	char *del = " \n\t\a\r\v";
 	char **comm;
 	char **aliascomm;
-	aliasl_t *visited;
+	aliasl_t *vis;
+	int i;
 
+	string = _ope_str(string);
 	*nbw = _nbword(string, del);
 	comm = _strtow(string, del);
-	visited = NULL;
-	aliascomm = _parse_alias(comm, nbw, param, visited);
+
+	vis = NULL;
+	aliascomm = _parse_alias(comm, nbw, param, vis, 0);
+
+	if (*nbw > 0)
+	{
+		i = 1;
+		while(aliascomm[i])
+		{
+			vis = NULL;
+			if (_strcmp(aliascomm[i - 1],";") == 0)
+				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
+			if (_strcmp(aliascomm[i - 1],"&&") == 0)
+				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
+			if (_strcmp(aliascomm[i - 1],"||") == 0)
+				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
+			i++;
+		}
+	}
+
+	for (i = 0; i < *nbw; i++)
+		printf("string[%i] is %s\n", i, aliascomm[i]);
+
+
 	return (aliascomm);
 }
 
@@ -119,44 +143,40 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
  * Return: new command line including alias
  */
 
-char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis)
+char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis, int k)
 {
 	char *del = " \n\t\a\r\v";
 	aliasl_t *head;
-	int lenal, i, redo = 0;
+	int lenal, i;
 	char **parsal;
 	char **newcomm;
 
-
-	if (comm[0] == NULL)
+	if (comm[k] == NULL)
 		return (NULL);
-
-	redo = 0;
 	head = param->alias;
-
-	if (head != NULL)
 
 	while (head)
 	{
-
-		if (_strcmp2(head->var, comm[0]) == 0 && _is_nodeal(vis, comm[0]) == 0)
+		if (_strcmp2(head->var, comm[k]) == 0 && _is_nodeal(vis, comm[k]) == 0)
 		{
-			_add_nodealias(&vis, comm[0]);
-
+			_add_nodealias(&vis, comm[k]);
 			lenal = _nbword(head->value, del);
 			parsal = _strtow(head->value, del);
 			newcomm = malloc((*nbw + lenal) * sizeof(char *));
-
-			for (i = 0; i < lenal; i++)
+			for (i = 0; i < k; i++)
 			{
-				newcomm[i] = _strdup(parsal[i]);
+				newcomm[i] = _strdup(comm[i]);
+				free(comm[i]);
+			}
+			for (i = 0; i < lenal; i ++)
+			{
+				newcomm[i + k] =_strdup(parsal[i]);
 				free(parsal[i]);
 			}
-			free(comm[0]);
-			for (i = 0; i < *nbw - 1; i++)
+			for (i = 0; i < *nbw - k - 1; i++)
 			{
-				newcomm[lenal + i] = _strdup(comm[i + 1]);
-				free(comm[i + 1]);
+				newcomm[i + k + lenal] = _strdup(comm[i + k + 1]);
+				free(comm[i + k + 1]);
 			}
 			newcomm[*nbw + lenal - 1] = NULL;
 			free(comm);
@@ -165,7 +185,7 @@ char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis)
 			if (lenal == 0)
 				return (newcomm);
 			else
-				return (_parse_alias(newcomm, nbw, param, vis));
+				return (_parse_alias(newcomm, nbw, param, vis, k));
 		}
 		head = head->next;
 	}

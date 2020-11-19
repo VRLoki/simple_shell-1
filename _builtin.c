@@ -12,7 +12,8 @@ int	_isbuiltin(char *comm)
 {
 	unsigned int	i;
 	char		*builtlist[] = {"exit", "env", "setenv",
-		"unsetenv", "cd", "alias", "help", "history", NULL};
+					"unsetenv", "cd", "alias", "unalias",
+					"help", "history", NULL};
 	i = 0;
 	while (builtlist[i])
 	{
@@ -43,6 +44,9 @@ int	_get_builtin_fct(char **comm, param_t *param)
 		return (_ft_unsetenv(comm, param));
 	if (_strcmp(comm[0], "alias") == 0)
 		return (_ft_alias(comm, param));
+	if (_strcmp(comm[0], "unalias") == 0)
+		return (_ft_unalias(comm, param));
+
 
 
 	printf("not done yet\n");

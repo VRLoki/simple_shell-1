@@ -15,7 +15,10 @@
 
 #define SEP " \n\a\t\v\r"
 
-
+#define NEXT 1
+#define AND 2
+#define OR 3
+#define STOP 4
 
 
 /**
@@ -95,7 +98,7 @@ typedef struct histl
  * @bashname: name of the bash for error message display
  * @count: number of lines of command
  * @pid: pid of the current shell process
- * @lastval: last return value from executed commands
+ * @lastexit: last return value from executed commands
  * @envlist: head of linked list on the environment variables
  * @alias: head of linked list on the alias variable
  * @hist: head of linked list on the history
@@ -112,7 +115,7 @@ typedef struct paraml
 	char *bashname;
 	int count;
 	char *pid;
-	int lastval;
+	int lastexit;
 	envl_t *envlist;
 	aliasl_t *alias;
 	histl_t *hist;
@@ -152,12 +155,13 @@ char	*_convert_base(unsigned long int nbr, int base, int cap);
 /* main.c */
 int _launchShell(param_t *param);
 void _siginthandler(int signum);
+void _prompt(param_t *param);
 
 /* _parse_string.c */
 char	**_parse_string(char *string, int *nbw);
 void	_free_grid(char **grid, int height);
 char **_parse_string2(char *string, int *nbw, param_t *param);
-char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis);
+char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis, int k);
 
 /* _exec_fct.c */
 int	_exec_fct(char **parsed, param_t *param);
@@ -204,9 +208,20 @@ int     _print_single_alias(char *name, param_t *param);
 int     _str_findeq(char *str);
 int     _assign_alias(char *comm, param_t *param);
 
+/* _ft_unalias.c */
+int     _ft_unalias(char **comm, param_t *param);
+int     _delete_alias(char *comm, param_t *param);
+
 /* _listfct1.c */
 int _add_nodealias(aliasl_t **head, char *var);
 int _is_nodeal(aliasl_t *head, char *var);
 int _strcmp2(char *s1, char *s2);
+
+/* _operators.c */
+char * _ope_str(char *s);
+char * _opeNEXT(char *s);
+char * _opeAND(char *s);
+char * _opeOR(char *s);
+char * _opeSTOP(char *s);
 
 #endif

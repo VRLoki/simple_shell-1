@@ -43,6 +43,7 @@ int _nbword(const char *s, const char *del)
 {
 	int i = 1;
 	int nbw = 0;
+	int no = 1;
 
 	if (s == NULL)
 		return (0);
@@ -52,7 +53,10 @@ int _nbword(const char *s, const char *del)
 
 	while (s[i])
 	{
-		if (_isdelim(s[i - 1], del) == 1 && _isdelim(s[i], del) == 0)
+		if (s[i - 1] == 39)
+			no = 1 - no;
+
+		if (_isdelim(s[i - 1], del) == 1 && _isdelim(s[i], del) == 0 && no)
 			nbw++;
 		i++;
 	}
@@ -102,7 +106,7 @@ char *_mydup(const char *str, int size)
 
 char **_strtow(const char *str, const char *del)
 {
-	int i = 0, nbw, inword = 0, sizeword = 0, curw = -1;
+	int i = 0, nbw, inword = 0, sizeword = 0, curw = -1, no = 1;
 	char **s;
 
 	nbw = _nbword(str, del);
@@ -112,20 +116,27 @@ char **_strtow(const char *str, const char *del)
 		return (NULL);
 	while (str[i] != '\0')
 	{
+		if (str[i] == 39)
+			no = 1 - no;
+
+
 		if (_isdelim(str[i], del) == 0 && inword == 0)
 		{
 			inword = 1;
 			sizeword = 1;
 			curw += 1;
 		}
-		else if (_isdelim(str[i], del) == 1 && inword == 1)
+		else if (_isdelim(str[i], del) == 1 && inword == 1 && no)
 		{
 			inword = 0;
 			s[curw] = _mydup(str + i - sizeword, sizeword);
 			sizeword = 0;
 		}
-		else if (_isdelim(str[i], del) == 0 && inword == 1)
+		else if (_isdelim(str[i], del) == 0 && inword == 1 || no == 0)
 			sizeword += 1;
+
+//		printf("str[%i] %c, inword = %i, size = %i, curw =%i, no =%i\n", i, str[i], inword, sizeword, curw, no);
+
 		i++;
 	}
 	if (inword == 1)

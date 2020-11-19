@@ -66,9 +66,7 @@ int _launchShell(param_t *param)
 	char    **parsed = NULL;
 
 /*	signal(SIGINT, _siginthandler); */
-	if (param->mode == 0)
-		_puts("$: ");
-
+	_prompt(param);
 	while ((read = _getlinefile(&line, &n, param->fdnb)) != EOF)
 	{
 		nbw = 0;
@@ -76,18 +74,16 @@ int _launchShell(param_t *param)
 		parsed = _parse_string2(line, &nbw, param);
 		if (nbw == 0)
 		{
-			if (param->mode == 0)
-				_puts("$: ");
+			_prompt(param);
 			continue;
 		}
 		built_nbr = _isbuiltin(parsed[0]);
 		if (built_nbr != 0)
-			_get_builtin_fct(parsed, param);
+			param->lastexit = _get_builtin_fct(parsed, param);
 		else
-			_exec_fct(parsed, param);
+			param->lastexit = _exec_fct(parsed, param);
 		_free_grid(parsed, nbw);
-		if (param->mode == 0)
-			_puts("$: ");
+		_prompt(param);
 	}
 	if (param->mode == 0)
 		_putchar('\n');
@@ -111,4 +107,17 @@ void _siginthandler(int signum)
 	(void) signum;
 	write(0, "\n", 1);
 	_puts("$: ");
+}
+
+
+/**
+ * _prompt - display promter
+ *
+ * @param: parameter variable
+ */
+
+void _prompt(param_t *param)
+{
+	if (param->mode == 0)
+		_puts("$: ");
 }
