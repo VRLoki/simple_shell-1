@@ -8,7 +8,7 @@
  * Return: transformed string
  */
 
-char * _ope_str(char *s)
+char *_ope_str(char *s)
 {
 	char *new;
 
@@ -30,14 +30,14 @@ char * _ope_str(char *s)
  * Return: transformed string
  */
 
-char * _opeNEXT(char *s)
+char *_opeNEXT(char *s)
 {
 	int len = _strlen(s);
 	int i = 0, j = 0;
 	char *news;
 
 	if (len <= 1)
-		return(s);
+		return (s);
 	while (s[i])
 	{
 		if (s[i] == ';')
@@ -78,14 +78,14 @@ char * _opeNEXT(char *s)
  * Return: transformed string
  */
 
-char * _opeAND(char *s)
+char *_opeAND(char *s)
 {
 	int len = _strlen(s);
 	int i = 0, j = 0;
 	char *news;
 
 	if (len <= 2)
-		return(s);
+		return (s);
 	while (s[i])
 	{
 		if (s[i] == '&' && s[i + 1] == '&')
@@ -104,7 +104,7 @@ char * _opeAND(char *s)
 			news[j] = ' ';
 			news[j + 1] = '&';
 			news[j + 2] = '&';
-			news [j + 3] = ' ';
+			news[j + 3] = ' ';
 			j = j + 4;
 			i = i + 2;
 		}
@@ -129,14 +129,14 @@ char * _opeAND(char *s)
  * Return: transformed string
  */
 
-char * _opeOR(char *s)
+char *_opeOR(char *s)
 {
 	int len = _strlen(s);
 	int i = 0, j = 0;
 	char *news;
 
 	if (len <= 2)
-		return(s);
+		return (s);
 	while (s[i])
 	{
 		if (s[i] == '|' && s[i + 1] == '|')
@@ -155,7 +155,7 @@ char * _opeOR(char *s)
 			news[j] = ' ';
 			news[j + 1] = '|';
 			news[j + 2] = '|';
-			news [j + 3] = ' ';
+			news[j + 3] = ' ';
 			j = j + 4;
 			i = i + 2;
 		}
@@ -182,14 +182,14 @@ char * _opeOR(char *s)
  * Return: transformed string
  */
 
-char * _opeSTOP(char *s)
+char *_opeSTOP(char *s)
 {
 	int len = _strlen(s);
 	int i = 0, j = 0;
 	char *news;
 
 	if (len <= 1)
-		return(s);
+		return (s);
 	while (s[i])
 	{
 		if (s[i] == '#')

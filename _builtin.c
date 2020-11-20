@@ -28,6 +28,7 @@ int	_isbuiltin(char *comm)
  * _get_builtin_fct - call the right builtin function.
  *
  * @comm: the command to excute.
+ * @param: global parameter variable
  *
  * Return: the exit number of the command or 1
  */

@@ -86,6 +86,7 @@ char **_parse_string(char *string, int *nbw)
  *
  * @string : string parsed
  * @nbw : number of words
+ * @param : global parameter variable
  *
  * Return: created char **
  */
@@ -108,22 +109,18 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 	if (*nbw > 0)
 	{
 		i = 1;
-		while(aliascomm[i])
+		while (aliascomm[i])
 		{
 			vis = NULL;
-			if (_strcmp(aliascomm[i - 1],";") == 0)
+			if (_strcmp(aliascomm[i - 1], ";") == 0)
 				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
-			if (_strcmp(aliascomm[i - 1],"&&") == 0)
+			if (_strcmp(aliascomm[i - 1], "&&") == 0)
 				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
-			if (_strcmp(aliascomm[i - 1],"||") == 0)
+			if (_strcmp(aliascomm[i - 1], "||") == 0)
 				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
 			i++;
 		}
 	}
-
-/*	for (i = 0; i < *nbw; i++)
-		printf("string[%i] is %s\n", i, aliascomm[i]);
-*/
 
 	return (aliascomm);
 }
@@ -139,27 +136,27 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
  * @comm : intial command line
  * @nbw: total number of word in comm
  * @param: global parameter variable
+ * @v: linked list of visited alias
+ * @k: index of parse string to check
  *
  * Return: new command line including alias
  */
 
-char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis, int k)
+char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *v, int k)
 {
 	char *del = " \n\t\a\r\v";
 	aliasl_t *head;
 	int lenal, i;
-	char **parsal;
-	char **newcomm;
+	char **parsal, **newcomm;
 
 	if (comm[k] == NULL)
 		return (NULL);
 	head = param->alias;
-
 	while (head)
 	{
-		if (_strcmp2(head->var, comm[k]) == 0 && _is_nodeal(vis, comm[k]) == 0)
+		if (_strcmp2(head->var, comm[k]) == 0 && _is_nodeal(v, comm[k]) == 0)
 		{
-			_add_nodealias(&vis, comm[k]);
+			_add_nodealias(&v, comm[k]);
 			lenal = _nbword(head->value, del);
 			parsal = _strtow(head->value, del);
 			newcomm = malloc((*nbw + lenal) * sizeof(char *));
@@ -168,9 +165,9 @@ char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis, int k)
 				newcomm[i] = _strdup(comm[i]);
 				free(comm[i]);
 			}
-			for (i = 0; i < lenal; i ++)
+			for (i = 0; i < lenal; i++)
 			{
-				newcomm[i + k] =_strdup(parsal[i]);
+				newcomm[i + k] = _strdup(parsal[i]);
 				free(parsal[i]);
 			}
 			for (i = 0; i < *nbw - k - 1; i++)
@@ -185,10 +182,9 @@ char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis, int k)
 			if (lenal == 0)
 				return (newcomm);
 			else
-				return (_parse_alias(newcomm, nbw, param, vis, k));
+				return (_parse_alias(newcomm, nbw, param, v, k));
 		}
 		head = head->next;
 	}
 	return (comm);
-
 }

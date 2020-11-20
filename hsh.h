@@ -156,7 +156,7 @@ void _prompt(param_t *param);
 char	**_parse_string(char *string, int *nbw);
 void	_free_grid(char **grid, int height);
 char **_parse_string2(char *string, int *nbw, param_t *param);
-char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *vis, int k);
+char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *v, int k);
 
 /* _exec_fct.c */
 int	_exec_fct(char **parsed, param_t *param);
@@ -218,18 +218,18 @@ int _is_nodeal(aliasl_t *head, char *var);
 int _strcmp2(char *s1, char *s2);
 
 /* _operators.c */
-char * _ope_str(char *s);
-char * _opeNEXT(char *s);
-char * _opeAND(char *s);
-char * _opeOR(char *s);
-char * _opeSTOP(char *s);
+char *_ope_str(char *s);
+char *_opeNEXT(char *s);
+char *_opeAND(char *s);
+char *_opeOR(char *s);
+char *_opeSTOP(char *s);
 
 /* _get_parsestruc */
-int _exec_string (char **parsed, int nbw, param_t *param);
+int _exec_string(char **parsed, int nbw, param_t *param);
 char **_getcomm(char **parsed, int from, int to);
 int _exec_need(char *curop, int lastexit);
-int _check_grammar (char **parsed, int nbw, param_t *param);
-char *_get_nextop (char **parsed, int *cur);
+int _check_grammar(char **parsed, int nbw, param_t *param);
+char *_get_nextop(char **parsed, int *cur);
 
 /* _get_parsestruc2 */
 int _error_syntax(char *command, param_t *param);

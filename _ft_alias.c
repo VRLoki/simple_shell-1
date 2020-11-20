@@ -23,7 +23,7 @@ int	_ft_alias(char **comm, param_t *param)
 
 	while (comm[i])
 	{
-		if(_str_findeq(comm[i]))
+		if (_str_findeq(comm[i]))
 		{
 			_assign_alias(comm[i], param);
 		}
@@ -68,6 +68,7 @@ int	_print_all_alias(param_t *param)
 /**
  * _print_single_alias - prints all the alias
  *
+ * @name : name of the alias to print
  * @param: global parameters of the shell.
  *
  * Return: 0 or if fail 1
@@ -84,9 +85,9 @@ int	_print_single_alias(char *name, param_t *param)
 		if (_strcmp(node->var, name) == 0)
 		{
 			line = _strdup(name);
-			line = _str_concat(line,"='");
+			line = _str_concat(line, "='");
 			line = _str_concat(line, node->value);
-			line = _str_concat(line,"'\n");
+			line = _str_concat(line, "'\n");
 			write(STDOUT_FILENO, line, _strlen(line));
 			free(line);
 			return (0);
@@ -110,7 +111,7 @@ int	_print_single_alias(char *name, param_t *param)
 /**
  * _str_findeq - determine if string is an assignement
  *
- * @param: global parameters of the shell.
+ * @str: string to analyze.
  *
  * Return: postion of the '=' if assignement,
  * else 0
@@ -149,31 +150,22 @@ int	_assign_alias(char *comm, param_t *param)
 	int cut, len;
 	char *var, *val, *value;
 	aliasl_t *node, *newnode;
-	char *errmsg = "alias correct assignement is alias name='value'\n";
+	char *errmsg = "Alias correct assignement is alias name='value'\n";
 
 	len = _strlen(comm);
 	cut = _str_findeq(comm);
 	var = _strncut(comm, cut, 0);
 	val = _strncut(comm, len - cut - 1, cut + 1);
-
 	if (var == NULL || val == NULL)
-		return(1);
-
+		return (1);
 	len = _strlen(val);
-	if (len < 2)
+	if (len < 2 || val[0] != 39 || val[len - 1] != 39)
 	{
 		write(STDERR_FILENO, errmsg, _strlen(errmsg));
 		return (1);
 	}
-	if (val[0] != 39 || val[len -1] != 39)
-	{
-		write(STDERR_FILENO, errmsg, _strlen(errmsg));
-		return (1);
-	}
-
 	value = _strncut(val, len - 2, 1);
 	free(val);
-
 	node = param->alias;
 	while (node)
 	{
@@ -194,5 +186,5 @@ int	_assign_alias(char *comm, param_t *param)
 	param->alias = newnode;
 	free(var);
 	free(value);
-	return(0);
+	return (0);
 }

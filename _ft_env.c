@@ -1,7 +1,7 @@
 #include "hsh.h"
 
 /**
- * _error_exit - display the error message of the function exit.
+ * _error_env - display the error message of the function exit.
  *
  * @command: the exit number who make the error.
  * @param: global parameters of the shell.
@@ -62,9 +62,7 @@ int	_ft_env(param_t *param)
  * _ft_setenv - initialize a new environment variable,
  * or modify an existing one.
  *
- * @name: the name of the environnement.
- * @value: the value.
- * @overwrite: authorize to replace a value if the name already exist.
+ * @comm: command line
  * @param: global parameters of the shell.
  *
  * Return: 0 or if fail -1
@@ -75,10 +73,6 @@ int	_ft_setenv(char **comm, param_t *param)
 	envl_t  *comp;
 	envl_t  *pre_node;
 
-	printf("comm[0] = [%s]\n", comm[0]);
-	printf("comm[1] = [%s]\n", comm[1]);
-	printf("comm[2] = [%s]\n", comm[2]);
-	printf("comm[3] = [%s]\n", comm[3]);
 	comp = (envl_t *)malloc(sizeof(envl_t));
 	if (comm == NULL || comp == NULL || param->envlist == NULL)
 		return (-1);
@@ -121,7 +115,7 @@ int	_ft_setenv(char **comm, param_t *param)
 /**
  * _ft_unsetenv - remove an environment variable.
  *
- * @name: the name of the variable.
+ * @comm: command line
  * @param: global parameters of the shell.
  *
  * Return: 0 (Sucess) or -1 if fail.

@@ -65,7 +65,7 @@ int _launchShell(param_t *param)
 	size_t  n;
 	char    **parsed = NULL;
 
-/*	signal(SIGINT, _siginthandler); */
+	signal(SIGINT, _siginthandler);
 	_prompt(param);
 	while ((read = _getlinefile(&line, &n, param->fdnb)) != EOF)
 	{
@@ -81,20 +81,10 @@ int _launchShell(param_t *param)
 			continue;
 		}
 
-/*		param->lastexit = 0;
-		built_nbr = _isbuiltin(parsed[0]);
-		if (built_nbr != 0)
-			param->lastexit = _get_builtin_fct(parsed, param);
-		else
-		param->lastexit = _exec_fct(parsed, param);*/
-
 		_exec_string(parsed, nbw, param);
 		_free_grid(parsed, nbw);
 		printf("lastexit->%i\n", param->lastexit);
-
 		_prompt(param);
-
-
 
 	}
 	if (param->mode == 0)

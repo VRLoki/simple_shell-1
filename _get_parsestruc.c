@@ -3,7 +3,7 @@
 
 
 /**
- * _exec_string : execute a valid command line
+ * _exec_string - execute a valid command line
  *
  * @parsed: input parsed line
  * @nbw: number of token in the parsed line
@@ -12,12 +12,12 @@
  * Return: 0 if correct, 2 if not
  */
 
-int _exec_string (char **parsed, int nbw, param_t *param)
+int _exec_string(char **parsed, int nbw, param_t *param)
 {
-        int cur = -1;
-        int temp = -1;
+	int cur = -1;
+	int temp = -1;
 	int built_nbr;
-        char *nextop, *curop;
+	char *nextop, *curop;
 	char **comm;
 
 	curop = _strdup(";");
@@ -29,7 +29,7 @@ int _exec_string (char **parsed, int nbw, param_t *param)
 		nextop = _strdup(_get_nextop(parsed, &cur));
 
 		if (_strcmp(curop, "#") == 0)
-			return(param->lastexit);
+			return (param->lastexit);
 
 		if (_exec_need(curop, param->lastexit) == 1)
 		{
@@ -48,14 +48,14 @@ int _exec_string (char **parsed, int nbw, param_t *param)
 	}
 
 	free(curop);
-        return (0);
+	return (0);
 }
 
 
 
 
 /**
- * _getcomm : extract a comm array of string from a parsed line
+ * _getcomm - extract a comm array of string from a parsed line
  *
  * @parsed: parsed string
  * @from: token from
@@ -81,7 +81,7 @@ char **_getcomm(char **parsed, int from, int to)
 
 
 /**
- * _exec_need : determine if a command has to be executed
+ * _exec_need - determine if a command has to be executed
  *
  * @curop: current operator
  * @lastexit: current lastexit
@@ -97,7 +97,7 @@ int _exec_need(char *curop, int lastexit)
 		return (1);
 	if (_strcmp(curop, "||") == 0 && lastexit != 0)
 		return (1);
-	return(0);
+	return (0);
 }
 
 
@@ -108,7 +108,7 @@ int _exec_need(char *curop, int lastexit)
 
 
 /**
- * _check_grammar : check if the command line is valid
+ * _check_grammar - check if the command line is valid
  * and display an error message if not
  *
  * @parsed: input parsed line
@@ -118,7 +118,7 @@ int _exec_need(char *curop, int lastexit)
  * Return: 0 if correct, 2 if not
  */
 
-int _check_grammar (char **parsed, int nbw, param_t *param)
+int _check_grammar(char **parsed, int nbw, param_t *param)
 {
 	int cur = -1;
 	int temp = -1;
@@ -162,7 +162,7 @@ int _check_grammar (char **parsed, int nbw, param_t *param)
 
 
 /**
- * _get_nextop : find the next logic operator in a
+ * _get_nextop - find the next logic operator in a
  * parsed string
  *
  * @parsed: input parsed line
@@ -171,13 +171,13 @@ int _check_grammar (char **parsed, int nbw, param_t *param)
  * Return: next logic operator
  */
 
-char *_get_nextop (char **parsed, int *cur)
+char *_get_nextop(char **parsed, int *cur)
 {
 	char *NEXT = ";";
 	char *AND = "&&";
 	char *OR = "||";
 	char *STOP = "#";
-	char *END = "END";
+	char *FIN = "END";
 
 	while (parsed[*cur])
 	{
@@ -191,12 +191,5 @@ char *_get_nextop (char **parsed, int *cur)
 			return (STOP);
 		*cur += 1;
 	}
-
-	return(END);
+	return (FIN);
 }
-
-
-
-
-
-
