@@ -60,7 +60,7 @@ int main(int ac, char **av, char **env)
 
 int _launchShell(param_t *param)
 {
-	int     read = 0, nbw = 0, built_nbr;
+	int     read = 0, nbw = 0, checkgramm;
 	char    *line = NULL;
 	size_t  n;
 	char    **parsed = NULL;
@@ -72,18 +72,30 @@ int _launchShell(param_t *param)
 		nbw = 0;
 		param->count++;
 		parsed = _parse_string2(line, &nbw, param);
-		if (nbw == 0)
+		checkgramm = _check_grammar(parsed, nbw, param);
+
+
+		if (nbw == 0 || checkgramm == 2)
 		{
 			_prompt(param);
 			continue;
 		}
+
+/*		param->lastexit = 0;
 		built_nbr = _isbuiltin(parsed[0]);
 		if (built_nbr != 0)
 			param->lastexit = _get_builtin_fct(parsed, param);
 		else
-			param->lastexit = _exec_fct(parsed, param);
+		param->lastexit = _exec_fct(parsed, param);*/
+
+		_exec_string(parsed, nbw, param);
 		_free_grid(parsed, nbw);
+		printf("lastexit->%i\n", param->lastexit);
+
 		_prompt(param);
+
+
+
 	}
 	if (param->mode == 0)
 		_putchar('\n');

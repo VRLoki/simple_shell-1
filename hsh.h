@@ -15,11 +15,6 @@
 
 #define SEP " \n\a\t\v\r"
 
-#define NEXT 1
-#define AND 2
-#define OR 3
-#define STOP 4
-
 
 /**
  * struct error_mess - use to display proper error message
@@ -228,5 +223,17 @@ char * _opeNEXT(char *s);
 char * _opeAND(char *s);
 char * _opeOR(char *s);
 char * _opeSTOP(char *s);
+
+/* _get_parsestruc */
+int _exec_string (char **parsed, int nbw, param_t *param);
+char **_getcomm(char **parsed, int from, int to);
+int _exec_need(char *curop, int lastexit);
+int _check_grammar (char **parsed, int nbw, param_t *param);
+char *_get_nextop (char **parsed, int *cur);
+
+/* _get_parsestruc2 */
+int _error_syntax(char *command, param_t *param);
+
+
 
 #endif

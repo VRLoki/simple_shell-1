@@ -121,9 +121,9 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 		}
 	}
 
-	for (i = 0; i < *nbw; i++)
+/*	for (i = 0; i < *nbw; i++)
 		printf("string[%i] is %s\n", i, aliascomm[i]);
-
+*/
 
 	return (aliascomm);
 }

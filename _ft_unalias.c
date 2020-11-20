@@ -11,8 +11,6 @@
 
 int	_ft_unalias(char **comm, param_t *param)
 {
-	int i = 0;
-	aliasl_t *head;
 	char *errmsg = "Unalias must be called with a valid arg\n";
 
 	if (comm[1] == NULL)
@@ -37,7 +35,6 @@ int	_ft_unalias(char **comm, param_t *param)
 
 int	_delete_alias(char *comm, param_t *param)
 {
-	int i = 0;
 	aliasl_t *head, *old, *next;
 	char *errmsg = "Alias to unalias does not exist\n";
 

@@ -132,10 +132,8 @@ char **_strtow(const char *str, const char *del)
 			s[curw] = _mydup(str + i - sizeword, sizeword);
 			sizeword = 0;
 		}
-		else if (_isdelim(str[i], del) == 0 && inword == 1 || no == 0)
+		else if ((_isdelim(str[i], del) == 0 && inword == 1) || no == 0)
 			sizeword += 1;
-
-//		printf("str[%i] %c, inword = %i, size = %i, curw =%i, no =%i\n", i, str[i], inword, sizeword, curw, no);
 
 		i++;
 	}
