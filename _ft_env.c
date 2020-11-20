@@ -73,7 +73,6 @@ int	_ft_setenv(char **comm, param_t *param)
 	envl_t  *comp;
 	envl_t  *pre_node;
 
-	comp = (envl_t *)malloc(sizeof(envl_t));
 	if (comm == NULL || comp == NULL || param->envlist == NULL)
 		return (-1);
 	if (comm[1] == NULL || comm[2] == NULL)
@@ -81,6 +80,7 @@ int	_ft_setenv(char **comm, param_t *param)
 		_error_env(comm[0], param);
 		return (-1);
 	}
+
 	comp = param->envlist;
 	while (comp != NULL)
 	{
@@ -107,7 +107,6 @@ int	_ft_setenv(char **comm, param_t *param)
 		comp->next = NULL;
 		pre_node->next = comp;
 	}
-	free(comp);
 	return (0);
 }
 

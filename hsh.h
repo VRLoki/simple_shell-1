@@ -209,8 +209,9 @@ int     _delete_alias(char *comm, param_t *param);
 
 /* _ft_cd.c */
 int	_ft_cd(char **path, param_t *param);
-char	**_init_tab(char *s1, char *s2);
-void	_free_tab(char **tab);
+void	_free_cd(char *home, char *pwd, char *oldpwd, char *dest);
+char	*_getdest(char *path, char *home, char *oldpwd);
+int	_error_cd(char **command, param_t *param);
 
 /* _listfct1.c */
 int _add_nodealias(aliasl_t **head, char *var);

@@ -1,81 +1,86 @@
 #include "hsh.h"
 
+
 /**
- * _free_tab - free a char **.
+ * _error_cd - display the error message of the function cd.
  *
- * @tab: the char ** to free.
+ * @command: the exit number who make the error.
+ * @param: global parameters of the shell.
+ *
+ * Return: -1 always
+ */
+
+int     _error_cd(char **command, param_t *param)
+{
+	char *dispmess;
+	int count = param->count;
+
+	dispmess = _strdup(param->bashname);
+	dispmess = _str_concat(dispmess, ": ");
+	dispmess = _str_concat(dispmess, _convert_base(count, 10, 0));
+	dispmess = _str_concat(dispmess, ": ");
+	dispmess = _str_concat(dispmess, command[0]);
+	dispmess = _str_concat(dispmess, ": ");
+	dispmess = _str_concat(dispmess, "can't cd to ");
+	dispmess = _str_concat(dispmess, command[1]);
+	dispmess = _str_concat(dispmess, "\n");
+	write(STDERR_FILENO, dispmess, _strlen(dispmess));
+	free(dispmess);
+	return (-1);
+}
+
+
+/**
+ * _getdest - return the path to destination folder wanted.
+ *
+ * @home: the variable home.
+ * @oldpwd: the variable oldpwd.
+ * @path: the destination wanted.
+ *
+ * Return: the destination directory.
+ */
+
+char	*_getdest(char *path, char *home, char *oldpwd)
+{
+
+	if (path == NULL)
+	{
+		return (_strdup(home));
+	}
+	else if (_strcmp(path, "-") == 0)
+	{
+		return (_strdup(oldpwd));
+	}
+	else
+	{
+		return (_strdup(path));
+	}
+}
+
+
+/**
+ * _free_cd - free some variables use in cd.
+ *
+ * @home: the variable home.
+ * @pwd: the variable pwd.
+ * @oldpwd: the variable oldpwd.
+ * @dest: the variable dest.
  *
  * Return: void.
  */
 
-void	_free_tab(char **tab)
+void	_free_cd(char *home, char *pwd, char *oldpwd, char *dest)
 {
-	unsigned int	i;
-
-	if (tab != NULL)
-	{
-		i = 0;
-		while (tab[i])
-		{
-			free(tab[i]);
-			i++;
-		}
-		free(tab);
-	}
+	if (home != NULL)
+		free(home);
+	if (pwd != NULL)
+		free(pwd);
+	if (oldpwd != NULL)
+		free(oldpwd);
+	if (dest != NULL)
+		free(dest);
 }
 
-
-/**
- * _init_tab - initialise a char ** to set env.
- *
- * @s1: the new PWD.
- * @s2: the old PWD.
- *
- * Return: the table set or NULL if fail.
- */
-
-char	**_init_tab(char *s1, char *s2)
-{
-	char		**tab;
-
-	tab = (char **)malloc(sizeof(char *) * 5);
-	if (tab == NULL)
-	{
-		return (NULL);
-	}
-	tab[0] = _strdup("cd");
-	tab[1] = _strdup(s1);
-	tab[2] = _strdup(s2);
-	tab[3] = _strdup("1");
-	tab[4] = NULL;
-	return (tab);
-}
-
-/**
- * _presetenv - regroup al the parametre to do a setenv.
- *
- * @value: the new pwd value.
- * @oldvalue: the old pwd value.
- * @param: global parameters of the shell.
- *
- * Return: 0 (Success) -1 if fail.
- */
-
-int	_presetenv(char *value, char *oldvalue, param_t *param)
-{
-	char	**tab;
-
-
-	tab = _init_tab("OLDPWD", oldvalue);
-	free(oldvalue);
-	_ft_setenv(tab, param);
-	_free_tab(tab);
-	tab = _init_tab("PWD", value);
-	free(value);
-	_ft_setenv(tab, param);
-	_free_tab(tab);
-	return (0);
-}
 
 /**
  * _ft_cd - change the current directory
@@ -92,12 +97,8 @@ int	_ft_cd(char **path, param_t *param)
 	char	*home;
 	char	*pwd;
 	char	*oldpwd;
+	char	*dest;
 
-	node = (envl_t *)malloc(sizeof(envl_t));
-	if (node == NULL)
-	{
-		return (-1);
-	}
 	node = param->envlist;
 	while (node != NULL)
 	{
@@ -109,35 +110,27 @@ int	_ft_cd(char **path, param_t *param)
 			oldpwd = strdup(node->value);
 		node = node->next;
 	}
-	free(node);
-	if (path[1] == NULL)
+	dest = _getdest(path[1], home, oldpwd);
+	if (chdir(dest) == -1)
 	{
-		chdir(home);
-		return (_presetenv(home, pwd, param));
+		_free_cd(home, pwd, oldpwd, dest);
+		return (_error_cd(path, param));
 	}
-	else if (_strcmp(path[1], ".") == 0)
+	node = param->envlist;
+	while (node != NULL)
 	{
-		free(home);
-		free(pwd);
-		free(oldpwd);
-		return (0);
+		if (_strcmp(node->var, "PWD") == 0)
+		{
+			free(node->value);
+			node->value = _strdup(getcwd(NULL, 4096));
+		}
+		if (_strcmp(node->var, "OLDPWD") == 0)
+		{
+			free(node->value);
+			node->value = _strdup(pwd);
+		}
+		node = node->next;
 	}
-	else if (_strcmp(path[1], "-") == 0)
-	{
-		free(home);
-		chdir(oldpwd);
-		return (_presetenv(oldpwd, pwd, param));
-	}
-	else if (_strcmp(path[1], "/") == 0)
-	{
-		free(home);
-		chdir("/");
-		return (_presetenv("/", pwd, param));
-	}
-	else if (_strcmp(path[1], "MES IEUCS"))
-	{
-		return (_presetenv("RIEN", pwd, param));
-	}
-	else
-		return (-1);
+	_free_cd(home, pwd, oldpwd, dest);
+	return (0);
 }

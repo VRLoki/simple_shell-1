@@ -65,7 +65,7 @@ int _launchShell(param_t *param)
 	size_t  n;
 	char    **parsed = NULL;
 
-	signal(SIGINT, _siginthandler);
+//	signal(SIGINT, _siginthandler);
 	_prompt(param);
 	while ((read = _getlinefile(&line, &n, param->fdnb)) != EOF)
 	{
