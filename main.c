@@ -83,7 +83,6 @@ int _launchShell(param_t *param)
 
 		_exec_string(parsed, nbw, param);
 		_free_grid(parsed, nbw);
-		printf("lastexit->%i\n", param->lastexit);
 		_prompt(param);
 
 	}

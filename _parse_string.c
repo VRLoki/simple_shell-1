@@ -122,6 +122,9 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 		}
 	}
 
+	for (i = 0; i < *nbw; i++)
+		aliascomm[i] = _parse_env(aliascomm[i], param);
+
 	return (aliascomm);
 }
 
@@ -188,3 +191,6 @@ char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *v, int k)
 	}
 	return (comm);
 }
+
+
+

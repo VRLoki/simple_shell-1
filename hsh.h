@@ -234,6 +234,7 @@ char *_get_nextop(char **parsed, int *cur);
 /* _get_parsestruc2 */
 int _error_syntax(char *command, param_t *param);
 
-
+/* _dollar_parse.c */
+char *_parse_env(char *comm, param_t *param);
 
 #endif
