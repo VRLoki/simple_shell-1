@@ -1,4 +1,4 @@
-# C - printf
+# C - Simple Shell
 
 ## Objectifs
 
