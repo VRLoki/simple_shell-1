@@ -73,7 +73,7 @@ int	_ft_setenv(char **comm, param_t *param)
 	envl_t  *comp;
 	envl_t  *pre_node;
 
-	if (comm == NULL || comp == NULL || param->envlist == NULL)
+	if (comm == NULL || param->envlist == NULL)
 		return (-1);
 	if (comm[1] == NULL || comm[2] == NULL)
 	{

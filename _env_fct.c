@@ -23,11 +23,57 @@ param_t *_initParam(char **av, char **env)
 	param->alias = NULL;
 	param->hist = NULL;
 	param->lastexit = 0;
-	param->pid = "1111";
-	param->parsed = NULL;
+	param->pid = _getpid();
 	param->envlist = _getEnvList(env);
 	return (param);
 }
+
+
+
+/**
+ * _getpid - get the pid of the process
+ *
+ * Return: string containing pid
+ */
+
+
+char *_getpid(void)
+{
+	pid_t pid;
+	char *file, *buf, *id;
+	int fd, bufflen, nbw, status;
+	char **buftow;
+
+	pid = fork();
+	if (pid > 0)
+	{
+		file = _strdup("/proc/");
+		file = _str_concat(file, _convert_base(pid, 10, 0));
+		file = _str_concat(file, "/stat");
+		fd = open(file, O_RDONLY);
+		free(file);
+
+		buf = (char *)malloc(sizeof(char) * 2049);
+		bufflen = read(fd, buf, 2048);
+		if (bufflen < 0)
+			return (NULL);
+		nbw = _nbword(buf, " ");
+		buftow = _strtow(buf, " ");
+		free(buf);
+		id = _strdup(buftow[4]);
+		_free_grid(buftow, nbw);
+		wait(&status);
+	}
+	else
+	{
+		_exit(0);
+	}
+	return (id);
+}
+
+
+
+
 
 
 /**
@@ -45,11 +91,9 @@ envl_t *_getEnvList(char **env)
 	char **tok;
 
 	head = NULL;
-
 	i = 0;
 	while (env[i])
 	{
-
 		new = malloc(sizeof(envl_t));
 		if (new == NULL)
 			return (NULL);
@@ -60,7 +104,6 @@ envl_t *_getEnvList(char **env)
 			new->value = _strdup(tok[1]);
 		free(tok);
 		new->next = NULL;
-
 		if (head == NULL)
 			head = new;
 		else
@@ -70,13 +113,42 @@ envl_t *_getEnvList(char **env)
 				tmp = tmp->next;
 			tmp->next = new;
 		}
-
 		i++;
 	}
-
+	if (_get_env_val("OLDPWD", head) == NULL)
+	{
+		new = malloc(sizeof(envl_t));
+		new->var = "OLDPWD";
+		new->value = _strdup(_get_env_val("PWD", head));
+		new->next = head;
+		head = new;
+	}
 	return (head);
-
 }
+
+/**
+ * _get_env_val - find the value of an env var
+ *
+ * @var: var to search
+ * @head: head of the env list
+ *
+ * Return: value of var if found, NULL if not
+ */
+char *_get_env_val(char *var, envl_t *head)
+{
+	envl_t *tmp;
+
+	tmp = head;
+	while (tmp != NULL)
+	{
+		if (_strcmp(tmp->var, var) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+
 
 
 /**

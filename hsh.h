@@ -97,9 +97,9 @@ typedef struct histl
  * @envlist: head of linked list on the environment variables
  * @alias: head of linked list on the alias variable
  * @hist: head of linked list on the history
- * @fdnb : file descriptor to read from (NOT USED)
+ * @filename : name of the file to read from if mode = 2
+ * @fdnb : file descriptor to read from
  * @mode : 0 for Interactive, 1 for Noninter, 2 for FileMode
- * @parsed : parsed string to work from (NOT USED)
  *
  * Description: store the environment
  */
@@ -114,9 +114,9 @@ typedef struct paraml
 	envl_t *envlist;
 	aliasl_t *alias;
 	histl_t *hist;
+	char *filename;
 	int fdnb;
 	int mode;
-	char **parsed;
 } param_t;
 
 
@@ -132,6 +132,8 @@ int	_get_builtin_fct(char **comm, param_t *param);
 /* _putfct.c */
 int	_putchar(char c);
 int	_puts(char *s);
+void _prompt(param_t *param);
+void _prompt2(param_t *param);
 
 /* _strfct1.c */
 int	_strlen(char *s);
@@ -149,8 +151,8 @@ char	*_convert_base(unsigned long int nbr, int base, int cap);
 
 /* main.c */
 int _launchShell(param_t *param);
+int _shell_loop(param_t *param);
 void _siginthandler(int signum);
-void _prompt(param_t *param);
 
 /* _parse_string.c */
 char	**_parse_string(char *string, int *nbw);
@@ -163,6 +165,7 @@ int	_exec_fct(char **parsed, param_t *param);
 char	*_getfullpath(char *name, char *mypath);
 int	_error_fct(int errnb, char *command, param_t *param);
 int	_error_open(int errnb, char *command, param_t *param);
+int _contains_char(char *str, char c);
 
 /* _getline.c */
 int	_strfindn(char *s, char c);
@@ -180,6 +183,8 @@ int     _error_exit(char *command, param_t *param);
 param_t	*_initParam(char **av, char **env);
 envl_t	*_getEnvList(char **env);
 char	**_getEnvChar(envl_t *head);
+char *_get_env_val(char *var, envl_t *head);
+char *_getpid(void);
 
 /* _strtow.c */
 int _isdelim(char c, const char *del);
@@ -212,6 +217,7 @@ int	_ft_cd(char **path, param_t *param);
 void	_free_cd(char *home, char *pwd, char *oldpwd, char *dest);
 char	*_getdest(char *path, char *home, char *oldpwd);
 int	_error_cd(char **command, param_t *param);
+void _puts_dir(char *path);
 
 /* _listfct1.c */
 int _add_nodealias(aliasl_t **head, char *var);
@@ -234,8 +240,32 @@ char *_get_nextop(char **parsed, int *cur);
 
 /* _get_parsestruc2 */
 int _error_syntax(char *command, param_t *param);
+int _gramm_ret(char *curop, char *nextop, int ret);
+char **_removelast(char **parsed, int *nbw);
+char **_concat_parsed(char **parsed, int *nbw, char **parsed2, int *nbw2);
+int _error_EOF(param_t *param);
 
 /* _dollar_parse.c */
 char *_parse_env(char *comm, param_t *param);
+
+/* _ft_help.c */
+int     _ft_help(char **comm, param_t *param);
+void    _help_help(void);
+void    _help_env(void);
+void    _help_setenv(void);
+void    _help_unsetenv(void);
+
+/* _ft_help2.c */
+void    _help_exit(void);
+void    _help_cd(void);
+void    _help_alias(void);
+void    _help_unalias(void);
+void    _help_history(void);
+
+/* _ft_help3.c */
+void    _help_all(void);
+void    _help_error(char *comm, param_t *param);
+
+
 
 #endif

@@ -149,6 +149,7 @@ char *_getfullpath(char *name, char *mypath)
 
 	fullname = _str_concat("/", name);
 	splitpath = _strtow2(mypath, ":");
+
 	i = 0;
 	while (splitpath[i] != NULL)
 	{
@@ -156,11 +157,13 @@ char *_getfullpath(char *name, char *mypath)
 			fullnamepath = _strdup(name);
 		else
 			fullnamepath = _str_concat(splitpath[i], fullname);
+
 		if (stat(fullnamepath, &st) == 0)
 		{
 			free(fullname);
 			return (fullnamepath);
 		}
+
 		free(fullnamepath);
 		i++;
 	}
@@ -168,4 +171,27 @@ char *_getfullpath(char *name, char *mypath)
 	free(splitpath);
 	return (name);
 
+}
+
+
+/**
+ * _contains_char - determine if a string contains a character
+ *
+ * @str: string to parse
+ * @c: character to find
+ *
+ * Return: 0 if not in, 1 if in
+ */
+
+int _contains_char(char *str, char c)
+{
+	int i = 0;
+
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }

@@ -29,7 +29,7 @@ int _exec_string(char **parsed, int nbw, param_t *param)
 		nextop = _strdup(_get_nextop(parsed, &cur));
 
 		if (_strcmp(curop, "#") == 0)
-			return (param->lastexit);
+			return (_gramm_ret(curop, nextop, param->lastexit));
 
 		if (_exec_need(curop, param->lastexit) == 1)
 		{
@@ -40,7 +40,6 @@ int _exec_string(char **parsed, int nbw, param_t *param)
 			else
 				param->lastexit = _exec_fct(comm, param);
 		}
-
 		free(curop);
 		curop = _strdup(nextop);
 		free(nextop);
@@ -115,38 +114,47 @@ int _exec_need(char *curop, int lastexit)
  * @nbw: number of token in the parsed line
  * @param: global parameter variable
  *
- * Return: 0 if correct, 2 if not
+ * Return: 0 if correct, 1 if need more line, 2 if wrong, 3 if final ';'
  */
 
 int _check_grammar(char **parsed, int nbw, param_t *param)
 {
 	int cur = -1;
 	int temp = -1;
-	char *nextop;
+	char *nextop, *curop;
 
 	if (nbw == 0)
 		return (0);
 
+	curop = _strdup(";");
 	while (cur < nbw)
 	{
 		cur += 1;
 		nextop = _strdup(_get_nextop(parsed, &cur));
-
 		if (_strcmp(nextop, "#") == 0)
+			return (_gramm_ret(curop, nextop, 0));
+
+		if (cur - temp <= 1 && _strcmp(nextop, "END") == 0)
 		{
-			free(nextop);
-			return (0);
+			if (_strcmp(curop, ";") == 0)
+				return (_gramm_ret(curop, nextop, 3));
+			if (_strcmp(curop, "&&") == 0)
+				return (_gramm_ret(curop, nextop, 1));
+			if (_strcmp(curop, "||") == 0)
+			return (_gramm_ret(curop, nextop, 1));
 		}
 		if (cur - temp <= 1)
 		{
 			_error_syntax(nextop, param);
 			param->lastexit = 2;
-			free(nextop);
-			return (2);
+			return (_gramm_ret(curop, nextop, 2));
 		}
+		free(curop);
+		curop = _strdup(nextop);
 		free(nextop);
 		temp = cur;
 	}
+	free(curop);
 	return (0);
 }
 

@@ -32,6 +32,7 @@ int main(int ac, char **av, char **env)
 		{
 			param->mode = 2;
 			param->fdnb = fd;
+			param->filename = av[1];
 		}
 	}
 	else if (isatty(STDIN_FILENO))
@@ -51,7 +52,7 @@ int main(int ac, char **av, char **env)
 
 
 /**
- * _launchShell - main loop for Shell
+ * _launchShell - launch and exit the shell loop
  *
  * @param: parameter variable
  *
@@ -60,40 +61,73 @@ int main(int ac, char **av, char **env)
 
 int _launchShell(param_t *param)
 {
-	int     read = 0, nbw = 0, checkgramm;
+
+	signal(SIGINT, _siginthandler);
+	_prompt(param);
+
+	_shell_loop(param);
+
+	if (param->mode == 0)
+		_putchar('\n');
+	if (param->mode == 2)
+		close(param->fdnb);
+	return (EXIT_SUCCESS);
+}
+
+
+/**
+ * _shell_loop - main loop for Shell
+ *
+ * @param: parameter variable
+ *
+ * Return: EXIT_SUCCESS
+ */
+
+int _shell_loop(param_t *param)
+{
+	int     read, read2 = 0, nbw, nbw2, checkgramm;
 	char    *line = NULL;
 	size_t  n;
-	char    **parsed = NULL;
+	char    **parsed, **parsed2;
 
-//	signal(SIGINT, _siginthandler);
-	_prompt(param);
 	while ((read = _getlinefile(&line, &n, param->fdnb)) != EOF)
 	{
 		nbw = 0;
 		param->count++;
 		parsed = _parse_string2(line, &nbw, param);
 		checkgramm = _check_grammar(parsed, nbw, param);
-
-
-		if (nbw == 0 || checkgramm == 2)
+		while (checkgramm == 1)
+		{
+			_prompt2(param);
+			read2 = _getlinefile(&line, &n, param->fdnb);
+			param->count++;
+			if (read2 == EOF)
+			{
+				_error_EOF(param);
+				break;
+			}
+			read2 = 0;
+			nbw2 = 0;
+			parsed2 = _parse_string2(line, &nbw2, param);
+			parsed = _concat_parsed(parsed, &nbw, parsed2, &nbw2);
+			checkgramm = _check_grammar(parsed, nbw, param);
+		}
+		if (checkgramm == 3)
+			parsed = _removelast(parsed, &nbw);
+		if (nbw == 0 || checkgramm == 2 || read2 == EOF)
 		{
 			_prompt(param);
 			continue;
 		}
-
 		_exec_string(parsed, nbw, param);
 		_free_grid(parsed, nbw);
 		_prompt(param);
 
 	}
-	if (param->mode == 0)
-		_putchar('\n');
-	if (line != NULL)
-		free(line);
-	if (param->mode == 2)
-		close(param->fdnb);
-	return (EXIT_SUCCESS);
+	return (1);
 }
+
+
 
 
 
@@ -111,14 +145,3 @@ void _siginthandler(int signum)
 }
 
 
-/**
- * _prompt - display promter
- *
- * @param: parameter variable
- */
-
-void _prompt(param_t *param)
-{
-	if (param->mode == 0)
-		_puts("$: ");
-}

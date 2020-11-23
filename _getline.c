@@ -108,19 +108,17 @@ ssize_t _getlinefile(char **lineptr, size_t *n, int fd)
 	if (initbuf == 0 || bufflen == 0)
 	{
 		initbuf = 1;
-		buf = (char *)malloc(sizeof(char) * 1024);
-		bufflen = read(fd, buf, 1024);
+		buf = (char *)malloc(sizeof(char) * 2049);
+		bufflen = read(fd, buf, 2048);
 		buf[bufflen] = '\0';
 	}
 	if (bufflen == 0)
+	{
+		*lineptr = NULL;
 		return (EOF);
+	}
 	nextchar = _strfindn(buf, '\n');
 	nextline = malloc((nextchar + 1) * sizeof(char));
-	if (nextline == NULL)
-	{
-		free(buf);
-		return (-1);
-	}
 	*n = nextchar;
 	_strncpy(nextline, buf, nextchar);
 	nextline[nextchar] = '\0';
