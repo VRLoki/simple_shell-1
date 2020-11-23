@@ -102,7 +102,7 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 	string = _ope_str(string);
 	*nbw = _nbword(string, del);
 	comm = _strtow(string, del);
-
+	free(string);
 	vis = NULL;
 	aliascomm = _parse_alias(comm, nbw, param, vis, 0);
 
@@ -124,6 +124,7 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 
 	for (i = 0; i < *nbw; i++)
 		aliascomm[i] = _parse_env(aliascomm[i], param);
+
 
 	return (aliascomm);
 }
@@ -164,23 +165,14 @@ char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *v, int k)
 			parsal = _strtow(head->value, del);
 			newcomm = malloc((*nbw + lenal) * sizeof(char *));
 			for (i = 0; i < k; i++)
-			{
 				newcomm[i] = _strdup(comm[i]);
-				free(comm[i]);
-			}
 			for (i = 0; i < lenal; i++)
-			{
 				newcomm[i + k] = _strdup(parsal[i]);
-				free(parsal[i]);
-			}
 			for (i = 0; i < *nbw - k - 1; i++)
-			{
 				newcomm[i + k + lenal] = _strdup(comm[i + k + 1]);
-				free(comm[i + k + 1]);
-			}
 			newcomm[*nbw + lenal - 1] = NULL;
-			free(comm);
-			free(parsal);
+			_free_grid(comm, *nbw);
+			_free_grid(parsal, lenal);
 			*nbw = *nbw + lenal - 1;
 			if (lenal == 0)
 				return (newcomm);
@@ -191,6 +183,3 @@ char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *v, int k)
 	}
 	return (comm);
 }
-
-
-

@@ -24,7 +24,6 @@ param_t *_initParam(char **av, char **env)
 	param->hist = NULL;
 	param->lastexit = 0;
 	param->pid = "1111";
-	param->parsed = NULL;
 	param->envlist = _getEnvList(env);
 	return (param);
 }
@@ -45,11 +44,9 @@ envl_t *_getEnvList(char **env)
 	char **tok;
 
 	head = NULL;
-
 	i = 0;
 	while (env[i])
 	{
-
 		new = malloc(sizeof(envl_t));
 		if (new == NULL)
 			return (NULL);
@@ -60,7 +57,6 @@ envl_t *_getEnvList(char **env)
 			new->value = _strdup(tok[1]);
 		free(tok);
 		new->next = NULL;
-
 		if (head == NULL)
 			head = new;
 		else
@@ -70,13 +66,42 @@ envl_t *_getEnvList(char **env)
 				tmp = tmp->next;
 			tmp->next = new;
 		}
-
 		i++;
 	}
-
+	if (_get_env_val("OLDPWD", head) == NULL)
+	{
+		new = malloc(sizeof(envl_t));
+		new->var = "OLDPWD";
+		new->value = _strdup(_get_env_val("PWD", head));
+		new->next = head;
+		head = new;
+	}
 	return (head);
-
 }
+
+/**
+ * _get_env_val - find the value of an env var
+ *
+ * @var: var to search
+ * @head: head of the env list
+ *
+ * Return: value of var if found, NULL if not
+ */
+char *_get_env_val(char *var, envl_t *head)
+{
+	envl_t *tmp;
+
+	tmp = head;
+	while (tmp != NULL)
+	{
+		if (_strcmp(tmp->var, var) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+
 
 
 /**

@@ -69,6 +69,11 @@ char **_strtow2(const char *str, const char *del)
 		s[curw] = 0;
 		curw += 1;
 	}
-	s[curw + 1] = NULL;
+	else
+	{
+		s[curw] = _mydup(str + i - sizeword, sizeword);
+		curw += 1;
+	}
+	s[nbw] = NULL;
 	return (s);
 }

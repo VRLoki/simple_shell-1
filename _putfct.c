@@ -34,3 +34,33 @@ int _puts(char *s)
 	}
 	return (length);
 }
+
+
+
+/**
+ * _prompt - display promter
+ *
+ * @param: parameter variable
+ */
+
+void _prompt(param_t *param)
+{
+	if (param->mode == 0)
+		_puts("$: ");
+}
+
+
+
+
+
+/**
+ * _prompt2 - display prompter for extra line
+ *
+ * @param: parameter variable
+ */
+
+void _prompt2(param_t *param)
+{
+	if (param->mode == 0)
+		_puts("> ");
+}

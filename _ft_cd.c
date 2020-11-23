@@ -93,21 +93,18 @@ void	_free_cd(char *home, char *pwd, char *oldpwd, char *dest)
 
 int	_ft_cd(char **path, param_t *param)
 {
-	envl_t	*node;
-	char	*home;
-	char	*pwd;
-	char	*oldpwd;
-	char	*dest;
+	envl_t	*node = NULL;
+	char	*home = NULL, *pwd = NULL, *oldpwd = NULL, *dest = NULL;
 
 	node = param->envlist;
 	while (node != NULL)
 	{
 		if (_strcmp(node->var, "HOME") == 0)
-			home = strdup(node->value);
+			home = _strdup(node->value);
 		if (_strcmp(node->var, "PWD") == 0)
-			pwd = strdup(node->value);
+			pwd = _strdup(node->value);
 		if (_strcmp(node->var, "OLDPWD") == 0)
-			oldpwd = strdup(node->value);
+			oldpwd = _strdup(node->value);
 		node = node->next;
 	}
 	dest = _getdest(path[1], home, oldpwd);
@@ -132,5 +129,24 @@ int	_ft_cd(char **path, param_t *param)
 		node = node->next;
 	}
 	_free_cd(home, pwd, oldpwd, dest);
+	_puts_dir(path[1]);
 	return (0);
+}
+
+
+/**
+ * _puts_dir - display path if needed
+ *
+ * @path: the path arg
+ *
+ * Return: void.
+ */
+
+void _puts_dir(char *path)
+{
+	if (path)
+	{
+		if (_strcmp(path, "-") == 0)
+			puts(getcwd(NULL, 4096));
+	}
 }
