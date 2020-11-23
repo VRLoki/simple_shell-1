@@ -184,6 +184,7 @@ param_t	*_initParam(char **av, char **env);
 envl_t	*_getEnvList(char **env);
 char	**_getEnvChar(envl_t *head);
 char *_get_env_val(char *var, envl_t *head);
+char *_getpid(void);
 
 /* _strtow.c */
 int _isdelim(char c, const char *del);
@@ -246,4 +247,25 @@ int _error_EOF(param_t *param);
 
 /* _dollar_parse.c */
 char *_parse_env(char *comm, param_t *param);
+
+/* _ft_help.c */
+int     _ft_help(char **comm, param_t *param);
+void    _help_help(void);
+void    _help_env(void);
+void    _help_setenv(void);
+void    _help_unsetenv(void);
+
+/* _ft_help2.c */
+void    _help_exit(void);
+void    _help_cd(void);
+void    _help_alias(void);
+void    _help_unalias(void);
+void    _help_history(void);
+
+/* _ft_help3.c */
+void    _help_all(void);
+void    _help_error(char *comm, param_t *param);
+
+
+
 #endif

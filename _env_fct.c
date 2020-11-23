@@ -23,10 +23,57 @@ param_t *_initParam(char **av, char **env)
 	param->alias = NULL;
 	param->hist = NULL;
 	param->lastexit = 0;
-	param->pid = "1111";
+	param->pid = _getpid();
 	param->envlist = _getEnvList(env);
 	return (param);
 }
+
+
+
+/**
+ * _getpid - get the pid of the process
+ *
+ * Return: string containing pid
+ */
+
+
+char *_getpid(void)
+{
+	pid_t pid;
+	char *file, *buf, *id;
+	int fd, bufflen, nbw, status;
+	char **buftow;
+
+	pid = fork();
+	if (pid > 0)
+	{
+		file = _strdup("/proc/");
+		file = _str_concat(file, _convert_base(pid, 10, 0));
+		file = _str_concat(file, "/stat");
+		fd = open(file, O_RDONLY);
+		free(file);
+
+		buf = (char *)malloc(sizeof(char) * 2049);
+		bufflen = read(fd, buf, 2048);
+		if (bufflen < 0)
+			return (NULL);
+		nbw = _nbword(buf, " ");
+		buftow = _strtow(buf, " ");
+		free(buf);
+		id = _strdup(buftow[4]);
+		_free_grid(buftow, nbw);
+		wait(&status);
+	}
+	else
+	{
+		_exit(0);
+	}
+	return (id);
+}
+
+
+
+
 
 
 /**
