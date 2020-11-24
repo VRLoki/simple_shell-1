@@ -13,7 +13,7 @@
 
 int main(int ac, char **av, char **env)
 {
-	int fd, err;
+	int fd, err, lastval;
 	param_t *param;
 
 	param = _initParam(av, env);
@@ -32,7 +32,7 @@ int main(int ac, char **av, char **env)
 		{
 			param->mode = 2;
 			param->fdnb = fd;
-			param->filename = av[1];
+			param->filename = _strdup(av[1]);
 		}
 	}
 	else if (isatty(STDIN_FILENO))
@@ -46,8 +46,8 @@ int main(int ac, char **av, char **env)
 		param->fdnb = STDIN_FILENO;
 	}
 
-	_launchShell(param);
-	return (EXIT_SUCCESS);
+	lastval = _launchShell(param);
+	return (lastval);
 }
 
 
@@ -61,24 +61,20 @@ int main(int ac, char **av, char **env)
 
 int _launchShell(param_t *param)
 {
-
+	int exitval;
 /*	signal(SIGINT, _siginthandler); */
 	_pull_hist(param);
 
 	_prompt(param);
-
 	_shell_loop(param);
-
 	_push_hist(param);
-
 	if (param->mode == 0)
 		_putchar('\n');
 	if (param->mode == 2)
 		close(param->fdnb);
-
+	exitval = param->lastexit;
 	_freeParam(param);
-
-	return (EXIT_SUCCESS);
+	return (exitval);
 }
 
 

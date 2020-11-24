@@ -117,7 +117,7 @@ envl_t *_getEnvList(char **env)
 	if (_get_env_val("OLDPWD", head) == NULL)
 	{
 		new = malloc(sizeof(envl_t));
-		new->var = "OLDPWD";
+		new->var = _strdup("OLDPWD");
 		new->value = _strdup(_get_env_val("PWD", head));
 		new->next = head;
 		head = new;

@@ -26,26 +26,26 @@ int _exec_string(char **parsed, int nbw, param_t *param)
 	{
 		cur += 1;
 		nextop = _strdup(_get_nextop(parsed, &cur));
-
 		if (_strcmp(curop, "#") == 0)
 			return (_gramm_ret(curop, nextop, param->lastexit));
-
 		if (_exec_need(curop, param->lastexit) == 1)
 		{
 			comm = _getcomm(parsed, temp, cur);
+			if (comm[0] != NULL)
+			{
 			built_nbr = _isbuiltin(comm[0]);
 			if (built_nbr != 0)
 				param->lastexit = _get_builtin_fct(comm, param);
 			else
 				param->lastexit = _exec_fct(comm, param);
+			}
+			_free_tab(comm);
 		}
-		_free_tab(comm);
 		free(curop);
 		curop = _strdup(nextop);
 		free(nextop);
 		temp = cur;
 	}
-
 	free(curop);
 	return (0);
 }

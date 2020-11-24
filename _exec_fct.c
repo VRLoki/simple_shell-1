@@ -18,9 +18,10 @@ int _exec_fct(char **parsed, param_t *param)
 
 	envfull = _getEnvChar(param->envlist);
 	mypath = _getenv("PATH", envfull);
-	tmp = _getfullpath(parsed[0], mypath);
+	tmp = _strdup(_getfullpath(parsed[0], mypath));
 	command = _strdup(tmp);
 	free(tmp);
+
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -39,7 +40,7 @@ int _exec_fct(char **parsed, param_t *param)
 		if (envfull)
 			_free_tab(envfull);
 		if (command)
-			free(command);
+		free(command);
 		wait(&status);
 		if (WIFEXITED(status))
 		{

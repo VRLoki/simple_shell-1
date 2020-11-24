@@ -151,6 +151,7 @@ char	*_convert_base(unsigned long int nbr, int base, int cap);
 
 /* _strfct3.c */
 char	*_str_concat_f(char *s1, char *s2);
+void replace_null(char * buf, int bufflen);
 
 /* main.c */
 int _launchShell(param_t *param);
