@@ -161,8 +161,9 @@ void _siginthandler(int signum);
 /* _parse_string.c */
 char	**_parse_string(char *string, int *nbw);
 void	_free_grid(char **grid, int height);
-char **_parse_string2(char *string, int *nbw, param_t *param);
-char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *v, int k);
+char	**_parse_string2(char *string, int *nbw, param_t *param);
+char	**_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t **v, int k);
+void	_free_vis(aliasl_t *vis);
 
 /* _exec_fct.c */
 int	_exec_fct(char **parsed, param_t *param);

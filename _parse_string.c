@@ -20,6 +20,35 @@ void _free_grid(char **grid, int height)
 	free(grid);
 }
 
+/**
+ * _free_vis - frees the linked list vis.
+ *
+ * @vis : vis
+ *
+ * Return: (void)
+ */
+
+void	_free_vis(aliasl_t *vis)
+{
+	aliasl_t	*tmp;
+
+	if (vis != NULL)
+	{
+	printf("ALLO0\n");
+		while (vis != NULL)
+		{
+			tmp = vis->next;
+			if (vis->var != NULL)
+				free(vis->var);
+			if (vis->value != NULL)
+				free(vis->value);
+			free(vis);
+			vis = tmp;
+		}
+		printf("ALLO2\n");
+	}
+}
+
 
 /**
  * _parse_string2 - find all the words from a string and
@@ -45,8 +74,8 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 	comm = _strtow(string, del);
 	free(string);
 	vis = NULL;
-	aliascomm = _parse_alias(comm, nbw, param, vis, 0);
-
+	aliascomm = _parse_alias(comm, nbw, param, &vis, 0);
+	_free_vis(vis);
 	if (*nbw > 0)
 	{
 		i = 1;
@@ -54,11 +83,11 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 		{
 			vis = NULL;
 			if (_strcmp(aliascomm[i - 1], ";") == 0)
-				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
+				aliascomm = _parse_alias(aliascomm, nbw, param, &vis, i);
 			if (_strcmp(aliascomm[i - 1], "&&") == 0)
-				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
+				aliascomm = _parse_alias(aliascomm, nbw, param, &vis, i);
 			if (_strcmp(aliascomm[i - 1], "||") == 0)
-				aliascomm = _parse_alias(aliascomm, nbw, param, vis, i);
+				aliascomm = _parse_alias(aliascomm, nbw, param, &vis, i);
 			i++;
 		}
 	}
@@ -87,7 +116,7 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
  * Return: new command line including alias
  */
 
-char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *v, int k)
+char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t **v, int k)
 {
 	char *del = " \n\t\a\r\v";
 	aliasl_t *head;
@@ -99,9 +128,9 @@ char **_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t *v, int k)
 	head = param->alias;
 	while (head)
 	{
-		if (_strcmp2(head->var, comm[k]) == 0 && _is_nodeal(v, comm[k]) == 0)
+		if (_strcmp2(head->var, comm[k]) == 0 && _is_nodeal(*v, comm[k]) == 0)
 		{
-			_add_nodealias(&v, comm[k]);
+			_add_nodealias(v, comm[k]);
 			lenal = _nbword(head->value, del);
 			parsal = _strtow(head->value, del);
 			newcomm = malloc((*nbw + lenal) * sizeof(char *));

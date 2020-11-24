@@ -53,7 +53,7 @@ int _free_envlist(param_t *param)
 			free(node);
 		node = nodenext;
 	}
-	return(0);
+	return (0);
 }
 
 

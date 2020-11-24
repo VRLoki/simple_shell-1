@@ -20,9 +20,9 @@ int _add_nodealias(aliasl_t **head, char *var)
 		return (1);
 
 	new->var = _strdup(var);
+	new->value = NULL;
 	new->next = *head;
 	*head = new;
-
 	return (0);
 }
 
