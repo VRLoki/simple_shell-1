@@ -22,7 +22,7 @@ int	_atoi_exit(char *s)
 	{
 		if (s[i] < '0' || s[i] > '9')
 			return (-1);
-		
+
 		nbr = nbr * 10 + (s[i] - '0');
 		i++;
 		if (nbr > INT_MAX)

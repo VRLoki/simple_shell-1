@@ -35,7 +35,7 @@ char *_str_concat_f(char *s1, char *s2)
 
 
 /**
- * replace_null - replace the null character by space
+ * _replace_null - replace the null character by space
  *
  * @buf : buffer read
  * @bufflen : size of the buffer
@@ -43,11 +43,11 @@ char *_str_concat_f(char *s1, char *s2)
  * Return: concatenated string
  */
 
-void replace_null(char *buf, int bufflen)
+void _replace_null(char *buf, int bufflen)
 {
 	int i;
 
-	for(i = 0; i < bufflen; i++)
+	for (i = 0; i < bufflen; i++)
 	{
 		if (buf[i] == '\0')
 			buf[i] = ' ';

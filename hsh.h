@@ -151,7 +151,7 @@ char	*_convert_base(unsigned long int nbr, int base, int cap);
 
 /* _strfct3.c */
 char	*_str_concat_f(char *s1, char *s2);
-void replace_null(char * buf, int bufflen);
+void _replace_null(char *buf, int bufflen);
 
 /* main.c */
 int _launchShell(param_t *param);
@@ -163,7 +163,7 @@ void _siginthandler(int signum);
 char	**_parse_string(char *string, int *nbw);
 void	_free_grid(char **grid, int height);
 char	**_parse_string2(char *string, int *nbw, param_t *param);
-char	**_parse_alias(char **comm, int *nbw, param_t *param, aliasl_t **v, int k);
+char	**_parse_alias(char **com, int *nbw, param_t *par, aliasl_t **v, int k);
 void	_free_vis(aliasl_t *vis);
 
 /* _exec_fct.c */

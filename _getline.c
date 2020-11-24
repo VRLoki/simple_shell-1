@@ -110,7 +110,7 @@ ssize_t _getlinefile(char **lineptr, size_t *n, int fd)
 		initbuf = 1;
 		buf = (char *)malloc(sizeof(char) * 4096);
 		bufflen = read(fd, buf, 4096);
-		replace_null(buf, bufflen);
+		_replace_null(buf, bufflen);
 		buf[bufflen] = '\0';
 	}
 	if (bufflen == 0)
