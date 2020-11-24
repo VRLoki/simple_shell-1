@@ -5,13 +5,13 @@
  *
  * @s: the exit number.
  *
- * Return: the exit number or 0 if fail
+ * Return: the exit number or -1 if fail
  */
 
-unsigned char	_atoi_exit(char *s)
+int	_atoi_exit(char *s)
 {
-	int		i;
-	unsigned char	nbr;
+	int			i;
+	unsigned long int	nbr;
 
 	i = 0;
 	if (s[i] == '+')
@@ -21,36 +21,16 @@ unsigned char	_atoi_exit(char *s)
 	while (s[i])
 	{
 		if (s[i] < '0' || s[i] > '9')
-			return (0);
+			return (-1);
+		
 		nbr = nbr * 10 + (s[i] - '0');
 		i++;
+		if (nbr > INT_MAX)
+		{
+			return (-1);
+		}
 	}
-	return (nbr);
-}
-
-/**
- * _check_zero - check if there is only 0 in s.
- *
- * @s: the string to check.
- *
- * Return: true if true and false if false
- */
-
-bool	_check_zero(char *s)
-{
-	unsigned int	i;
-
-	i = 0;
-	if (s[i] == '+')
-		i++;
-
-	while (s[i] == '0')
-		i++;
-
-	if (s[i] == '\0')
-		return (true);
-
-	return (false);
+	return ((unsigned char)nbr);
 }
 
 
@@ -91,7 +71,7 @@ int     _error_exit(char *command, param_t *param)
 
 int	_ft_exit(char *s, param_t *param)
 {
-	unsigned char	nbr;
+	int	nbr;
 
 	if (s == NULL)
 	{
@@ -101,22 +81,12 @@ int	_ft_exit(char *s, param_t *param)
 	}
 
 	nbr = _atoi_exit(s);
-	if (nbr == 0)
-	{
-		if (_check_zero(s))
-		{
-			_push_hist(param);
-			_freeParam(param);
-			_exit(nbr);
-		}
-	}
-	else
+	if (nbr >= 0)
 	{
 		_push_hist(param);
 		_freeParam(param);
-		_exit(nbr);
+		_exit((unsigned char)nbr);
 	}
-
 	_error_exit(s, param);
 	return (2);
 }
