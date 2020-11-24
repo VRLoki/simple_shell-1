@@ -20,6 +20,8 @@ int _exec_fct(char **parsed, param_t *param)
 	envfull = _getEnvChar(param->envlist);
 	mypath = _getenv("PATH", envfull);
 	command = _getfullpath(parsed[0], mypath);
+	if (mypath)
+		free(mypath);
 
 	child_pid = fork();
 
@@ -37,6 +39,9 @@ int _exec_fct(char **parsed, param_t *param)
 	}
 	else
 	{
+		_free_tab(envfull);
+		if (command)
+			free(command);
 		wait(&status);
 		if (WIFEXITED(status))
 		{
@@ -160,6 +165,7 @@ char *_getfullpath(char *name, char *mypath)
 
 		if (stat(fullnamepath, &st) == 0)
 		{
+			_free_tab(splitpath);
 			free(fullname);
 			return (fullnamepath);
 		}
@@ -168,7 +174,7 @@ char *_getfullpath(char *name, char *mypath)
 		i++;
 	}
 	free(fullname);
-	free(splitpath);
+	_free_tab(splitpath);
 	return (name);
 
 }

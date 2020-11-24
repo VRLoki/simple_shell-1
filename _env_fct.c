@@ -41,7 +41,7 @@ param_t *_initParam(char **av, char **env)
 char *_getpid(void)
 {
 	pid_t pid;
-	char *file, *buf, *id;
+	char *file, *buf, *id, *conv_pid;
 	int fd, bufflen, nbw, status;
 	char **buftow;
 
@@ -49,12 +49,14 @@ char *_getpid(void)
 	if (pid > 0)
 	{
 		file = _strdup("/proc/");
-		file = _str_concat(file, _convert_base(pid, 10, 0));
-		file = _str_concat(file, "/stat");
+		conv_pid = _convert_base(pid, 10, 0);
+		file = _str_concat_f(file, conv_pid);
+		free(conv_pid);
+		file = _str_concat_f(file, "/stat");
 		fd = open(file, O_RDONLY);
 		free(file);
 
-		buf = (char *)malloc(sizeof(char) * 2049);
+		buf = (char *)malloc(sizeof(char) * 2048);
 		bufflen = read(fd, buf, 2048);
 		if (bufflen < 0)
 			return (NULL);
@@ -181,9 +183,9 @@ char **_getEnvChar(envl_t *head)
 	while (tmp)
 	{
 		var = _strdup(tmp->var);
-		var = _str_concat(var, "=");
+		var = _str_concat_f(var, "=");
 		value = _strdup(tmp->value);
-		var = _str_concat(var, value);
+		var = _str_concat_f(var, value);
 		env[i] = _strdup(var);
 		free(var);
 		free(value);

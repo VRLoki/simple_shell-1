@@ -149,6 +149,9 @@ char	*_getenv(char *name, char **env);
 char	*_strrev(char *str);
 char	*_convert_base(unsigned long int nbr, int base, int cap);
 
+/* _strfct3.c */
+char	*_str_concat_f(char *s1, char *s2);
+
 /* main.c */
 int _launchShell(param_t *param);
 int _shell_loop(param_t *param);
@@ -192,6 +195,7 @@ int _freeParam(param_t *param);
 int _free_envlist(param_t *param);
 int _free_alias(param_t *param);
 int _free_hist(param_t *param);
+void	_free_tab(char **tab);
 
 
 /* _strtow.c */

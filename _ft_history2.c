@@ -19,7 +19,9 @@ int	_pull_hist(param_t *param)
 	if (home == NULL)
 		return (1);
 	path = _str_concat(home, "/.simple_shell_history");
+	free(home);
 	fd = open(path, O_RDWR);
+	free(path);
 	if (fd <= 0)
 		return (1);
 
@@ -38,7 +40,10 @@ int	_pull_hist(param_t *param)
 	}
 	close(fd);
 	_populate_hist(line, param);
-
+	if (buf != NULL)
+		free(buf);
+	if (line != NULL)
+		free(line);
 	return (0);
 }
 
@@ -56,17 +61,18 @@ int	_populate_hist(char *line, param_t *param)
 {
 	char **list;
 	char *push;
-	int i;
+	int i, nbw;
 
+	nbw = _nbword(line, "\n");
 	list = _strtow(line, "\n");
 	i = 0;
-	while (list[i])
+	while (list && list[i])
 	{
 		push = _str_concat(list[i], "\n");
 		_add_hist_line(push, param);
 		i++;
 	}
-
+	_free_grid(list, nbw);
 	return (0);
 }
 
@@ -93,7 +99,9 @@ int	_push_hist(param_t *param)
 	if (home == NULL)
 		return (1);
 	path = _str_concat(home, "/.simple_shell_history");
+	free(home);
 	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	free(path);
 	if (fd <= 0)
 		return (1);
 	node = param->hist;

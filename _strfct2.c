@@ -121,7 +121,7 @@ char *_strrev(char *str)
 		j--;
 	}
 	dest[i] = '\0';
-	if (str[i])
+	if (str)
 	{
 		free(str);
 	}

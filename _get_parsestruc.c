@@ -39,6 +39,7 @@ int _exec_string(char **parsed, int nbw, param_t *param)
 				param->lastexit = _get_builtin_fct(comm, param);
 			else
 				param->lastexit = _exec_fct(comm, param);
+			_free_tab(comm);
 		}
 		free(curop);
 		curop = _strdup(nextop);
@@ -69,6 +70,8 @@ char **_getcomm(char **parsed, int from, int to)
 	char **comm;
 
 	comm = malloc(sizeof(char *) * (to - from));
+	if (comm == NULL)
+		return (NULL);
 	for (i = 0; i < to - from - 1; i++)
 		comm[i] = _strdup(parsed[i + from + 1]);
 	comm[i] = NULL;

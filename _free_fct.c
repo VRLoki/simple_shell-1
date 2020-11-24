@@ -23,7 +23,7 @@ int _freeParam(param_t *param)
 
 	if (param->filename != NULL)
 		free(param->filename);
-
+	free(param);
 	return (0);
 }
 
@@ -42,13 +42,15 @@ int _free_envlist(param_t *param)
 	envl_t *node, *nodenext;
 
 	node = param->envlist;
-
 	while (node)
 	{
 		nodenext = node->next;
-		free(node->var);
-		free(node->value);
-		free(node);
+		if (node->var)
+			free(node->var);
+		if (node->value)
+			free(node->value);
+		if (node)
+			free(node);
 		node = nodenext;
 	}
 	return(0);
@@ -105,4 +107,29 @@ int _free_hist(param_t *param)
 		node = nodenext;
 	}
 	return (0);
+}
+
+
+/**
+ * _free_tab - free a table.
+ *
+ * @tab: the table to free.
+ *
+ * Return: void
+ */
+
+void	_free_tab(char **tab)
+{
+	int	i;
+
+	if (tab != NULL)
+	{
+		i = 0;
+		while (tab[i])
+		{
+			free(tab[i]);
+			i++;
+		}
+		free(tab);
+	}
 }

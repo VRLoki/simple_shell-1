@@ -118,7 +118,10 @@ char *_strdup(char *str)
 	if (s == NULL)
 		return (NULL);
 	for (i = 0; i < strsize; i++)
+	{
 		s[i] = str[i];
+
+	}
 	s[i] = '\0';
 	return (s);
 }
