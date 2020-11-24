@@ -20,8 +20,6 @@ int _exec_fct(char **parsed, param_t *param)
 	envfull = _getEnvChar(param->envlist);
 	mypath = _getenv("PATH", envfull);
 	command = _getfullpath(parsed[0], mypath);
-	if (mypath)
-		free(mypath);
 
 	child_pid = fork();
 
@@ -39,7 +37,8 @@ int _exec_fct(char **parsed, param_t *param)
 	}
 	else
 	{
-		_free_tab(envfull);
+		if (envfull)
+			_free_tab(envfull);
 		if (command)
 			free(command);
 		wait(&status);
