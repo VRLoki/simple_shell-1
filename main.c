@@ -62,15 +62,22 @@ int main(int ac, char **av, char **env)
 int _launchShell(param_t *param)
 {
 
-	signal(SIGINT, _siginthandler);
-	_prompt(param);
+/*	signal(SIGINT, _siginthandler); */
 
+	_pull_hist(param);
+
+	_prompt(param);
 	_shell_loop(param);
+
+	_push_hist(param);
 
 	if (param->mode == 0)
 		_putchar('\n');
 	if (param->mode == 2)
 		close(param->fdnb);
+
+	_freeParam(param);
+
 	return (EXIT_SUCCESS);
 }
 
@@ -86,12 +93,13 @@ int _launchShell(param_t *param)
 int _shell_loop(param_t *param)
 {
 	int     read, read2 = 0, nbw, nbw2, checkgramm;
-	char    *line = NULL;
+	char    *line = NULL, *part;
 	size_t  n;
 	char    **parsed, **parsed2;
 
 	while ((read = _getlinefile(&line, &n, param->fdnb)) != EOF)
 	{
+		part = _strdup(line);
 		nbw = 0;
 		param->count++;
 		parsed = _parse_string2(line, &nbw, param);
@@ -100,6 +108,7 @@ int _shell_loop(param_t *param)
 		{
 			_prompt2(param);
 			read2 = _getlinefile(&line, &n, param->fdnb);
+			part = _str_concat_hist(part, line);
 			param->count++;
 			if (read2 == EOF)
 			{
@@ -112,6 +121,7 @@ int _shell_loop(param_t *param)
 			parsed = _concat_parsed(parsed, &nbw, parsed2, &nbw2);
 			checkgramm = _check_grammar(parsed, nbw, param);
 		}
+		_add_hist_line(part, param);
 		if (checkgramm == 3)
 			parsed = _removelast(parsed, &nbw);
 		if (nbw == 0 || checkgramm == 2 || read2 == EOF)
@@ -119,13 +129,33 @@ int _shell_loop(param_t *param)
 			_prompt(param);
 			continue;
 		}
-		_exec_string(parsed, nbw, param);
-		_free_grid(parsed, nbw);
-		_prompt(param);
-
+		_core_exec(parsed, nbw, param);
 	}
 	return (1);
 }
+
+
+
+/**
+ * _core_exec - main loop for Shell
+ *
+ * @parsed : parsed string
+ * @nbw : number of tokens
+ * @param: parameter variable
+ *
+ * Return: EXIT_SUCCESS
+ */
+
+int _core_exec(char **parsed, int nbw, param_t *param)
+{
+	_exec_string(parsed, nbw, param);
+	_free_grid(parsed, nbw);
+	_prompt(param);
+
+	return (1);
+}
+
+
 
 
 
@@ -143,5 +173,3 @@ void _siginthandler(int signum)
 	write(0, "\n", 1);
 	_puts("$: ");
 }
-
-

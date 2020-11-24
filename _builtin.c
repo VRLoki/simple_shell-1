@@ -51,6 +51,8 @@ int	_get_builtin_fct(char **comm, param_t *param)
 		return (_ft_cd(comm, param));
 	if (_strcmp(comm[0], "help") == 0)
 		return (_ft_help(comm, param));
+	if (_strcmp(comm[0], "history") == 0)
+		return (_ft_history(comm, param));
 
 
 

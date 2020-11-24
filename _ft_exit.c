@@ -92,23 +92,31 @@ int     _error_exit(char *command, param_t *param)
 int	_ft_exit(char *s, param_t *param)
 {
 	unsigned char	nbr;
-	char		*num_error;
 
 	if (s == NULL)
+	{
+		_push_hist(param);
+		_freeParam(param);
 		_exit(0);
+	}
 
-	num_error = strdup(s);
-	nbr = _atoi_exit(num_error);
+	nbr = _atoi_exit(s);
 	if (nbr == 0)
 	{
 		if (_check_zero(s))
+		{
+			_push_hist(param);
+			_freeParam(param);
 			_exit(nbr);
+		}
 	}
 	else
+	{
+		_push_hist(param);
+		_freeParam(param);
 		_exit(nbr);
+	}
 
 	_error_exit(s, param);
-	if (num_error != NULL)
-		free(num_error);
 	return (2);
 }

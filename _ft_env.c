@@ -86,11 +86,8 @@ int	_ft_setenv(char **comm, param_t *param)
 	{
 		if (_strcmp(comm[1], comp->var) == 0)
 		{
-			if (comm[3] != 0)
-			{
-				free(comp->value);
-				comp->value = _strdup(comm[2]);
-			}
+			free(comp->value);
+			comp->value = _strdup(comm[2]);
 			return (0);
 		}
 		if (comp->next == NULL)

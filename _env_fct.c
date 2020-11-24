@@ -25,6 +25,7 @@ param_t *_initParam(char **av, char **env)
 	param->lastexit = 0;
 	param->pid = _getpid();
 	param->envlist = _getEnvList(env);
+	param->filename = NULL;
 	return (param);
 }
 
@@ -86,9 +87,8 @@ char *_getpid(void)
  */
 envl_t *_getEnvList(char **env)
 {
-	int i;
+	int i, k;
 	envl_t *new, *head, *tmp;
-	char **tok;
 
 	head = NULL;
 	i = 0;
@@ -97,12 +97,9 @@ envl_t *_getEnvList(char **env)
 		new = malloc(sizeof(envl_t));
 		if (new == NULL)
 			return (NULL);
-		tok = _strtow(env[i], "=");
-		if (tok[0])
-			new->var = _strdup(tok[0]);
-		if (tok[1])
-			new->value = _strdup(tok[1]);
-		free(tok);
+		k = _strfindn(env[i], '=');
+		new->var = _strncut(env[i], k - 1, 0);
+		new->value = _strncut(env[i], _strlen(env[i]) - k, k);
 		new->next = NULL;
 		if (head == NULL)
 			head = new;

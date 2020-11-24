@@ -152,6 +152,7 @@ char	*_convert_base(unsigned long int nbr, int base, int cap);
 /* main.c */
 int _launchShell(param_t *param);
 int _shell_loop(param_t *param);
+int _core_exec(char **parsed, int nbw, param_t *param);
 void _siginthandler(int signum);
 
 /* _parse_string.c */
@@ -185,6 +186,13 @@ envl_t	*_getEnvList(char **env);
 char	**_getEnvChar(envl_t *head);
 char *_get_env_val(char *var, envl_t *head);
 char *_getpid(void);
+
+/* _free_fct.c */
+int _freeParam(param_t *param);
+int _free_envlist(param_t *param);
+int _free_alias(param_t *param);
+int _free_hist(param_t *param);
+
 
 /* _strtow.c */
 int _isdelim(char c, const char *del);
@@ -266,6 +274,15 @@ void    _help_history(void);
 void    _help_all(void);
 void    _help_error(char *comm, param_t *param);
 
+/* _ft_history.c */
+int     _ft_history(char **comm, param_t *param);
+int     _add_hist_line(char *string, param_t *param);
+int     _print_hist(param_t *param);
+char *_str_concat_hist(char *s1, char *s2);
 
+/* _ft_history2.c */
+int     _pull_hist(param_t *param);
+int     _push_hist(param_t *param);
+int     _populate_hist(char *line, param_t *param);
 
 #endif
