@@ -13,15 +13,15 @@ int _exec_fct(char **parsed, param_t *param)
 {
 	int status = 0, exit_status = 0;
 	pid_t child_pid;
-	char *mypath;
-	char *command;
+	char *mypath, *command, *tmp;
 	char **envfull;
 
 	envfull = _getEnvChar(param->envlist);
 	mypath = _getenv("PATH", envfull);
-	command = _strdup(_getfullpath(parsed[0], mypath));
+	tmp = _getfullpath(parsed[0], mypath);
+	command = _strdup(tmp);
+	free(tmp);
 	child_pid = fork();
-
 	if (child_pid == -1)
 	{
 		perror("Error: Children process failed");
