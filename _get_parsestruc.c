@@ -18,11 +18,10 @@ int _exec_string(char **parsed, int nbw, param_t *param)
 	int temp = -1;
 	int built_nbr;
 	char *nextop, *curop;
-	char **comm;
+	char **comm = NULL;
 
 	curop = _strdup(";");
 	param->lastexit = 0;
-
 	while (temp < nbw)
 	{
 		cur += 1;
@@ -39,8 +38,8 @@ int _exec_string(char **parsed, int nbw, param_t *param)
 				param->lastexit = _get_builtin_fct(comm, param);
 			else
 				param->lastexit = _exec_fct(comm, param);
-			_free_tab(comm);
 		}
+		_free_tab(comm);
 		free(curop);
 		curop = _strdup(nextop);
 		free(nextop);

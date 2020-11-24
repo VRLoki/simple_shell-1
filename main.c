@@ -63,10 +63,10 @@ int _launchShell(param_t *param)
 {
 
 /*	signal(SIGINT, _siginthandler); */
-
 	_pull_hist(param);
 
 	_prompt(param);
+
 	_shell_loop(param);
 
 	_push_hist(param);
@@ -151,6 +151,7 @@ int _core_exec(char **parsed, int nbw, param_t *param)
 	_exec_string(parsed, nbw, param);
 	_free_grid(parsed, nbw);
 	_prompt(param);
+
 
 	return (1);
 }

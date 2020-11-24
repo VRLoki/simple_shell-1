@@ -15,7 +15,7 @@ int	_pull_hist(param_t *param)
 	int fd, nbr;
 	char *path, *home, *buf, *line = NULL;
 
-	home = _get_env_val("HOME", param->envlist);
+	home = _strdup(_get_env_val("HOME", param->envlist));
 	if (home == NULL)
 		return (1);
 	path = _str_concat(home, "/.simple_shell_history");
@@ -95,7 +95,7 @@ int	_push_hist(param_t *param)
 	char *path, *home;
 	histl_t *node;
 
-	home = _get_env_val("HOME", param->envlist);
+	home = _strdup(_get_env_val("HOME", param->envlist));
 	if (home == NULL)
 		return (1);
 	path = _str_concat(home, "/.simple_shell_history");

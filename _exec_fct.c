@@ -19,8 +19,7 @@ int _exec_fct(char **parsed, param_t *param)
 
 	envfull = _getEnvChar(param->envlist);
 	mypath = _getenv("PATH", envfull);
-	command = _getfullpath(parsed[0], mypath);
-
+	command = _strdup(_getfullpath(parsed[0], mypath));
 	child_pid = fork();
 
 	if (child_pid == -1)

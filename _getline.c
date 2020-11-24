@@ -108,12 +108,13 @@ ssize_t _getlinefile(char **lineptr, size_t *n, int fd)
 	if (initbuf == 0 || bufflen == 0)
 	{
 		initbuf = 1;
-		buf = (char *)malloc(sizeof(char) * 2049);
-		bufflen = read(fd, buf, 2048);
+		buf = (char *)malloc(sizeof(char) * 4096);
+		bufflen = read(fd, buf, 4096);
 		buf[bufflen] = '\0';
 	}
 	if (bufflen == 0)
 	{
+		free(buf);
 		*lineptr = NULL;
 		return (EOF);
 	}

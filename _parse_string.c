@@ -34,7 +34,6 @@ void	_free_vis(aliasl_t *vis)
 
 	if (vis != NULL)
 	{
-	printf("ALLO0\n");
 		while (vis != NULL)
 		{
 			tmp = vis->next;
@@ -45,7 +44,6 @@ void	_free_vis(aliasl_t *vis)
 			free(vis);
 			vis = tmp;
 		}
-		printf("ALLO2\n");
 	}
 }
 
