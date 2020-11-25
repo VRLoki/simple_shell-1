@@ -11,7 +11,6 @@
 
 int _freeParam(param_t *param)
 {
-	printf("COucou\n");
 	if (param->bashname != NULL)
 		free(param->bashname);
 
