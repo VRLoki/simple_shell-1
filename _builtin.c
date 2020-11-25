@@ -56,6 +56,6 @@ int	_get_builtin_fct(char **comm, param_t *param)
 
 
 
-	printf("not done yet\n");
+	_puts("not done yet\n");
 	return (1);
 }

@@ -62,16 +62,19 @@ int main(int ac, char **av, char **env)
 int _launchShell(param_t *param)
 {
 	int exitval;
+
 	signal(SIGINT, _siginthandler);
 
-/*	if (param->mode == 0)
-	_pull_hist(param);*/
-
+/*
+ * if (param->mode == 0)
+ *	_pull_hist(param);
+ */
 	_prompt(param);
 	_shell_loop(param);
-/*	if(param->mode == 0)
-	_push_hist(param);*/
-
+/*
+ * if(param->mode == 0)
+ *	_push_hist(param);
+ */
 	if (param->mode == 0)
 		_putchar('\n');
 	if (param->mode == 2)
