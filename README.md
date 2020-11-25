@@ -158,8 +158,11 @@ Help_files: Directory containing help files of built-in commands.
 
 | File | Description  |
 | ------- | --- |
-| hsh.h | Declaration of all functions ande include of libraries|
+| hsh.h | Declaration of all functions and includes of libraries|
 | main.c | Main file with function to start: <br> - main() <br> - \_launchShell() <br> - \_shell\_loop() <br> - \_core\_exec() <br> - \_siginhandler()  |
+| builtin.c | Functions to handle the builtin functions: <br> - \_isbuiltin() <br> - \_get_builtin_fct() |
+| \_env_fct.c | Functions to handle the environment variables: <br> - \_initParam() <br> - \_getpid() <br> - \_getEnvList() <br> - \_get_env_val() <br> - \_getEnvChar()  |
+| \_exec_fct.c | Functions to execute commands enter in the shell: <br> - \_exec_fct() <br> - \_error_fct() <br> - \_error_open() <br> - \_getfullpath() <br> - \_contains_char()  |
 
 ## Authors
 
