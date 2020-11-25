@@ -38,20 +38,25 @@ int     _error_cd(char **command, param_t *param)
  * @home: the variable home.
  * @oldpwd: the variable oldpwd.
  * @path: the destination wanted.
+ * @pwd: the current folder
  *
  * Return: the destination directory.
  */
 
-char	*_getdest(char *path, char *home, char *oldpwd)
+char	*_getdest(char *path, char *home, char *oldpwd, char *pwd)
 {
 
 	if (path == NULL)
 	{
 		return (_strdup(home));
 	}
-	else if (_strcmp(path, "-") == 0)
+	else if (_strcmp(path, "-") == 0 && oldpwd != NULL)
 	{
 		return (_strdup(oldpwd));
+	}
+	else if (_strcmp(path, "-") == 0 && oldpwd == NULL)
+	{
+		return (_strdup(pwd));
 	}
 	else
 	{
@@ -109,7 +114,7 @@ int	_ft_cd(char **path, param_t *param)
 			oldpwd = _strdup(node->value);
 		node = node->next;
 	}
-	dest = _getdest(path[1], home, oldpwd);
+	dest = _getdest(path[1], home, oldpwd, pwd);
 	if (chdir(dest) == -1)
 	{
 		_free_cd(home, pwd, oldpwd, dest);

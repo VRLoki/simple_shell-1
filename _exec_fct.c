@@ -74,21 +74,17 @@ int _exec_fct(char **parsed, param_t *param, char *c, char *n, char **p)
 int _eft(int nb, char *co, char **pd, param_t *pm, char *c, char *n, char **p)
 {
 	unsigned int	i;
-	char *dispmess, *conv;
+	char *dispmess;
 
 	error_mess_t	error_mess[] = {
 		{2, 127, "not found"},
 		{13, 126, "Permission denied"},
 	};
-	conv = _convert_base(pm->count, 10, 0);
-	dispmess = _strdup(pm->bashname);
-	dispmess = _str_concat_f(dispmess, ": ");
-	dispmess = _str_concat_f(dispmess, conv);
+	dispmess = _error_base(pm);
 	dispmess = _str_concat_f(dispmess, ": ");
 	dispmess = _str_concat_f(dispmess, co);
 	dispmess = _str_concat_f(dispmess, ": ");
 	_free_tab(p);
-	free(conv);
 	free(co);
 	free(c);
 	free(n);
@@ -129,15 +125,30 @@ int _eft(int nb, char *co, char **pd, param_t *pm, char *c, char *n, char **p)
 
 int	_error_open(int errnb, char *command, param_t *param)
 {
-	char *dispmess, *conv;
+	char *dispmess, *conv, *file;
 
 	conv = _convert_base(param->count, 10, 0);
-	dispmess = _strdup(param->bashname);
-	dispmess = _str_concat_f(dispmess, ": ");
-	dispmess = _str_concat_f(dispmess, conv);
-	dispmess = _str_concat_f(dispmess, ": Can't open ");
-	dispmess = _str_concat_f(dispmess, command);
-	dispmess = _str_concat_f(dispmess, "\n");
+	if (param->mode != 2)
+	{	dispmess = _strdup(param->bashname);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": Can't open ");
+		dispmess = _str_concat_f(dispmess, command);
+		dispmess = _str_concat_f(dispmess, "\n");
+	}
+	else
+	{
+		file = _strdup(param->filename);
+		dispmess = _strdup(param->filename);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, file);
+		dispmess = _str_concat_f(dispmess, ": Can't open ");
+		dispmess = _str_concat_f(dispmess, command);
+		dispmess = _str_concat_f(dispmess, "\n");
+		free(file);
+	}
 	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);

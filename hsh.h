@@ -228,7 +228,7 @@ int     _delete_alias(char *comm, param_t *param);
 /* _ft_cd.c */
 int	_ft_cd(char **path, param_t *param);
 void	_free_cd(char *home, char *pwd, char *oldpwd, char *dest);
-char	*_getdest(char *path, char *home, char *oldpwd);
+char	*_getdest(char *path, char *home, char *oldpwd, char *pwd);
 int	_error_cd(char **command, param_t *param);
 void _puts_dir(char *path);
 
@@ -289,5 +289,8 @@ char *_str_concat_hist(char *s1, char *s2);
 int     _pull_hist(param_t *param);
 int     _push_hist(param_t *param);
 int     _populate_hist(char *line, param_t *param);
+
+/* _error_base.c */
+char *_error_base(param_t *param);
 
 #endif

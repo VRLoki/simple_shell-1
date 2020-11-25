@@ -133,9 +133,9 @@ int _check_grammar(char **parsed, int nbw, param_t *param)
 	{
 		cur += 1;
 		nextop = _strdup(_get_nextop(parsed, &cur));
+
 		if (_strcmp(nextop, "#") == 0)
 			return (_gramm_ret(curop, nextop, 0));
-
 		if (cur - temp <= 1 && _strcmp(nextop, "END") == 0)
 		{
 			if (_strcmp(curop, ";") == 0)
