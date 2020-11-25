@@ -44,7 +44,7 @@ It will display this screen that means you are inside our shell
  $:
 ```
 ```bash
- $ ./custom_name_shell
+ $ ./hsh
  $: echo display something
  display something
  $:
@@ -61,6 +61,28 @@ Non interactive mode allows you to run a simple command.
 ```bash
  $ echo "pwd" | ./hsh
 *Display your current directory*
+```
+
+### FILE MODE
+
+File mode allows you to enter many commands as you want with the intermediary of a file. You can write in your file one command by line. The shell will execute them one by one. You don't need to exit at the end.
+
+Create a file "my\_file"
+
+Write the commands you want to execute
+```
+ls
+pwd
+echo Hello
+```
+
+Execute the file mode:
+```bash
+ $ cat my_file | ./hsh
+*Display files and directories in your current directory*
+*Display the path to your current directory*
+Hello
+ $
 ```
 
 -----
