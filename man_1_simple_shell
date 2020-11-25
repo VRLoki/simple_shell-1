@@ -146,6 +146,32 @@ $ echo "cd && pwd" | ./hsh;/home/vagrant/
 $ echo "echo Hello" | ./hsh;Hello
 .TE
 
+
+FILE MODE
+.br
+Create a file (in that exemple the filename will be "my_file"), put one command by line and save it :
+
+ls
+.br
+pwd
+.br
+cd && pwd
+.br
+echo Hello
+.br
+
+.TS
+tab(;) allbox;
+l l
+l l.
+Commands;Display
+$ cat my_file | ./hsh;hsh
+;/home/vagrant/simple_shell
+;/home/vagrant/
+;Hello
+.TE
+
+
 .SH EXIT STATUS
 Errors that are detected by the shell, such as a syntax error, will cause the shell to exit with a non-zero exit status.  If the shell is not an interactive shell, the execution of the shell file will be aborted.  Otherwise the shell will return the exit status of the last command executed, or if the exit builtin is used with a numeric argument, it will return the argument.
 
