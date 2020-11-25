@@ -119,7 +119,7 @@ int	_ft_cd(char **path, param_t *param)
 		if (_strcmp(node->var, "PWD") == 0)
 		{
 			free(node->value);
-			node->value = _strdup(getcwd(NULL, 4096));
+			node->value = getcwd(NULL, 0);
 		}
 		if (_strcmp(node->var, "OLDPWD") == 0)
 		{
@@ -144,9 +144,15 @@ int	_ft_cd(char **path, param_t *param)
 
 void _puts_dir(char *path)
 {
+	char	*pwd;
+
 	if (path)
 	{
 		if (_strcmp(path, "-") == 0)
-			_puts(getcwd(NULL, 4096));
+		{
+			pwd = getcwd(NULL, 0);
+			_puts(pwd);
+			free(pwd);
+		}
 	}
 }
