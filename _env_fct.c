@@ -5,28 +5,25 @@
  * _initParam - function to initialize the values
  * of the param struct
  *
+ * @param: global variable parameter
  * @av: the tab with the arguments.
  * @env: the environnement
  *
  * Return: intialized param struct
  */
 
-param_t *_initParam(char **av, char **env)
+int _initParam(param_t *param, char **av, char **env)
 {
-	param_t *param;
-
-	param = malloc(sizeof(param_t));
-
+	param->pid = _convert_base(getpid(), 10, 0);
 	param->count = 0;
 	param->fdnb = 0;
 	param->bashname = _strdup(av[0]);
 	param->alias = NULL;
 	param->hist = NULL;
 	param->lastexit = 0;
-	param->pid = _getpid();
 	param->envlist = _getEnvList(env);
 	param->filename = NULL;
-	return (param);
+	return (0);
 }
 
 

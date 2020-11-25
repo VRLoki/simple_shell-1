@@ -180,12 +180,12 @@ ssize_t	_getlinefile(char **lineptr, size_t *n, int fd);
 char *_strncut(char *src, int n, int from);
 
 /* _ft_exit.c */
-int	_ft_exit(char *s, param_t *param);
+int	_ft_exit(char **s, param_t *param);
 int	_atoi_exit(char *s);
 int	_error_exit(char *command, param_t *param);
 
 /* _env_fct.c */
-param_t	*_initParam(char **av, char **env);
+int _initParam(param_t *param, char **av, char **env);
 envl_t	*_getEnvList(char **env);
 char	**_getEnvChar(envl_t *head);
 char *_get_env_val(char *var, envl_t *head);

@@ -163,7 +163,8 @@ int _error_EOF(param_t *param)
 		dispmess = _strdup(param->bashname);
 		dispmess = _str_concat_f(dispmess, ": ");
 		dispmess = _str_concat_f(dispmess, conv);
-		dispmess = _str_concat_f(dispmess, ": Syntax error: end of file unexpected\n");
+		dispmess = _str_concat_f(dispmess, ": Syntax error");
+		dispmess = _str_concat_f(dispmess, ": end of file unexpected\n");
 	}
 	else
 	{
@@ -172,7 +173,8 @@ int _error_EOF(param_t *param)
 		dispmess = _str_concat_f(dispmess, conv);
 		dispmess = _str_concat_f(dispmess, ": ");
 		dispmess = _str_concat_f(dispmess, _strdup(param->filename));
-		dispmess = _str_concat_f(dispmess, ": Syntax error: end of file unexpected\n");
+		dispmess = _str_concat_f(dispmess, ": Syntax error");
+		dispmess = _str_concat_f(dispmess, ": end of file unexpected\n");
 	}
 	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));

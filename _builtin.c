@@ -36,7 +36,7 @@ int	_isbuiltin(char *comm)
 int	_get_builtin_fct(char **comm, param_t *param)
 {
 	if (_strcmp(comm[0], "exit") == 0)
-		return (_ft_exit(comm[1], param));
+		return (_ft_exit(comm, param));
 	if (_strcmp(comm[0], "env") == 0)
 		return (_ft_env(param));
 	if (_strcmp(comm[0], "setenv") == 0)

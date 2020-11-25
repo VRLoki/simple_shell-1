@@ -11,18 +11,12 @@
 
 int _freeParam(param_t *param)
 {
-	if (param->bashname != NULL)
-		free(param->bashname);
-
-	if (param->pid != NULL)
-		free(param->pid);
+	free(param->bashname);
+	free(param->pid);
 	_free_envlist(param);
 	_free_alias(param);
 	_free_hist(param);
-
-	if (param->filename != NULL)
-		free(param->filename);
-	free(param);
+	free(param->filename);
 	return (0);
 }
 

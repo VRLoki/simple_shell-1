@@ -71,24 +71,26 @@ int     _error_exit(char *command, param_t *param)
  * Return: 2 if fail
  */
 
-int	_ft_exit(char *s, param_t *param)
+int	_ft_exit(char **s, param_t *param)
 {
 	int	nbr;
 
-	if (s == NULL)
+	if (s[1] == NULL)
 	{
+		_free_tab(s);
 		_push_hist(param);
 		_freeParam(param);
 		_exit(0);
 	}
 
-	nbr = _atoi_exit(s);
+	nbr = _atoi_exit(s[1]);
 	if (nbr >= 0)
 	{
+		_free_tab(s);
 		_push_hist(param);
 		_freeParam(param);
 		_exit((unsigned char)nbr);
 	}
-	_error_exit(s, param);
+	_error_exit(s[1], param);
 	return (2);
 }

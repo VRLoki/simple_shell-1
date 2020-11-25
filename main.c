@@ -13,10 +13,11 @@
 
 int main(int ac, char **av, char **env)
 {
-	int fd, err, lastval;
-	param_t *param;
+	int fd, err, lastval = 0;
+	param_t param;
 
-	param = _initParam(av, env);
+
+	_initParam(&param, av, env);
 	if (ac > 1)
 	{	fd = open(av[1], O_RDONLY);
 		if (fd == -1)
@@ -25,28 +26,28 @@ int main(int ac, char **av, char **env)
 				err = 126;
 			else
 				err = 127;
-			free(param);
-			_error_open(err, av[1], param);
+			_error_open(err, av[1], &param);
 		}
 		else
 		{
-			param->mode = 2;
-			param->fdnb = fd;
-			param->filename = _strdup(av[1]);
+			param.mode = 2;
+			param.fdnb = fd;
+			param.filename = _strdup(av[1]);
 		}
 	}
 	else if (isatty(STDIN_FILENO))
 	{
-		param->mode = 0;
-		param->fdnb = STDIN_FILENO;
+		param.mode = 0;
+		param.fdnb = STDIN_FILENO;
 	}
 	else
 	{
-		param->mode = 1;
-		param->fdnb = STDIN_FILENO;
+		param.mode = 1;
+		param.fdnb = STDIN_FILENO;
 	}
 
-	lastval = _launchShell(param);
+	lastval = _launchShell(&param);
+	_freeParam(&param);
 	return (lastval);
 }
 
@@ -80,8 +81,9 @@ int _launchShell(param_t *param)
 	if (param->mode == 2)
 		close(param->fdnb);
 	exitval = param->lastexit;
-	_freeParam(param);
-;
+/*
+ *	_freeParam(param);
+ */
 	return (exitval);
 }
 
