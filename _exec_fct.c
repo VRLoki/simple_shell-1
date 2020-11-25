@@ -5,11 +5,14 @@
  *
  * @parsed: the commande to execute.
  * @param: global parameters of the shell.
+ * @c : curop
+ * @n : nextop
+ * @p : parsed string intial
  *
  * Return: the exit status (Always)
  */
 
-int _exec_fct(char **parsed, param_t *param)
+int _exec_fct(char **parsed, param_t *param, char *c, char *n, char **p)
 {
 	int status = 0, exit_status = 0;
 	pid_t child_pid;
@@ -30,7 +33,8 @@ int _exec_fct(char **parsed, param_t *param)
 	{
 		if (execve(command, parsed, envfull) == -1)
 		{
-			_error_fct(errno, command, param);
+			_free_tab(envfull);
+			_eft(errno, command, parsed, param, c, n, p);
 		}
 	}
 	else
@@ -54,15 +58,20 @@ int _exec_fct(char **parsed, param_t *param)
 
 
 /**
- *_error_fct - print an error message
+ *_eft - print an error message
  *
- * @errnb: error number input
- * @command: command failing
- * @param : global parameters structure
+ * @nb: error number input
+ * @co: command failing
+ * @pd: parsed string
+ * @pm : global parameters structure
+ * @p: parsed string
+ * @c: curop
+ * @n: nextop
+ *
  *
  * Return: the exit status (Always)
  */
-int	_error_fct(int errnb, char *command, param_t *param)
+int _eft(int nb, char *co, char **pd, param_t *pm, char *c, char *n, char **p)
 {
 	unsigned int	i;
 	char *dispmess, *conv;
@@ -71,18 +80,24 @@ int	_error_fct(int errnb, char *command, param_t *param)
 		{2, 127, "not found"},
 		{13, 126, "Permission denied"},
 	};
-	conv = _convert_base(param->count, 10, 0);
-	dispmess = _strdup(param->bashname);
+	conv = _convert_base(pm->count, 10, 0);
+	dispmess = _strdup(pm->bashname);
 	dispmess = _str_concat_f(dispmess, ": ");
 	dispmess = _str_concat_f(dispmess, conv);
 	dispmess = _str_concat_f(dispmess, ": ");
-	dispmess = _str_concat_f(dispmess, command);
+	dispmess = _str_concat_f(dispmess, co);
 	dispmess = _str_concat_f(dispmess, ": ");
+	_free_tab(p);
 	free(conv);
+	free(co);
+	free(c);
+	free(n);
+	_free_tab(pd);
+	_freeParam(pm);
 	i = 0;
 	while (error_mess[i].nbr_error)
 	{
-		if ((error_mess[i].nbr_error) == errnb)
+		if ((error_mess[i].nbr_error) == nb)
 		{
 			dispmess = _str_concat_f(dispmess, error_mess[i].m_error);
 			dispmess = _str_concat_f(dispmess, "\n");
@@ -126,6 +141,7 @@ int	_error_open(int errnb, char *command, param_t *param)
 	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
+	_freeParam(param);
 	exit(errnb);
 }
 

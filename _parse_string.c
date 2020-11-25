@@ -71,6 +71,11 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 	*nbw = _nbword(string, del);
 	comm = _strtow(string, del);
 	free(string);
+	if (*nbw == 0)
+	{
+		_free_tab(comm);
+		return (NULL);
+	}
 	vis = NULL;
 	aliascomm = _parse_alias(comm, nbw, param, &vis, 0);
 	_free_vis(vis);
@@ -89,11 +94,8 @@ char **_parse_string2(char *string, int *nbw, param_t *param)
 			i++;
 		}
 	}
-
 	for (i = 0; i < *nbw; i++)
 		aliascomm[i] = _parse_env(aliascomm[i], param);
-
-
 	return (aliascomm);
 }
 

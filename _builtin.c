@@ -25,18 +25,21 @@ int	_isbuiltin(char *comm)
 }
 
 /**
- * _get_builtin_fct - call the right builtin function.
+ * _get_b_fct - call the right builtin function.
  *
  * @comm: the command to excute.
  * @param: global parameter variable
+ * @c: curop
+ * @n: nextop
+ * @p: parsed
  *
  * Return: the exit number of the command or 1
  */
 
-int	_get_builtin_fct(char **comm, param_t *param)
+int	_get_b_fct(char **comm, param_t *param, char *c, char *n, char **p)
 {
 	if (_strcmp(comm[0], "exit") == 0)
-		return (_ft_exit(comm, param));
+		return (_ft_exit(comm, param, c, n, p));
 	if (_strcmp(comm[0], "env") == 0)
 		return (_ft_env(param));
 	if (_strcmp(comm[0], "setenv") == 0)

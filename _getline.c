@@ -101,13 +101,12 @@ char *_strncut(char *src, int n, int from)
 ssize_t _getlinefile(char **lineptr, size_t *n, int fd)
 {
 	static char *buf;
-	static int initbuf, bufflen;
+	static int bufflen;
 	char *nextline, *tmp;
 	int nextchar;
 
-	if (initbuf == 0 || bufflen == 0)
+	if (bufflen == 0)
 	{
-		initbuf = 1;
 		buf = (char *)malloc(sizeof(char) * 4096);
 		bufflen = read(fd, buf, 4096);
 		_replace_null(buf, bufflen);
@@ -135,8 +134,8 @@ ssize_t _getlinefile(char **lineptr, size_t *n, int fd)
 	{
 		tmp = _strdup((buf + nextchar));
 		free(buf);
-		buf = malloc((bufflen - nextchar) * sizeof(char));
 		buf = _strdup(tmp);
+		free(tmp);
 		bufflen = _strlen(buf);
 	}
 	return (nextchar);
