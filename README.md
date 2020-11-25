@@ -172,6 +172,25 @@ There are different posible exit status, this deppende on the success of the las
  $
 ```
 
+### FILE MODE
+
+Create a file "my\_file"
+
+Write the commands you want to execute
+```
+ls
+pwd
+echo Hello
+```
+
+Execute the file mode:
+```bash
+ $ cat my_file | ./hsh
+*Display files and directories in your current directory*
+*Display the path to your current directory*
+Hello
+ $
+```
 -----
 ## FILES
 
