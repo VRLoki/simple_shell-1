@@ -159,9 +159,9 @@ Help_files: Directory containing help files of built-in commands.
 | File | Description  |
 | ------- | --- |
 | hsh.h | Declaration of all functions ande include of libraries|
-| main.c | Main file with function to start: <br> - main() <br> - \_launchShell() <br> - \_shell\_loop() <br> - \_core\_exec() <br> \_siginhandler()  |
+| main.c | Main file with function to start: <br> - main() <br> - \_launchShell() <br> - \_shell\_loop() <br> - \_core\_exec() <br> - \_siginhandler()  |
 
 ## Authors
 
-Matt Scetbun *a.k.a* [@matt969696](https://github.com/matt969696 "The best bro for coding a project <3").
+Matt Scetbun *a.k.a* [@matt969696](https://github.com/matt969696 "The best bro for coding a project <3"). <br>
 Gautier Chuinard *a.k.a* [@gchuinard](https://github.com/gchuinard "Just me :D").
