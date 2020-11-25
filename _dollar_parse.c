@@ -24,14 +24,14 @@ char *_parse_env(char *comm, param_t *param)
 	if (comm[1] == '$')
 	{
 		newcomm = _strdup(param->pid);
-		newcomm = _str_concat(newcomm, _strncut(comm, len - 2, 2));
+		newcomm = _str_concat_f(newcomm, _strncut(comm, len - 2, 2));
 		free(comm);
 		return (newcomm);
 	}
 	if (comm[1] == '?')
 	{
-		newcomm = _strdup(_convert_base(param->lastexit, 10, 0));
-		newcomm = _str_concat(newcomm, _strncut(comm, len - 2, 2));
+		newcomm = _convert_base(param->lastexit, 10, 0));
+		newcomm = _str_concat_f(newcomm, _strncut(comm, len - 2, 2));
 		free(comm);
 		return (newcomm);
 	}

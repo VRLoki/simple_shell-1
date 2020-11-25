@@ -12,18 +12,20 @@
 
 int     _error_cd(char **command, param_t *param)
 {
-	char *dispmess;
+	char *dispmess, *conv;
 	int count = param->count;
 
+	conv = _convert_base(count, 10, 0);
 	dispmess = _strdup(param->bashname);
-	dispmess = _str_concat(dispmess, ": ");
-	dispmess = _str_concat(dispmess, _convert_base(count, 10, 0));
-	dispmess = _str_concat(dispmess, ": ");
-	dispmess = _str_concat(dispmess, command[0]);
-	dispmess = _str_concat(dispmess, ": ");
-	dispmess = _str_concat(dispmess, "can't cd to ");
-	dispmess = _str_concat(dispmess, command[1]);
-	dispmess = _str_concat(dispmess, "\n");
+	dispmess = _str_concat_f(dispmess, ": ");
+	dispmess = _str_concat_f(dispmess, conv);
+	dispmess = _str_concat_f(dispmess, ": ");
+	dispmess = _str_concat_f(dispmess, command[0]);
+	dispmess = _str_concat_f(dispmess, ": ");
+	dispmess = _str_concat_f(dispmess, "can't cd to ");
+	dispmess = _str_concat_f(dispmess, command[1]);
+	dispmess = _str_concat_f(dispmess, "\n");
+	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
 	return (-1);

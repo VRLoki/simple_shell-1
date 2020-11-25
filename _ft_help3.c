@@ -33,28 +33,32 @@ void	_help_all(void)
 
 void	_help_error(char *command, param_t *param)
 {
-	char *dispmess;
+	char *dispmess, *conv, *file;
 
+	conv = _convert_base(param->count, 10, 0);
+	file = _strdup(param->filename);
 	if (param->mode != 2)
 	{
 		dispmess = _strdup(param->bashname);
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
-		dispmess = _str_concat(dispmess, ": No help topics match \"");
-		dispmess = _str_concat(dispmess, command);
-		dispmess = _str_concat(dispmess, "\"\n");
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": No help topics match \"");
+		dispmess = _str_concat_f(dispmess, command);
+		dispmess = _str_concat_f(dispmess, "\"\n");
 	}
 	else
 	{
-		dispmess = _strdup(param->filename);
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _strdup(param->filename));
-		dispmess = _str_concat(dispmess, ": No help topics match \"");
-		dispmess = _str_concat(dispmess, command);
-		dispmess = _str_concat(dispmess, "\"\n");
+		dispmess = _strdup(file);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, file);
+		dispmess = _str_concat_f(dispmess, ": No help topics match \"");
+		dispmess = _str_concat_f(dispmess, command);
+		dispmess = _str_concat_f(dispmess, "\"\n");
 	}
+	free(file);
+	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
 }

@@ -65,35 +65,35 @@ int _exec_fct(char **parsed, param_t *param)
 int	_error_fct(int errnb, char *command, param_t *param)
 {
 	unsigned int	i;
-	char *dispmess;
+	char *dispmess, *conv;
 
 	error_mess_t	error_mess[] = {
 		{2, 127, "not found"},
 		{13, 126, "Permission denied"},
 	};
-
+	conv = _convert_base(param->count, 10, 0);
 	dispmess = _strdup(param->bashname);
-	dispmess = _str_concat(dispmess, ": ");
-	dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
-	dispmess = _str_concat(dispmess, ": ");
-	dispmess = _str_concat(dispmess, command);
-	dispmess = _str_concat(dispmess, ": ");
-
+	dispmess = _str_concat_f(dispmess, ": ");
+	dispmess = _str_concat_f(dispmess, conv);
+	dispmess = _str_concat_f(dispmess, ": ");
+	dispmess = _str_concat_f(dispmess, command);
+	dispmess = _str_concat_f(dispmess, ": ");
+	free(conv);
 	i = 0;
 	while (error_mess[i].nbr_error)
 	{
 		if ((error_mess[i].nbr_error) == errnb)
 		{
-			dispmess = _str_concat(dispmess, error_mess[i].m_error);
-			dispmess = _str_concat(dispmess, "\n");
+			dispmess = _str_concat_f(dispmess, error_mess[i].m_error);
+			dispmess = _str_concat_f(dispmess, "\n");
 			write(STDERR_FILENO, dispmess, _strlen(dispmess));
 			free(dispmess);
 			exit(error_mess[i].n_err_sh);
 		}
 		i++;
 	}
-	dispmess = _str_concat(dispmess, "Error to add");
-	dispmess = _str_concat(dispmess, "\n");
+	dispmess = _str_concat_f(dispmess, "Error to add");
+	dispmess = _str_concat_f(dispmess, "\n");
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
 	exit(EXIT_FAILURE);
@@ -114,14 +114,16 @@ int	_error_fct(int errnb, char *command, param_t *param)
 
 int	_error_open(int errnb, char *command, param_t *param)
 {
-	char *dispmess;
+	char *dispmess, *conv;
 
+	conv = _convert_base(param->count, 10, 0);
 	dispmess = _strdup(param->bashname);
-	dispmess = _str_concat(dispmess, ": ");
-	dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
-	dispmess = _str_concat(dispmess, ": Can't open ");
-	dispmess = _str_concat(dispmess, command);
-	dispmess = _str_concat(dispmess, "\n");
+	dispmess = _str_concat_f(dispmess, ": ");
+	dispmess = _str_concat_f(dispmess, conv);
+	dispmess = _str_concat_f(dispmess, ": Can't open ");
+	dispmess = _str_concat_f(dispmess, command);
+	dispmess = _str_concat_f(dispmess, "\n");
+	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
 	exit(errnb);

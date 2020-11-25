@@ -13,28 +13,32 @@
 
 int _error_syntax(char *command, param_t *param)
 {
-	char *dispmess;
+	char *dispmess, *conv, *file;
 
+	conv = _convert_base(param->count, 10, 0);
+	file = _strdup(param->filename);
 	if (param->mode != 2)
 	{
 		dispmess = _strdup(param->bashname);
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
-		dispmess = _str_concat(dispmess, ": Syntax error: \"");
-		dispmess = _str_concat(dispmess, command);
-		dispmess = _str_concat(dispmess, "\" unexpected\n");
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": Syntax error: \"");
+		dispmess = _str_concat_f(dispmess, command);
+		dispmess = _str_concat_f(dispmess, "\" unexpected\n");
 	}
 	else
 	{
 		dispmess = _strdup(param->filename);
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _strdup(param->filename));
-		dispmess = _str_concat(dispmess, ": Syntax error: \"");
-		dispmess = _str_concat(dispmess, command);
-		dispmess = _str_concat(dispmess, "\" unexpected\n");
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, file);
+		dispmess = _str_concat_f(dispmess, ": Syntax error: \"");
+		dispmess = _str_concat_f(dispmess, command);
+		dispmess = _str_concat_f(dispmess, "\" unexpected\n");
 	}
+	free(conv);
+	free(file);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
 	return (2);
@@ -151,25 +155,26 @@ char **_concat_parsed(char **parsed, int *nbw, char **parsed2, int *nbw2)
 
 int _error_EOF(param_t *param)
 {
-	char *dispmess;
+	char *dispmess, *conv;
 
+	conv = _convert_base(param->count, 10, 0);
 	if (param->mode != 2)
 	{
 		dispmess = _strdup(param->bashname);
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
-		dispmess = _str_concat(dispmess, ": Syntax error: end of file unexpected\n");
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": Syntax error: end of file unexpected\n");
 	}
 	else
 	{
 		dispmess = _strdup(param->filename);
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _convert_base(param->count, 10, 0));
-		dispmess = _str_concat(dispmess, ": ");
-		dispmess = _str_concat(dispmess, _strdup(param->filename));
-		dispmess = _str_concat(dispmess, ": Syntax error: end of file unexpected\n");
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, _strdup(param->filename));
+		dispmess = _str_concat_f(dispmess, ": Syntax error: end of file unexpected\n");
 	}
-
+	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
 	return (2);

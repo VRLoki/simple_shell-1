@@ -66,6 +66,7 @@ int	_print_hist(param_t *param)
 {
 	int i = 0;
 	histl_t *node;
+	char *conv;
 
 	node = param->hist;
 	if (node == NULL)
@@ -73,11 +74,13 @@ int	_print_hist(param_t *param)
 
 	while (node)
 	{
-		_puts(_convert_base(i, 10, 0));
+		conv = _convert_base(i, 10, 0);
+		_puts(conv);
 		_puts("  ");
 		_puts(node->line);
 		node = node->next;
 		i++;
+		free(conv);
 	}
 
 	return (0);
