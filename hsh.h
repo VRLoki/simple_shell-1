@@ -228,7 +228,7 @@ int     _delete_alias(char *comm, param_t *param);
 /* _ft_cd.c */
 int	_ft_cd(char **path, param_t *param);
 void	_free_cd(char *home, char *pwd, char *oldpwd, char *dest);
-char	*_getdest(char *path, char *home, char *oldpwd);
+char	*_getdest(char *path, char *home, char *oldpwd, char *pwd);
 int	_error_cd(char **command, param_t *param);
 void _puts_dir(char *path);
 
