@@ -148,7 +148,7 @@ There are different posible exit status, this deppende on the success of the las
  $ echo $?
  7
  $
-``
+```
 
 -----
 ## FILES
