@@ -147,6 +147,6 @@ void _puts_dir(char *path)
 	if (path)
 	{
 		if (_strcmp(path, "-") == 0)
-			puts(getcwd(NULL, 4096));
+			_puts(getcwd(NULL, 4096));
 	}
 }
