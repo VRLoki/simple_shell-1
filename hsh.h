@@ -290,4 +290,7 @@ int     _pull_hist(param_t *param);
 int     _push_hist(param_t *param);
 int     _populate_hist(char *line, param_t *param);
 
+/* _error_base.c */
+char *_error_base(param_t *param);
+
 #endif

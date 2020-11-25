@@ -45,16 +45,32 @@ int	_atoi_exit(char *s)
 
 int     _error_exit(char *command, param_t *param)
 {
-	char *dispmess, *conv;
+	char *dispmess, *conv, *file;
 	int count = param->count;
 
 	conv = _convert_base(count, 10, 0);
+	if (param->mode != 2)
+	{
 	dispmess = _strdup(param->bashname);
 	dispmess = _str_concat_f(dispmess, ": ");
 	dispmess = _str_concat_f(dispmess, conv);
 	dispmess = _str_concat_f(dispmess, ": exit: Illegal number: ");
 	dispmess = _str_concat_f(dispmess, command);
 	dispmess = _str_concat_f(dispmess, "\n");
+	}
+	else
+	{
+		file = _strdup(param->filename);
+		dispmess = _strdup(param->filename);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, conv);
+		dispmess = _str_concat_f(dispmess, ": ");
+		dispmess = _str_concat_f(dispmess, file);
+		dispmess = _str_concat_f(dispmess, ": exit: Illegal number: ");
+		dispmess = _str_concat_f(dispmess, command);
+		dispmess = _str_concat_f(dispmess, "\n");
+		free(file);
+	}
 	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);
