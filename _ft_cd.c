@@ -154,6 +154,7 @@ void _puts_dir(char *path)
 		{
 			pwd = getcwd(NULL, 0);
 			_puts(pwd);
+			_putchar('\n');
 			free(pwd);
 		}
 	}
