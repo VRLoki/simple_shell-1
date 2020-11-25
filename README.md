@@ -1,109 +1,167 @@
-# C - Simple Shell
+# SIMPLE SHELL
 
-## Objectifs
+Simple shell is a fundamental command line user interface where you wich provides all basic built-in commands.
+This project is our own simple shell with basic commands that was created based on SH. Simple shell handle environment
 
-The objectif was to code a Shell (sh) and add a few more features, in C.
+-----
+## INSTALLATION
 
-Our Shell is name hsh and it's handle all the system call.
+1. Git clone this repository
 
-We reprogramme some of the builtin functions :
-
-1. exit
-	Exit the programme with the error code given.
-	Example: exit [STATUS ERROR]
-
-	/* Exit the programme with the error code 14. */
-	- exit 14
-
-
-2. env
-	Display all the environment variables.
-	Example: env
-	- env
-
-
-3. setenv
-	Set an environment variable with the value given. You can precise, if the variable already exit, overwrite it, or not.
-	Example: setenv [VARIABLE] [VALUE] [OVERWRITE]
-	
-	/* Create a new variable in the environment name NEWENV. /*
-	- setenv NEWENV /home/vagrant/simple\_shell	
-	
-	/* Create a new variable if it doesn't exist in the environment. */
-	- setenv NEWENV /home/vagrant/ 0
-
-	/* Create a new variable named NEWENV if it doesn't exist in the environment, or setup the variable NEWENV is it exist with the value. */
-	- setenv NEWENV /home/vagrant/ 1
-
-
-4. unsetenv
-	Delete an environment variable.
-	Exemple: unsetenv
-	
-	/* Delete the variable NEWENV in the environment. */ [VARIABLE]
-	- unsetenv NEWENV
-
-5. alias
-	Create or set a new alias, if the alias already exist it will be overwrite.
-	Exemple: alias [VARIABLE]='[VALUE]'
-
-	/* Create a new alias named l with the value ls -la. */
-	- alias l='ls -la'
-
-	/* Set the variable l to ls. */
-	- alias l='ls'
-
-6. unalias
-	Delete an alias.
-	Exemple: unalias [VARIABLE]
-
-	/* The alias l is delete. */
-	- unalias l	
-
-7. cd
-	Switch to the specified directory (default HOME).
-	Exemple: cd [DIRECTORY]
-
-	/* Switch to HOME. */
-	- cd				
-
-	/* Brings you to the previous directory */
-	- cd -				
-
-	/* Keeps you on the same directory */
-	- cd .			
-	
-	/* Switch to my_sub_dir directory */
-	- cd /my\_dir/my\_sub\_dir	
-
-If you want more details on our hsh you can check the man: man ./man\_hsh
-
-
-## Conditions of developpement
-
-This Shell has been code from the 10/11/2020 to 25/11/2020 by 2 wonderful people.
-
-Everything was done remotely.
-
-
-## How to use it
-
-Clone this repository.
-
-You can compile with:
-```
-gcc -Wall -pedantic -Werror -Wextra \*.c -o hsh
-```
-or
-```
-gcc -Wall -pedantic -Werror -Wextra _exec_fct.c  _ft_unalias.c _putfct.c _strtow.c _ft_alias.c _listfct1.c _builtin.c _ft_cd.c _getline.c main.c _strfct1.c _dollar_parse.c _ft_env.c _get_parsestruc2.c _operators.c _strfct2.c _env_fct.c _ft_exit.c _get_parsestruc.c _parse_string.c _strtow2.c -o hsh
+```bash
+ $ git clone https://github.com/gchuinard/simple_shell.git
 ```
 
-Execute: ./hsh
+2. Compile all files to get executable file
 
+```bash
+ $ gcc *.c -o hsh
+```
+
+3. Execute
+
+```bash
+ $ ./hsh
+```
+
+-----
+## USAGE
+
+### INTERACTIVE MODE
+
+Interactive mode allows you to enter as many commands as you want.
+Also allows you to exit in two ways, press ```CTRL + D``` or
+exit built-in command. ```$ exit ```
+
+To run simple shell just execute the command below
+
+```bash
+ $ ./hsh
+```
+
+It will display this screen that means you are inside our shell
+```bash
+ $:
+```
+```bash
+ $ ./custom_name_shell
+ $: echo display something
+ display something
+ $:
+```
+
+### NON INTERACTIVE MODE
+
+Non interactive mode allows you to run a simple command.
+
+```bash
+ $ echo "the command you want to run" | ./hsh
+```
+
+```bash
+ $ echo "pwd" | ./hsh
+*Display your current directory*
+```
+
+-----
+## BUILT-IN COMMANDS
+
+More information about each command use help. ```$: help built-in_command```
+
+
+```bash
+ $: ./hsh
+ $: help exit
+ exit: exit [n]
+
+ Exit the shell.
+
+    Exits the shell with a status of N.  If N is omitted, the exit status
+    is that of the last command executed.
+ $:
+```
+
+| Command | Description  |
+| ------- | --- |
+| exit | Exit simple shell|
+| help | Display help of built-in command |
+| env | Display environment variables |
+| cd | Change directory |
+| setenv | Set environment variable value or create a new one |
+| unsetenv | Delete environment variable |
+| alias | Set an alias or create a new one |
+| unalias | Delete an alias |
+| history | Display previous commands |
+
+-----
+## EXIT STATUS
+
+There are different posible exit status, this deppende on the success of the last command.
+
+0: Success exit.<br>
+2: Error execute command. <br>
+126: Permission denied.<br>
+127: not found.
+
+
+-----
+## EXAMPLES
+
+### INTERACTIVE MODE
+
+```bash
+ $ ./hsh
+ $: ls -l
+ -rwxrw-r-- 1 vagrant vagrant    25 Nov 20 00:00 hsh
+ $:
+```
+```bash
+ $ ./custom_name_shell
+ $: echo 123
+ 123
+ $:
+```
+
+```bash
+ $ ./hsh
+ $: cd /tmp
+ $: pwd
+ /tmp
+ $:
+```
+
+### NON INTERACTIVE MODE
+
+```bash
+ $ echo "/bin/ls -l" | ./hsh
+ -rwxrw-r-- 1 vagrant vagrant    25 Nov 20 00:00 hsh
+ $
+ ```
+```bash
+ $ echo "pwd" | ./hsh
+ /root/simple_shell
+ $
+```
+
+```bash
+ $ echo "exit 7" | ./hsh
+ $ echo $?
+ 7
+ $
+``
+
+-----
+## FILES
+
+
+Help_files: Directory containing help files of built-in commands.
+
+| File | Description  |
+| ------- | --- |
+| hsh.h | Declaration of all functions ande include of libraries|
+| main.c | Main file with function to start: <br> - main() <br> - \_launchShell() <br> - \_shell\_loop() <br> - \_core\_exec() <br> \_siginhandler()  |
 
 ## Authors
 
 Matt Scetbun *a.k.a* [@matt969696](https://github.com/matt969696 "The best bro for coding a project <3").
-
 Gautier Chuinard *a.k.a* [@gchuinard](https://github.com/gchuinard "Just me :D").
