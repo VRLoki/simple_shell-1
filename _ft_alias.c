@@ -85,9 +85,9 @@ int	_print_single_alias(char *name, param_t *param)
 		if (_strcmp(node->var, name) == 0)
 		{
 			line = _strdup(name);
-			line = _str_concat(line, "='");
-			line = _str_concat(line, node->value);
-			line = _str_concat(line, "'\n");
+			line = _str_concat_f(line, "='");
+			line = _str_concat_f(line, node->value);
+			line = _str_concat_f(line, "'\n");
 			write(STDOUT_FILENO, line, _strlen(line));
 			free(line);
 			return (0);
@@ -96,8 +96,8 @@ int	_print_single_alias(char *name, param_t *param)
 	}
 
 	line = _strdup("alias: ");
-	line = _str_concat(line, name);
-	line = _str_concat(line, " not found\n");
+	line = _str_concat_f(line, name);
+	line = _str_concat_f(line, " not found\n");
 	write(STDERR_FILENO, line, _strlen(line));
 	free(line);
 	return (1);
@@ -150,7 +150,6 @@ int	_assign_alias(char *comm, param_t *param)
 	int cut, len;
 	char *var, *val, *value;
 	aliasl_t *node, *newnode;
-	char *errmsg = "Alias correct assignement is alias name='value'\n";
 
 	len = _strlen(comm);
 	cut = _str_findeq(comm);
@@ -159,12 +158,10 @@ int	_assign_alias(char *comm, param_t *param)
 	if (var == NULL || val == NULL)
 		return (1);
 	len = _strlen(val);
-	if (len < 2 || val[0] != 39 || val[len - 1] != 39)
-	{
-		write(STDERR_FILENO, errmsg, _strlen(errmsg));
-		return (1);
-	}
-	value = _strncut(val, len - 2, 1);
+	if (len > 2 && val[0] == 39 && val[len - 1] == 39)
+		value = _strncut(val, len - 2, 1);
+	else
+		value = _strdup(val);
 	free(val);
 	node = param->alias;
 	while (node)
