@@ -127,7 +127,7 @@ extern char	**environ;
 
 /* _builtin.c */
 int	_isbuiltin(char *comm);
-int	_get_builtin_fct(char **comm, param_t *param);
+int	_get_b_fct(char **comm, param_t *param, char *c, char *n, char **p);
 
 /* _putfct.c */
 int	_putchar(char c);
@@ -167,9 +167,9 @@ char	**_parse_alias(char **com, int *nbw, param_t *par, aliasl_t **v, int k);
 void	_free_vis(aliasl_t *vis);
 
 /* _exec_fct.c */
-int	_exec_fct(char **parsed, param_t *param);
+int _exec_fct(char **parsed, param_t *param, char *c, char *n, char **p);
 char	*_getfullpath(char *name, char *mypath);
-int	_error_fct(int errnb, char *command, param_t *param);
+int _eft(int nb, char *cm, char **pd, param_t *pm, char *c, char *n, char **p);
 int	_error_open(int errnb, char *command, param_t *param);
 int _contains_char(char *str, char c);
 
@@ -180,7 +180,7 @@ ssize_t	_getlinefile(char **lineptr, size_t *n, int fd);
 char *_strncut(char *src, int n, int from);
 
 /* _ft_exit.c */
-int	_ft_exit(char **s, param_t *param);
+int	_ft_exit(char **s, param_t *param, char *c, char *n, char **p);
 int	_atoi_exit(char *s);
 int	_error_exit(char *command, param_t *param);
 

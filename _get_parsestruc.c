@@ -35,9 +35,9 @@ int _exec_string(char **parsed, int nbw, param_t *param)
 			{
 			built_nbr = _isbuiltin(comm[0]);
 			if (built_nbr != 0)
-				param->lastexit = _get_builtin_fct(comm, param);
+				param->lastexit = _get_b_fct(comm, param, curop, nextop, parsed);
 			else
-				param->lastexit = _exec_fct(comm, param);
+				param->lastexit = _exec_fct(comm, param, curop, nextop, parsed);
 			}
 			_free_tab(comm);
 		}

@@ -67,16 +67,22 @@ int     _error_exit(char *command, param_t *param)
  *
  * @s: the exit number
  * @param: global parameters of the shell.
+ * @c: curop
+ * @n: nextop
+ * @p: parsed
  *
  * Return: 2 if fail
  */
 
-int	_ft_exit(char **s, param_t *param)
+int	_ft_exit(char **s, param_t *param, char *c, char *n, char **p)
 {
 	int	nbr;
 
 	if (s[1] == NULL)
 	{
+		_free_tab(p);
+		free(c);
+		free(n);
 		_free_tab(s);
 		_push_hist(param);
 		_freeParam(param);
@@ -86,6 +92,9 @@ int	_ft_exit(char **s, param_t *param)
 	nbr = _atoi_exit(s[1]);
 	if (nbr >= 0)
 	{
+		_free_tab(p);
+		free(c);
+		free(n);
 		_free_tab(s);
 		_push_hist(param);
 		_freeParam(param);
