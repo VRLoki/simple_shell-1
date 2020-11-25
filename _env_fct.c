@@ -42,7 +42,7 @@ char *_getpid(void)
 {
 	pid_t pid;
 	char *file, *buf, *id, *conv_pid;
-	int fd, bufflen, nbw, status;
+	int fd, bufflen = 0, nbw, status;
 	char **buftow;
 
 	pid = fork();
@@ -56,10 +56,14 @@ char *_getpid(void)
 		fd = open(file, O_RDONLY);
 		free(file);
 
-		buf = (char *)malloc(sizeof(char) * 2048);
+		buf = (char *)malloc(sizeof(char) * 2049);
 		bufflen = read(fd, buf, 2048);
-		if (bufflen < 0)
+		if (bufflen <= 0)
+		{
+			free(buf);
 			return (NULL);
+		}
+		buf[bufflen] = 0;
 		nbw = _nbword(buf, " ");
 		buftow = _strtow(buf, " ");
 		free(buf);

@@ -138,6 +138,7 @@ int	_ft_unsetenv(char **comm, param_t *param)
 		param->envlist = param->envlist->next;
 		free(del_node->var);
 		free(del_node->value);
+		free(del_node);
 		return (0);
 	}
 	while (del_node != NULL)
@@ -147,9 +148,10 @@ int	_ft_unsetenv(char **comm, param_t *param)
 			pre_node->next = del_node->next;
 			free(del_node->var);
 			free(del_node->value);
+			free(del_node);
 			return (0);
 		}
-		pre_node = del_node->next;
+		pre_node = del_node;
 		del_node = del_node->next;
 	}
 	return (0);

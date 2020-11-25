@@ -11,6 +11,7 @@
 
 int _freeParam(param_t *param)
 {
+	printf("COucou\n");
 	if (param->bashname != NULL)
 		free(param->bashname);
 
@@ -19,6 +20,7 @@ int _freeParam(param_t *param)
 	_free_envlist(param);
 	_free_alias(param);
 	_free_hist(param);
+
 	if (param->filename != NULL)
 		free(param->filename);
 	free(param);

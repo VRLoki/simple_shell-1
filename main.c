@@ -81,6 +81,7 @@ int _launchShell(param_t *param)
 		close(param->fdnb);
 	exitval = param->lastexit;
 	_freeParam(param);
+;
 	return (exitval);
 }
 
@@ -154,7 +155,6 @@ int _core_exec(char **parsed, int nbw, param_t *param)
 	_exec_string(parsed, nbw, param);
 	_free_grid(parsed, nbw);
 	_prompt(param);
-
 
 	return (1);
 }

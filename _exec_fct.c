@@ -13,14 +13,12 @@ int _exec_fct(char **parsed, param_t *param)
 {
 	int status = 0, exit_status = 0;
 	pid_t child_pid;
-	char *mypath, *command, *tmp;
+	char *mypath, *command;
 	char **envfull;
 
 	envfull = _getEnvChar(param->envlist);
 	mypath = _getenv("PATH", envfull);
-	tmp = _strdup(_getfullpath(parsed[0], mypath));
-	command = _strdup(tmp);
-	free(tmp);
+	command = _getfullpath(parsed[0], mypath);
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -40,7 +38,7 @@ int _exec_fct(char **parsed, param_t *param)
 		if (envfull)
 			_free_tab(envfull);
 		if (command)
-		free(command);
+			free(command);
 		wait(&status);
 		if (WIFEXITED(status))
 		{
@@ -55,9 +53,8 @@ int _exec_fct(char **parsed, param_t *param)
 
 
 
-
 /**
- * _error_fct - print an error message
+ *_error_fct - print an error message
  *
  * @errnb: error number input
  * @command: command failing
@@ -149,7 +146,7 @@ char *_getfullpath(char *name, char *mypath)
 	struct stat st;
 
 	if (mypath == NULL || (name[0] == '.' && name[1] == '/'))
-		return (name);
+		return (_strdup(name));
 
 	fullname = _str_concat("/", name);
 	splitpath = _strtow2(mypath, ":");
@@ -174,7 +171,7 @@ char *_getfullpath(char *name, char *mypath)
 	}
 	free(fullname);
 	_free_tab(splitpath);
-	return (name);
+	return (_strdup(name));
 
 }
 
