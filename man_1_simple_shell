@@ -1,0 +1,120 @@
+.TH man 1 "25 October 2020" "0.01" "simple_shell man page"
+
+
+.SH NAME
+simple_shell
+
+
+.SH SYNOPSIS
+.br
+
+
+.SH DESCRIPTION
+Should be very similar to the printf function, adding a few extra options
+
+
+.SH Flag characters
+The character '%' is followed by zero or more of the following flags:
+.br
+
+.TP
+.B #
+The value should be converted to an "alternate form". For o conversions, the first character of the output string is made zero (by prefixing a 0 if it was not zero already). For x and X conversions, a nonzero result has the string "0x" (or "0X" for X conversions) prepended to it. For other conversions, the result is unde‐fined.
+.TP
+
+.B 0
+The value should be zero padded. For d, i, o, u, x and X conversions, the converted value is padded on the left with zeros rather than blanks. If the 0 and - flags both appear, the 0 flag is ignored. For other conversions, the behavior is undefined.
+.TP
+
+.B -
+The converted value is to be left adjusted on the field  boundary. (The default  is right justification.) The converted value is padded on the right with blanks, rather than on the left with blanks or zeros. A - overrides a 0 if both are given.
+.TP
+
+.B ' '
+(a  space)  A  blank  should  be  left before a positive number (or empty string) produced by a signed conversion.
+.TP
+
+.B +
+A sign (+ or -) should always be placed before a  number  produced  by  a signed conversion.  By default, a sign is used only for negative numbers. A + overrides a space if both are used.
+.br
+
+
+.SH Field width
+An optional decimal digit string (with nonzero first digit) specifying a minimum field  width.  If the converted value has fewer characters than the field width, it will be padded with spaces on the left (or right, if the left-adjustment flag has  been  given).  Instead of a decimal digit string one may write "*" which must be of type int. A negative field width is taken as a '-' flag followed by a positive field width. In no case does a nonexistent or small field width cause truncation of a field; if the result of a conversion is wider than the field width, the field is expanded to contain the conversion result.
+
+.SH Precision
+An optional precision, in the form of a period ('.') followed by an optional decimal digit string. Instead of a decimal digit string one may write "*" to specify that the precision is given in the next argument, respectively, which must be of type int. If the precision is given as just '.', the precision is taken to be zero. A negative precision is taken as if the precision were omitted. This gives the minimum number of digits to appear for d, i, b, o, u, x, and X conversions, or the maximum number of characters to be printed from a string for s and S conversions.
+
+.SH Length modifier
+Here, "integer conversion" stands for d, i, b, o, u, x, or X conversion.
+.br
+
+.TP
+.B h
+A following integer conversion corresponds to a short int or unsigned short int argument, or a following n conversion corresponds to a pointer to a short int argument.
+.TP
+.B l
+(ell) A following integer conversion corresponds to a long int or unsigned long int argument, or a following n conversion corresponds to a pointer to a long int argument.
+
+
+.SH Conversion specifiers
+A character that specifies the type of conversion to be applied. The conversion specifiers and their meanings are:
+.br
+
+.TP
+.B c
+The int argument is written.
+.br
+
+.TP
+.B s
+Characters from the array are written up to (but not including) a terminating null byte ('\\0'); if a precision is specified, no more than the number specified are written. If a precision is given, no null byte need be present; if the precision is not specified, or is greater than the size of the array, the array must contain a terminating null byte.
+.br
+
+.TP
+.B d, i
+The int argument is converted to signed decimal notation. The precision, if any, gives the minimum number of digits that must appear; if the converted value requires fewer digits, it is padded on the left with zeros. The default precision is 1. When 0 is printed with an explicit precision 0, the output is empty.
+.br
+
+.TP
+.B b, u, o, x, X
+The unsigned int argument is converted to unsigned binary (b), unsigned octal (o), unsigned decimal (u), or unsigned hexadecimal (x and X) notation. The letters abcdef are used for x conversions; the letters ABCDEF are used for X conversions. Then the argument is print. The precision, if any, gives the minimum number of digits that must appear; if the converted value requires fewer digits, it is padded on the left with zeros. The default precision is 1. When 0 is printed with an explicit precision 0, the output is empty.
+.br
+
+.TP
+.B p
+The void * pointer argument is printed in hexadecimal (as if by %#x or %#lx)
+.br
+
+.TP
+.B S
+Prints a string replacing the non printable characters by x and his hexadecimal value
+.br
+
+.TP
+.B r
+Prints a string in reverse.
+.br
+
+.TP
+.B R
+Prints a string in Rot13 code.
+.br
+
+.SH RETURN VALUE
+Upon  successful return, these functions return the number of characters printed (excluding the null byte used to end output to strings).
+.br
+
+
+.SH SEE ALSO
+printf(3)
+.br
+
+
+.SH BUGS
+- Problem with precision = 0 and number = 0
+.br
+
+
+.SH AUTHOR
+Gautier Chuinard / Matt Scetbun
