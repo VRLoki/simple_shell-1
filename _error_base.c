@@ -72,3 +72,54 @@ int _add_alias_end(char *var, char *value, param_t *param)
 	node->next = new;
 	return (0);
 }
+
+
+
+
+
+/**
+ * _opeSTOP_zero - add space when '#'
+ * only on the first char
+ *
+ * @s : string to transform
+ *
+ * Return: transformed string
+ */
+
+char *_opeSTOP_zero(char *s)
+{
+	int len = _strlen(s);
+	int i = 1, j = 0;
+	char *news;
+
+	if (len <= 1)
+		return (s);
+	while (i < 1)
+	{
+		if (s[i] == '#')
+			len = len + 2;
+		i++;
+	}
+	news = malloc((len + 1) * sizeof(char));
+	i = 0;
+	while (i < 1)
+	{
+		if (s[i] == '#')
+		{
+			news[j] = ' ';
+			news[j + 1] = '#';
+			news[j + 2] = ' ';
+			j = j + 3;
+			i = i + 1;
+		}
+		else
+		{
+			news[j] = s[i];
+			j = j + 1;
+			i = i + 1;
+		}
+	}
+	news[j] = '\0';
+	free(s);
+	return (news);
+}
