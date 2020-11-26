@@ -44,7 +44,7 @@ It will display this screen that means you are inside our shell
  $:
 ```
 ```bash
- $ ./custom_name_shell
+ $ ./hsh
  $: echo display something
  display something
  $:
@@ -61,6 +61,28 @@ Non interactive mode allows you to run a simple command.
 ```bash
  $ echo "pwd" | ./hsh
 *Display your current directory*
+```
+
+### FILE MODE
+
+File mode allows you to enter many commands as you want with the intermediary of a file. You can write in your file one command by line. The shell will execute them one by one. You don't need to exit at the end.
+
+Create a file "my\_file"
+
+Write the commands you want to execute
+```
+ls
+pwd
+echo Hello
+```
+
+Execute the file mode:
+```bash
+ $ ./hsh my_file
+*Display files and directories in your current directory*
+*Display the path to your current directory*
+Hello
+ $
 ```
 
 -----
@@ -150,19 +172,30 @@ There are different posible exit status, this deppende on the success of the las
  $
 ```
 
+### FILE MODE
+
+Create a file "my\_file"
+
+Write the commands you want to execute
+```
+ls
+pwd
+echo Hello
+```
+
+Execute the file mode:
+```bash
+ $ cat my_file | ./hsh
+*Display files and directories in your current directory*
+*Display the path to your current directory*
+Hello
+ $
+```
 -----
 ## FILES
 
 
 Help_files: Directory containing help files of built-in commands.
-
-| File | Description  |
-| ------- | --- |
-| hsh.h | Declaration of all functions and includes of libraries|
-| main.c | Main file with function to start: <br> - main() <br> - \_launchShell() <br> - \_shell\_loop() <br> - \_core\_exec() <br> - \_siginhandler()  |
-| builtin.c | Functions to handle the builtin functions: <br> - \_isbuiltin() <br> - \_get_builtin_fct() |
-| \_env_fct.c | Functions to handle the environment variables: <br> - \_initParam() <br> - \_getpid() <br> - \_getEnvList() <br> - \_get_env_val() <br> - \_getEnvChar()  |
-| \_exec_fct.c | Functions to execute commands enter in the shell: <br> - \_exec_fct() <br> - \_error_fct() <br> - \_error_open() <br> - \_getfullpath() <br> - \_contains_char()  |
 
 ## Authors
 
