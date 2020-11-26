@@ -49,7 +49,7 @@ char	*_getdest(char *path, char *home, char *oldpwd, char *pwd)
 	if (path == NULL)
 	{
 		if (home == NULL)
-			home = _strdup(".");
+			return (_strdup("."));
 		return (_strdup(home));
 	}
 	else if (_strcmp(path, "-") == 0 && oldpwd != NULL)
