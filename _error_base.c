@@ -89,7 +89,7 @@ int _add_alias_end(char *var, char *value, param_t *param)
 char *_opeSTOP_zero(char *s)
 {
 	int len = _strlen(s);
-	int i = 1, j = 0;
+	int i = 0, j = 0;
 	char *news;
 
 	if (len <= 1)
