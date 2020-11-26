@@ -186,11 +186,12 @@ char *_opeOR(char *s)
 char *_opeSTOP(char *s)
 {
 	int len = _strlen(s);
-	int i = 1, j = 0;
+	int i = 1, j = 1;
 	char *news;
 
 	if (len <= 1)
 		return (s);
+	new[0] = s[0];
 	while (s[i])
 	{
 		if (s[i] == '#' && s[i - 1] == ' ')
