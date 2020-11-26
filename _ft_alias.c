@@ -149,7 +149,7 @@ int	_assign_alias(char *comm, param_t *param)
 {
 	int cut, len;
 	char *var, *val, *value;
-	aliasl_t *node, *newnode;
+	aliasl_t *node;
 
 	len = _strlen(comm);
 	cut = _str_findeq(comm);
@@ -168,6 +168,7 @@ int	_assign_alias(char *comm, param_t *param)
 	{
 		if (_strcmp(node->var, var) == 0)
 		{
+			free(node->value);
 			node->value = _strdup(value);
 			free(var);
 			free(value);
@@ -175,12 +176,7 @@ int	_assign_alias(char *comm, param_t *param)
 		}
 		node = node->next;
 	}
-	node = param->alias;
-	newnode = (aliasl_t *)malloc(sizeof(aliasl_t));
-	newnode->var = _strdup(var);
-	newnode->value = _strdup(value);
-	newnode->next = node;
-	param->alias = newnode;
+	_add_alias_end(var, value, param);
 	free(var);
 	free(value);
 	return (0);

@@ -92,7 +92,7 @@ int     _error_exit(char *command, param_t *param)
 
 int	_ft_exit(char **s, param_t *param, char *c, char *n, char **p)
 {
-	int	nbr;
+	int	nbr, lastval;
 
 	if (s[1] == NULL)
 	{
@@ -101,8 +101,9 @@ int	_ft_exit(char **s, param_t *param, char *c, char *n, char **p)
 		free(n);
 		_free_tab(s);
 		_push_hist(param);
+		lastval = param->lastexit;
 		_freeParam(param);
-		_exit(0);
+		_exit(lastval);
 	}
 
 	nbr = _atoi_exit(s[1]);

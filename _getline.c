@@ -107,7 +107,7 @@ ssize_t _getlinefile(char **lineptr, size_t *n, int fd)
 
 	if (bufflen == 0)
 	{
-		buf = (char *)malloc(sizeof(char) * 4096);
+		buf = (char *)malloc(sizeof(char) * 4097);
 		bufflen = read(fd, buf, 4096);
 		_replace_null(buf, bufflen);
 		buf[bufflen] = '\0';

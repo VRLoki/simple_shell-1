@@ -292,5 +292,6 @@ int     _populate_hist(char *line, param_t *param);
 
 /* _error_base.c */
 char *_error_base(param_t *param);
+int _add_alias_end(char *var, char *value, param_t *param);
 
 #endif
