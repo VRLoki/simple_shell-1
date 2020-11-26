@@ -94,17 +94,17 @@ char *_opeSTOP_zero(char *s)
 
 	if (len <= 1)
 		return (s);
-	while (i < 1)
+	while (s[i])
 	{
-		if (s[i] == '#')
+		if (s[i] == '#' && i == 0)
 			len = len + 2;
 		i++;
 	}
 	news = malloc((len + 1) * sizeof(char));
 	i = 0;
-	while (i < 1)
+	while (s[i])
 	{
-		if (s[i] == '#')
+		if (s[i] == '#' && i == 0)
 		{
 			news[j] = ' ';
 			news[j + 1] = '#';
