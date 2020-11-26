@@ -26,6 +26,7 @@ int main(int ac, char **av, char **env)
 				err = 126;
 			else
 				err = 127;
+
 			_error_open(err, av[1], &param);
 		}
 		else
@@ -45,7 +46,6 @@ int main(int ac, char **av, char **env)
 		param.mode = 1;
 		param.fdnb = STDIN_FILENO;
 	}
-
 	lastval = _launchShell(&param);
 	_freeParam(&param);
 	return (lastval);

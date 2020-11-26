@@ -192,7 +192,7 @@ char *_opeSTOP(char *s)
 		return (s);
 	while (s[i])
 	{
-		if (s[i] == '#')
+		if (s[i] == '#' && (i == 0 || s[i - 1] == ' '))
 			len = len + 2;
 		i++;
 	}
@@ -200,7 +200,7 @@ char *_opeSTOP(char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == '#')
+		if (s[i] == '#' && (i == 0 || s[i - 1] == ' '))
 		{
 			news[j] = ' ';
 			news[j + 1] = '#';

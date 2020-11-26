@@ -125,30 +125,15 @@ int _eft(int nb, char *co, char **pd, param_t *pm, char *c, char *n, char **p)
 
 int	_error_open(int errnb, char *command, param_t *param)
 {
-	char *dispmess, *conv, *file;
+	char *dispmess, *conv;
 
 	conv = _convert_base(param->count, 10, 0);
-	if (param->mode != 2)
-	{	dispmess = _strdup(param->bashname);
+		dispmess = _strdup(param->bashname);
 		dispmess = _str_concat_f(dispmess, ": ");
 		dispmess = _str_concat_f(dispmess, conv);
 		dispmess = _str_concat_f(dispmess, ": Can't open ");
 		dispmess = _str_concat_f(dispmess, command);
 		dispmess = _str_concat_f(dispmess, "\n");
-	}
-	else
-	{
-		file = _strdup(param->filename);
-		dispmess = _strdup(param->filename);
-		dispmess = _str_concat_f(dispmess, ": ");
-		dispmess = _str_concat_f(dispmess, conv);
-		dispmess = _str_concat_f(dispmess, ": ");
-		dispmess = _str_concat_f(dispmess, file);
-		dispmess = _str_concat_f(dispmess, ": Can't open ");
-		dispmess = _str_concat_f(dispmess, command);
-		dispmess = _str_concat_f(dispmess, "\n");
-		free(file);
-	}
 	free(conv);
 	write(STDERR_FILENO, dispmess, _strlen(dispmess));
 	free(dispmess);

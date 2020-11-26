@@ -125,14 +125,10 @@ int	_ft_unsetenv(char **comm, param_t *param)
 	envl_t  *del_node;
 
 	if (comm == NULL)
-	{
 		return (-1);
-	}
 	if (comm[1] == NULL)
-	{
 		_error_env(comm[0], param);
 		return (-1);
-	}
 	del_node = param->envlist;
 	pre_node = param->envlist;
 	if (_strcmp(comm[1], del_node->var) == 0)
@@ -156,5 +152,6 @@ int	_ft_unsetenv(char **comm, param_t *param)
 		pre_node = del_node;
 		del_node = del_node->next;
 	}
+
 	return (0);
 }

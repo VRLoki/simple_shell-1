@@ -12,7 +12,7 @@
 
 char *_parse_env(char *comm, param_t *param)
 {
-	char *newcomm, *isenv;
+	char *newcomm, *isenv, *temp;
 	int len;
 	envl_t *node;
 
@@ -22,17 +22,15 @@ char *_parse_env(char *comm, param_t *param)
 	if (len < 2 || comm[0] != '$')
 		return (comm);
 	if (comm[1] == '$')
-	{
 		newcomm = _strdup(param->pid);
-		newcomm = _str_concat_f(newcomm, _strncut(comm, len - 2, 2));
-		free(comm);
-		return (newcomm);
-	}
 	if (comm[1] == '?')
-	{
 		newcomm = _convert_base(param->lastexit, 10, 0);
-		newcomm = _str_concat_f(newcomm, _strncut(comm, len - 2, 2));
+	if (comm[1] == '$' || comm[1] == '?')
+	{
+		temp = _strncut(comm, len - 2, 2);
+		newcomm = _str_concat_f(newcomm, temp);
 		free(comm);
+		free(temp);
 		return (newcomm);
 	}
 	isenv = _strncut(comm, len - 1, 1);
