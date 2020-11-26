@@ -40,20 +40,30 @@ SH [arguments] [file]
 
 
 .SH DESCRIPTION
-Simple shell is a fundamental command line user interface where you which provides all basic built-in commands. Allows to execute commands
+Simple shell is a fundamental command line user interface where you which provides all basic built-in commands. Allows to execute commands There are two types of commands: builtin commands, and normal programs -- and the command is searched for (by name) in that order. They each are executed in a different way.
+Shell builtins are executed internally to the shell, without spawning a new
+process.
+Otherwise, the command is searched for as a normal program in the file system (as described in the next section). The shell will interpret the program in a subshell.
+.SS "Path Search"
+When locating a command, the shell first looks for a builtin command by that name. If a builtin command is not found, one of two things happen:
+.IP "1."
+Command names containing a slash are simply executed without performing any
+searches.
+.IP "2."
+The shell searches each entry in PATH in turn for the command. The value of the PATH variable should be a series of entries separated by colons. Each entry consists of a directory name. The current directory may be indicated implicitly by an empty directory name, or explicitly by a single period.
 
 .SH OPTIONS
 
 .B Built-int commands supported:
 
 .TP
-exit
+exit [STATUS]
  Exit simple shell.
 .br
 
 .TP
-help
- Display help of built-in command.
+help [BUILTIN]
+ Display help of builtin command.
 .br
 
 .TP
@@ -62,33 +72,41 @@ env
 .br
 
 .TP
-cd
+cd [DIRECTORY]
  Change directory.
+ If no argument is given to cd the command is interpreted as cd $HOME.
+
+ Updates the environment variable PWD when changing directory.
 .br
 
 .TP
-setenv
+setenv VARIABLE VALUE
  Set environment variable value or create a new one.
 .br
 
 .TP
-unsetenv
+unsetenv VARIABLE
  Delete environment variable.
 .br
 
 .TP
-alias
+alias VARIABLE VALUE
  Set an alias variable value or create a new one.
 .br
 
 .TP
-unalias
+unalias VARIABLE
  Delete an alias variable.
 .br
 
 .TP
 history
- Display the last commands used.
+Display the last commands used, one command by line, preceded with line numbers
+(starting at 0). On exit, write the entire history, without line
+numbers, to a file named .simple_shell_history in the directory
+$HOME. When the shell starts, read the file .simple_shell_history
+in the directory $HOME if it exists, and set the first line number to the
+total number of lines in the file modulo 4096.
 .br
 
 .El
@@ -208,6 +226,8 @@ OLDPWD
  The previous logical value of the current working directory.  This is set by the cd command.
 .br
 
+.SH FILES
+$HOME/.simple_shell_history
 
 .SH SEE ALSO
 bash(1)
