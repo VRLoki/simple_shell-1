@@ -191,7 +191,6 @@ char *_opeSTOP(char *s)
 
 	if (len <= 1)
 		return (s);
-	new[0] = s[0];
 	while (s[i])
 	{
 		if (s[i] == '#' && s[i - 1] == ' ')
@@ -199,7 +198,8 @@ char *_opeSTOP(char *s)
 		i++;
 	}
 	news = malloc((len + 1) * sizeof(char));
-	i = 0;
+	news[0] = s[0];
+	i = 1;
 	while (s[i])
 	{
 		if (s[i] == '#' && s[i - 1] == ' ')
