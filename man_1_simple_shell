@@ -183,7 +183,7 @@ tab(;) allbox;
 l l
 l l.
 Commands;Display
-$ cat my_file | ./hsh;hsh
+$ ./hsh my_file;hsh
 ;/home/vagrant/simple_shell
 ;/home/vagrant/
 ;Hello

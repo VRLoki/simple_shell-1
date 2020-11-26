@@ -78,7 +78,7 @@ echo Hello
 
 Execute the file mode:
 ```bash
- $ cat my_file | ./hsh
+ $ ./hsh my_file
 *Display files and directories in your current directory*
 *Display the path to your current directory*
 Hello
