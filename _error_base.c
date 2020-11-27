@@ -123,3 +123,56 @@ char *_opeSTOP_zero(char *s)
 	free(s);
 	return (news);
 }
+
+
+
+
+
+/**
+ * _add_env_end - add an env var at the end
+ * if it doesn't exist or replace it if found
+ *
+ * @var: name of the variable
+ * @value: value of the variable
+ * @param: global parameters of the shell.
+ *
+ * Return: 0 always
+ */
+
+int _add_env_end(char *var, char *value, param_t *param)
+{
+
+	envl_t *node, *new;
+
+	node = param->envlist;
+	while (node != NULL)
+	{
+		if (_strcmp(node->var, var) == 0)
+		{
+			free(node->value);
+			node->value = _strdup(value);
+			return (0);
+		}
+		node = node->next;
+	}
+
+	new = (envl_t *)malloc(sizeof(aliasl_t));
+	if (new == NULL)
+		return (1);
+	new->var = _strdup(var);
+	new->value = _strdup(value);
+	new->next = NULL;
+
+	if (param->envlist == NULL)
+	{
+		param->envlist = new;
+		return (0);
+	}
+
+	node = param->envlist;
+	while (node->next != NULL)
+		node = node->next;
+
+	node->next = new;
+	return (0);
+}

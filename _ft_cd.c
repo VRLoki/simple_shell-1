@@ -48,6 +48,13 @@ char	*_getdest(char *path, char *home, char *oldpwd, char *pwd)
 
 	if (path == NULL)
 	{
+		if (home == NULL)
+		{
+			if (pwd == NULL)
+				return (getcwd(NULL, 0));
+			else
+				return (_strdup(pwd));
+		}
 		return (_strdup(home));
 	}
 	else if (_strcmp(path, "-") == 0 && oldpwd != NULL)
@@ -56,7 +63,12 @@ char	*_getdest(char *path, char *home, char *oldpwd, char *pwd)
 	}
 	else if (_strcmp(path, "-") == 0 && oldpwd == NULL)
 	{
-		return (_strdup(pwd));
+		{
+			if (pwd == NULL)
+				return (getcwd(NULL, 0));
+			else
+				return (_strdup(pwd));
+		}
 	}
 	else
 	{
@@ -102,6 +114,7 @@ int	_ft_cd(char **path, param_t *param)
 {
 	envl_t	*node = NULL;
 	char	*home = NULL, *pwd = NULL, *oldpwd = NULL, *dest = NULL;
+	char *temp;
 
 	node = param->envlist;
 	while (node != NULL)
@@ -120,21 +133,13 @@ int	_ft_cd(char **path, param_t *param)
 		_free_cd(home, pwd, oldpwd, dest);
 		return (_error_cd(path, param));
 	}
-	node = param->envlist;
-	while (node != NULL)
-	{
-		if (_strcmp(node->var, "PWD") == 0)
-		{
-			free(node->value);
-			node->value = getcwd(NULL, 0);
-		}
-		if (_strcmp(node->var, "OLDPWD") == 0)
-		{
-			free(node->value);
-			node->value = _strdup(pwd);
-		}
-		node = node->next;
-	}
+	temp = getcwd(NULL, 0);
+	_add_env_end("PWD", temp, param);
+	if (pwd == NULL)
+		_add_env_end("OLDPWD", temp, param);
+	else
+		_add_env_end("OLDPWD", pwd, param);
+	free(temp);
 	_free_cd(home, pwd, oldpwd, dest);
 	_puts_dir(path[1]);
 	return (0);
