@@ -31,7 +31,7 @@ int _exec_fct(char **parsed, param_t *param, char *c, char *n, char **p)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(command, parsed, envfull) == -1)
+		if (execve(command, parsed, NULL) == -1)
 		{
 			_free_tab(envfull);
 			_eft(errno, command, parsed, param, c, n, p);
